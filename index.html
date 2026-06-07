@@ -3,17 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SYMANTIC • Next-Gen Gaming Intelligence by 14 y old Amresh</title>
+    <title>SYMANTIC • Next-Gen Gaming Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
-
-        :root {
-            --primary: #00F0FF;
-            --secondary: #8B5CF6;
-            --accent: #FF2D92;
-        }
 
         body {
             font-family: 'Inter', system_ui, sans-serif;
@@ -32,62 +26,35 @@
             -webkit-text-fill-color: transparent;
         }
 
+        .glass {
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
         .section { display: none; }
         .section.active { display: block; }
 
-        .news-card, .review-card, .category-card {
+        .news-card {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .news-card:hover, .review-card:hover, .category-card:hover {
+        .news-card:hover {
             transform: translateY(-6px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
         }
 
-        .genre-filter {
-            transition: all 0.2s ease;
+        .feature-card {
+            transition: all 0.3s ease;
         }
-        .genre-filter.active {
-            background: #00F0FF;
-            color: #05070F;
+        .feature-card:hover {
+            transform: translateY(-4px);
             border-color: #00F0FF;
-        }
-
-        .modal {
-            animation: modalEnter 0.2s ease forwards;
-        }
-        @keyframes modalEnter {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
         }
 
         .cyber-btn {
             font-family: 'Space Grotesk', system_ui, sans-serif;
             font-weight: 700;
             letter-spacing: 1px;
-        }
-
-        .glass {
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-
-        .nav-active {
-            color: #00F0FF;
-            background: rgba(0, 240, 255, 0.1);
-        }
-
-        .scanline {
-            position: relative;
-        }
-        .scanline::after {
-            content: '';
-            position: absolute; inset: 0;
-            background: repeating-linear-gradient(
-                0deg, transparent, transparent 2px, 
-                rgba(0,240,255,0.02) 2px, rgba(0,240,255,0.02) 4px
-            );
-            pointer-events: none;
         }
 
         body.light {
@@ -97,12 +64,11 @@
         body.light .glass { background: rgba(255,255,255,0.9); border-color: #E2E8F0; }
         body.light .bg-\\[\\#090C18\\] { background: #FFFFFF; }
         body.light .border-white\\/10 { border-color: #E2E8F0; }
-        body.light .text-\\[\\#4A5680\\] { color: #64748B; }
     </style>
 </head>
 <body class="bg-[#05070F] text-[#B8C8E0]">
 
-    <!-- NAVBAR -->
+    <!-- GLASSMORPHISM NAVBAR -->
     <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
         <div class="max-w-screen-2xl mx-auto px-6 md:px-8 h-16 flex items-center justify-between">
             <div onclick="showSection('home')" class="flex items-center gap-x-3 cursor-pointer">
@@ -113,28 +79,20 @@
             </div>
 
             <div class="hidden md:flex items-center gap-x-1 text-sm font-medium">
-                <button onclick="showSection('home')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">Home</button>
-                <button onclick="showSection('news')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">News</button>
-                <button onclick="showSection('reviews')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">Reviews</button>
-                <button onclick="showSection('categories')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">Categories</button>
-                <button onclick="showSection('podcasts')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">Podcasts</button>
-                <button onclick="showSection('community')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">Community</button>
-                <button onclick="showSection('leaderboard')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">Leaderboard</button>
-                <button onclick="showSection('about')" class="px-5 py-2 rounded-xl hover:bg-white/5 nav-link">About</button>
+                <button onclick="showSection('home')" class="px-5 py-2 rounded-xl hover:bg-white/5">Home</button>
+                <button onclick="showSection('news')" class="px-5 py-2 rounded-xl hover:bg-white/5">News</button>
+                <button onclick="showSection('reviews')" class="px-5 py-2 rounded-xl hover:bg-white/5">Reviews</button>
+                <button onclick="showSection('dashboard')" class="px-5 py-2 rounded-xl hover:bg-white/5">Dashboard</button>
+                <button onclick="showSection('pricing')" class="px-5 py-2 rounded-xl hover:bg-white/5">Pricing</button>
             </div>
 
             <div class="flex items-center gap-x-3">
-                <div class="hidden md:flex items-center glass border border-white/10 rounded-2xl px-4 py-2 text-sm w-80">
-                    <i class="fa-solid fa-search text-[#00F0FF] mr-3"></i>
-                    <input id="search-input" type="text" placeholder="Search news, reviews, podcasts..." class="bg-transparent outline-none w-full" onkeyup="globalSearch()">
-                </div>
-
-                <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center text-xl hover:bg-white/5 rounded-2xl transition-colors">
+                <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center text-xl hover:bg-white/5 rounded-2xl">
                     <i id="theme-icon" class="fa-solid fa-moon"></i>
                 </button>
-
+                
                 <button onclick="showSection('news')" class="cyber-btn hidden md:block px-6 py-2.5 text-xs bg-[#00F0FF] text-[#05070F] font-bold rounded-2xl">
-                    SUBSCRIBE
+                    GET PRO
                 </button>
 
                 <button onclick="toggleMobileMenu()" class="md:hidden w-10 h-10 flex items-center justify-center text-2xl">
@@ -148,255 +106,407 @@
                 <button onclick="showSection('home'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Home</button>
                 <button onclick="showSection('news'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">News</button>
                 <button onclick="showSection('reviews'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Reviews</button>
-                <button onclick="showSection('categories'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Categories</button>
-                <button onclick="showSection('podcasts'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Podcasts</button>
-                <button onclick="showSection('community'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Community</button>
-                <button onclick="showSection('leaderboard'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Leaderboard</button>
-                <button onclick="showSection('about'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">About</button>
+                <button onclick="showSection('dashboard'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Dashboard</button>
+                <button onclick="showSection('pricing'); toggleMobileMenu()" class="text-left py-3 px-4 hover:bg-white/5">Pricing</button>
             </div>
         </div>
     </nav>
 
-    <!-- HOME SECTION -->
+    <!-- HERO -->
     <div id="home" class="section active pt-16">
-        <div class="min-h-[92vh] flex items-center justify-center relative">
-            <div class="max-w-5xl mx-auto px-6 text-center">
+        <div class="min-h-[92vh] flex items-center justify-center relative overflow-hidden">
+            <div class="absolute inset-0 bg-[radial-gradient(#1f2a44_0.8px,transparent_1px)] bg-[length:6rem_6rem] opacity-40"></div>
+            
+            <div class="max-w-5xl mx-auto px-6 text-center relative z-10">
                 <div class="inline-flex items-center gap-x-2 px-5 py-1.5 rounded-3xl border border-[#00F0FF]/30 text-[#00F0FF] text-xs font-bold tracking-[3px] mb-8">
                     NEXT-GEN GAMING INTELLIGENCE
                 </div>
                 
-                <h1 class="font-display text-7xl md:text-[80px] font-semibold tracking-[-4.5px] leading-none mb-6">
+                <h1 class="font-display text-7xl md:text-[82px] font-semibold tracking-[-4.5px] leading-none mb-6">
                     The future of<br>
                     <span class="cyber-gradient">gaming media</span>
                 </h1>
                 
                 <p class="max-w-2xl mx-auto text-2xl text-[#4A5680] mb-10">
-                    Sharp analysis. Honest reviews. Zero hype.
+                    Sharp analysis. Honest reviews. Zero hype.<br>
+                    Powered by AI.
                 </p>
                 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
                     <button onclick="showSection('news')" class="cyber-btn px-10 py-4 bg-gradient-to-r from-[#00F0FF] to-[#8B5CF6] text-white font-bold text-sm rounded-3xl">
                         EXPLORE NEWS
                     </button>
-                    <button onclick="showSection('reviews')" class="cyber-btn px-10 py-4 border border-white/30 hover:bg-white/5 font-bold text-sm rounded-3xl">
-                        READ REVIEWS
+                    <button onclick="showSection('dashboard')" class="cyber-btn px-10 py-4 border border-white/30 hover:bg-white/5 font-bold text-sm rounded-3xl">
+                        VIEW DASHBOARD
                     </button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Trending -->
-        <div class="max-w-screen-2xl mx-auto px-6 pt-8">
-            <div class="flex justify-between items-end mb-6">
-                <div>
-                    <div class="text-[#00F0FF] text-xs font-bold tracking-[2px]">HOT THIS WEEK</div>
-                    <h2 class="font-display text-3xl font-semibold">Trending Now</h2>
-                </div>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="trending-grid"></div>
+    <!-- AI DASHBOARD MOCKUP -->
+    <div id="dashboard" class="section pt-20 max-w-screen-2xl mx-auto px-6">
+        <div class="text-center mb-12">
+            <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">LIVE ANALYTICS</div>
+            <h2 class="font-display text-4xl font-semibold mt-2">Symantic AI Dashboard</h2>
         </div>
 
-        <!-- Latest News Preview -->
-        <div class="max-w-screen-2xl mx-auto px-6 pt-14">
-            <div class="flex justify-between items-end mb-8">
-                <div>
-                    <div class="text-[#00F0FF] text-xs font-bold tracking-[2px]">JUST IN</div>
-                    <h2 class="font-display text-3xl font-semibold">Latest News</h2>
-                </div>
-                <button onclick="showSection('news')" class="text-[#00F0FF] text-sm font-semibold">View all →</button>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="glass border border-white/10 rounded-3xl p-6">
+                <div class="text-sm text-[#4A5680]">Active Readers Today</div>
+                <div class="font-display text-5xl font-bold mt-2">142.8k</div>
+                <div class="text-emerald-400 text-sm mt-1">↑ 18% from yesterday</div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="home-news-grid"></div>
+            <div class="glass border border-white/10 rounded-3xl p-6">
+                <div class="text-sm text-[#4A5680]">Articles This Week</div>
+                <div class="font-display text-5xl font-bold mt-2">87</div>
+                <div class="text-emerald-400 text-sm mt-1">↑ 12 today</div>
+            </div>
+            <div class="glass border border-white/10 rounded-3xl p-6">
+                <div class="text-sm text-[#4A5680]">Avg. Read Time</div>
+                <div class="font-display text-5xl font-bold mt-2">6.4m</div>
+                <div class="text-emerald-400 text-sm mt-1">↑ 0.8m this week</div>
+            </div>
+            <div class="glass border border-white/10 rounded-3xl p-6">
+                <div class="text-sm text-[#4A5680]">AI Prediction Accuracy</div>
+                <div class="font-display text-5xl font-bold mt-2">94.2%</div>
+                <div class="text-emerald-400 text-sm mt-1">Trending topics predicted</div>
+            </div>
         </div>
     </div>
 
-    <!-- NEWS SECTION -->
-    <div id="news" class="section pt-20 max-w-screen-2xl mx-auto px-6">
-        <div class="mb-6 flex items-center justify-between flex-wrap gap-4">
+    <!-- FEATURES GRID -->
+    <div class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="text-center mb-12">
+            <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">WHY SYMANTIC</div>
+            <h2 class="font-display text-4xl font-semibold mt-2">Built for the next generation of gamers</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="feature-card glass border border-white/10 rounded-3xl p-8">
+                <div class="text-4xl mb-6">🧠</div>
+                <div class="font-display text-2xl font-semibold mb-3">AI-Powered Insights</div>
+                <p class="text-[#4A5680]">Our AI analyzes millions of data points to predict trends before they go viral.</p>
+            </div>
+            <div class="feature-card glass border border-white/10 rounded-3xl p-8">
+                <div class="text-4xl mb-6">⚡</div>
+                <div class="font-display text-2xl font-semibold mb-3">Real-Time Updates</div>
+                <p class="text-[#4A5680]">Breaking news and reviews delivered instantly. Never miss a major drop.</p>
+            </div>
+            <div class="feature-card glass border border-white/10 rounded-3xl p-8">
+                <div class="text-4xl mb-6">🎯</div>
+                <div class="font-display text-2xl font-semibold mb-3">Honest Scoring</div>
+                <p class="text-[#4A5680]">No embargoes. No publisher pressure. Just transparent criticism you can trust.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- LATEST NEWS (Many Articles) -->
+    <div class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="flex justify-between items-end mb-8">
             <div>
-                <h2 class="font-display text-4xl font-semibold">All News</h2>
-                <p class="text-[#4A5680]">Stay updated with the latest in gaming</p>
+                <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">JUST IN</div>
+                <h2 class="font-display text-4xl font-semibold">Latest News</h2>
             </div>
-            
-            <div class="flex items-center gap-3">
-                <select id="sort-select" onchange="filterNews()" class="bg-[#090C18] border border-white/10 text-sm px-4 py-2 rounded-2xl">
-                    <option value="newest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="az">A-Z</option>
-                </select>
-                
-                <button onclick="showRandomArticle()" class="px-4 py-2 text-sm border border-white/10 rounded-2xl hover:bg-white/5">
-                    <i class="fa-solid fa-dice mr-2"></i> Random
-                </button>
-            </div>
+            <button onclick="showSection('news')" class="text-[#00F0FF] text-sm font-semibold">View all →</button>
         </div>
 
-        <div class="flex flex-wrap gap-2 mb-8" id="genre-filters"></div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="news-grid"></div>
-        
-        <div class="flex justify-center mt-8">
-            <button onclick="loadMoreNews()" class="px-8 py-3 border border-white/20 rounded-2xl hover:bg-white/5 text-sm font-medium">
-                Load More Articles
-            </button>
-        </div>
-    </div>
-
-    <!-- REVIEWS SECTION -->
-    <div id="reviews" class="section pt-20 max-w-screen-2xl mx-auto px-6">
-        <div class="mb-8">
-            <h2 class="font-display text-4xl font-semibold">Latest Reviews</h2>
-            <p class="text-[#4A5680]">Our critics play everything so you know what's worth your time</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="reviews-grid"></div>
-    </div>
-
-    <!-- CATEGORIES SECTION -->
-    <div id="categories" class="section pt-20 max-w-screen-2xl mx-auto px-6">
-        <div class="mb-8">
-            <h2 class="font-display text-4xl font-semibold">Browse by Genre</h2>
-        </div>
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4" id="categories-grid"></div>
-    </div>
-
-    <!-- PODCASTS SECTION -->
-    <div id="podcasts" class="section pt-20 max-w-screen-2xl mx-auto px-6">
-        <div class="mb-8">
-            <h2 class="font-display text-4xl font-semibold">Podcasts</h2>
-            <p class="text-[#4A5680]">Listen to deep conversations with developers and industry leaders</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="glass border border-white/10 rounded-3xl p-8">
-                <div class="flex items-center gap-x-4 mb-4">
-                    <div class="w-16 h-16 bg-gradient-to-br from-[#00F0FF] to-[#8B5CF6] rounded-2xl flex items-center justify-center text-3xl">🎙️</div>
-                    <div>
-                        <div class="font-display text-2xl font-semibold">The Symantic Podcast</div>
-                        <div class="text-sm text-[#4A5680]">Weekly • 45 min avg</div>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 15 News Cards -->
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(0)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🚀</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>JUN 5</span><span class="text-[#00F0FF]">4 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Apex Legends Season 22 Massive Map Overhaul</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">New Shattered Expanse map brings vertical gameplay and chaos to ranked play.</p>
                 </div>
-                <div class="text-sm mb-4">Deep dives into game development, industry trends, and exclusive interviews.</div>
-                <button class="mt-2 px-6 py-2 bg-white/10 hover:bg-white/20 rounded-2xl text-sm">Listen Now</button>
             </div>
-            
-            <div class="glass border border-white/10 rounded-3xl p-8">
-                <div class="flex items-center gap-x-4 mb-4">
-                    <div class="w-16 h-16 bg-gradient-to-br from-[#FF2D92] to-[#8B5CF6] rounded-2xl flex items-center justify-center text-3xl">🎮</div>
-                    <div>
-                        <div class="font-display text-2xl font-semibold">Level Up with Symantic</div>
-                        <div class="text-sm text-[#4A5680]">Bi-weekly • 30 min avg</div>
-                    </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(1)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">⚔️</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>JUN 4</span><span class="text-[#00F0FF]">6 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Elder Scrolls VI Gets Official 2027 Release Window</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Bethesda finally confirms Q3 2027 launch for the long-awaited sequel.</p>
                 </div>
-                <div class="text-sm mb-4">Quick takes on the biggest gaming news of the week.</div>
-                <button class="mt-2 px-6 py-2 bg-white/10 hover:bg-white/20 rounded-2xl text-sm">Listen Now</button>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(2)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🏎️</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>JUN 3</span><span class="text-[#00F0FF]">3 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Gran Turismo 8 Confirmed for PS6 Launch</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Real-time weather physics and over 900 licensed cars coming to PlayStation 6.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(3)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🧟</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>JUN 2</span><span class="text-[#00F0FF]">5 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Resident Evil 10 Rumored to be VR-First</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Capcom's next entry may bring Raccoon City back in full VR.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(4)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🤖</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>JUN 1</span><span class="text-[#00F0FF]">4 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Cyberpunk 2077 Sequel Enters Full Production</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">CDPR moves Project Orion into full development phase.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(5)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🗺️</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 31</span><span class="text-[#00F0FF]">5 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Civilization VIII Announced with AI Diplomacy</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Firaxis reveals revolutionary AI-powered negotiation system.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(6)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🎮</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 30</span><span class="text-[#00F0FF]">3 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Hades III Officially Announced</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Supergiant confirms the third entry in the acclaimed series.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(7)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">⚽</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 29</span><span class="text-[#00F0FF]">4 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">EA FC 27 Reveal Expected in July</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">New engine and major gameplay changes expected in EA FC 27.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(8)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🕹️</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 28</span><span class="text-[#00F0FF]">3 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Call of Duty 2026 Returns to Near-Future</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Activision confirms the next title will be set in a near-future setting.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(9)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🧙</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 27</span><span class="text-[#00F0FF]">4 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Dragon Age: The Veilguard New Trailer</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">BioWare shows more of the highly anticipated RPG.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(10)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">👾</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 26</span><span class="text-[#00F0FF]">3 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Metroid Prime 4 Gets 2026 Release Window</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Nintendo confirms 2026 release for the long-awaited title.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(11)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🏆</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 25</span><span class="text-[#00F0FF]">4 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">NBA 2K27 Leak Shows Major Visual Upgrade</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Next-gen visuals and new gameplay systems expected.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(12)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🕹️</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 24</span><span class="text-[#00F0FF]">3 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Valorant Champions 2026 Schedule Released</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Riot announces biggest esports event of the year.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(13)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">⚔️</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 23</span><span class="text-[#00F0FF]">5 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Final Fantasy XVII Development Update</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Square Enix shares new details on the next mainline entry.</p>
+                </div>
+            </div>
+
+            <div class="news-card glass border border-white/10 rounded-3xl overflow-hidden cursor-pointer" onclick="showArticleModal(14)">
+                <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">🎮</div>
+                <div class="p-6">
+                    <div class="flex justify-between text-xs text-[#4A5680] mb-3"><span>MAY 22</span><span class="text-[#00F0FF]">3 MIN</span></div>
+                    <h3 class="font-display text-[17px] font-semibold leading-tight">Celeste 2 Development Confirmed</h3>
+                    <p class="text-sm text-[#4A5680] mt-2">Maddy Thorson announces sequel to the acclaimed platformer.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- COMMUNITY SECTION -->
-    <div id="community" class="section pt-20 max-w-screen-2xl mx-auto px-6">
-        <div class="mb-8">
-            <h2 class="font-display text-4xl font-semibold">Community</h2>
-            <p class="text-[#4A5680]">Join the conversation with fellow gamers and creators</p>
+    <!-- WORKFLOW TIMELINE -->
+    <div class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="text-center mb-12">
+            <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">HOW IT WORKS</div>
+            <h2 class="font-display text-4xl font-semibold mt-2">Your daily gaming intelligence in 3 steps</h2>
         </div>
-        
+
+        <div class="max-w-4xl mx-auto space-y-8">
+            <div class="flex gap-x-6">
+                <div class="w-12 h-12 flex-shrink-0 rounded-2xl bg-[#00F0FF] text-[#05070F] flex items-center justify-center font-display text-2xl font-black">1</div>
+                <div>
+                    <div class="font-semibold text-xl">Personalize Your Feed</div>
+                    <p class="text-[#4A5680] mt-1">Tell us your favorite genres. Our AI builds your perfect daily briefing.</p>
+                </div>
+            </div>
+            <div class="flex gap-x-6">
+                <div class="w-12 h-12 flex-shrink-0 rounded-2xl bg-[#8B5CF6] text-white flex items-center justify-center font-display text-2xl font-black">2</div>
+                <div>
+                    <div class="font-semibold text-xl">Get Smart Summaries</div>
+                    <p class="text-[#4A5680] mt-1">Read AI-generated summaries or dive deep into full articles.</p>
+                </div>
+            </div>
+            <div class="flex gap-x-6">
+                <div class="w-12 h-12 flex-shrink-0 rounded-2xl bg-[#FF2D92] text-white flex items-center justify-center font-display text-2xl font-black">3</div>
+                <div>
+                    <div class="font-semibold text-xl">Stay Ahead of the Curve</div>
+                    <p class="text-[#4A5680] mt-1">Receive predictions and early alerts on games about to explode.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRICING -->
+    <div id="pricing" class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="text-center mb-12">
+            <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">PRICING</div>
+            <h2 class="font-display text-4xl font-semibold mt-2">Choose your plan</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="glass border border-white/10 rounded-3xl p-8">
+                <div class="font-semibold">Free</div>
+                <div class="mt-4"><span class="font-display text-5xl font-bold">$0</span><span class="text-[#4A5680]">/month</span></div>
+                <ul class="mt-8 space-y-3 text-sm">
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Access to all news</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Basic AI summaries</li>
+                </ul>
+                <button onclick="showSection('news')" class="mt-8 w-full py-3 border border-white/20 rounded-2xl font-medium">Get Started Free</button>
+            </div>
+
+            <div class="glass border-2 border-[#00F0FF] rounded-3xl p-8 relative">
+                <div class="absolute -top-3 right-6 bg-[#00F0FF] text-[#05070F] text-xs font-bold px-4 py-1 rounded-2xl">MOST POPULAR</div>
+                <div class="font-semibold">Pro</div>
+                <div class="mt-4"><span class="font-display text-5xl font-bold">$9</span><span class="text-[#4A5680]">/month</span></div>
+                <ul class="mt-8 space-y-3 text-sm">
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Everything in Free</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Unlimited AI insights</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Ad-free experience</li>
+                </ul>
+                <button class="mt-8 w-full py-3 bg-[#00F0FF] text-[#05070F] font-bold rounded-2xl">Start 14-day Trial</button>
+            </div>
+
+            <div class="glass border border-white/10 rounded-3xl p-8">
+                <div class="font-semibold">Enterprise</div>
+                <div class="mt-4"><span class="font-display text-5xl font-bold">Custom</span></div>
+                <ul class="mt-8 space-y-3 text-sm">
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Everything in Pro</li>
+                    <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Custom AI models</li>
+                </ul>
+                <button class="mt-8 w-full py-3 border border-white/20 rounded-2xl font-medium">Contact Sales</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TESTIMONIALS -->
+    <div class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="text-center mb-12">
+            <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">LOVED BY GAMERS</div>
+            <h2 class="font-display text-4xl font-semibold mt-2">What our community says</h2>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="glass border border-white/10 rounded-3xl p-8">
-                <div class="font-display text-2xl font-semibold mb-4">Discussion Forums</div>
-                <div class="space-y-4 text-sm">
-                    <div class="flex justify-between items-center"><span>General Discussion</span> <span class="text-xs bg-white/10 px-2 py-0.5 rounded">12.4k</span></div>
-                    <div class="flex justify-between items-center"><span>Game Recommendations</span> <span class="text-xs bg-white/10 px-2 py-0.5 rounded">8.9k</span></div>
-                    <div class="flex justify-between items-center"><span>Tech &amp; Hardware</span> <span class="text-xs bg-white/10 px-2 py-0.5 rounded">5.2k</span></div>
+                <div class="flex items-center gap-x-4 mb-6">
+                    <div class="w-12 h-12 bg-white/10 rounded-full"></div>
+                    <div><div class="font-semibold">Alex Rivera</div><div class="text-sm text-[#4A5680]">Pro Gamer • FaZe Clan</div></div>
                 </div>
-                <button class="mt-6 w-full py-2.5 border border-white/20 rounded-2xl text-sm">Join Discussions</button>
+                <p class="italic">"Symantic is the only site I trust for honest reviews. Their AI predictions are scary accurate."</p>
             </div>
-            
             <div class="glass border border-white/10 rounded-3xl p-8">
-                <div class="font-display text-2xl font-semibold mb-4">Top Contributors</div>
-                <div class="space-y-4">
-                    <div class="flex items-center gap-x-3"><div class="w-8 h-8 bg-white/10 rounded-full"></div> <div><div class="font-medium">PixelMaster42</div><div class="text-xs text-[#4A5680]">142 posts this month</div></div></div>
-                    <div class="flex items-center gap-x-3"><div class="w-8 h-8 bg-white/10 rounded-full"></div> <div><div class="font-medium">CyberNinja</div><div class="text-xs text-[#4A5680]">98 posts this month</div></div></div>
+                <div class="flex items-center gap-x-4 mb-6">
+                    <div class="w-12 h-12 bg-white/10 rounded-full"></div>
+                    <div><div class="font-semibold">Maya Chen</div><div class="text-sm text-[#4A5680]">Game Developer • Riot Games</div></div>
                 </div>
+                <p class="italic">"I use Symantic every day to understand what players actually care about."</p>
             </div>
-            
             <div class="glass border border-white/10 rounded-3xl p-8">
-                <div class="font-display text-2xl font-semibold mb-4">Events</div>
-                <div class="text-sm space-y-3">
-                    <div>Jun 12 • AMA with Supergiant Games</div>
-                    <div>Jun 18 • Symantic Game Awards Watch Party</div>
-                    <div>Jun 25 • Developer Roundtable</div>
+                <div class="flex items-center gap-x-4 mb-6">
+                    <div class="w-12 h-12 bg-white/10 rounded-full"></div>
+                    <div><div class="font-semibold">Jordan Lee</div><div class="text-sm text-[#4A5680]">Content Creator • 2.1M subs</div></div>
                 </div>
-                <button class="mt-6 w-full py-2.5 border border-white/20 rounded-2xl text-sm">See All Events</button>
+                <p class="italic">"The dashboard and AI insights help me decide what to cover next."</p>
             </div>
         </div>
     </div>
 
-    <!-- LEADERBOARD SECTION -->
-    <div id="leaderboard" class="section pt-20 max-w-screen-2xl mx-auto px-6">
-        <div class="mb-8">
-            <h2 class="font-display text-4xl font-semibold">Top Games This Month</h2>
+    <!-- FAQ -->
+    <div class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="text-center mb-12">
+            <div class="text-[#00F0FF] text-xs font-bold tracking-[3px]">FAQ</div>
+            <h2 class="font-display text-4xl font-semibold mt-2">Frequently Asked Questions</h2>
         </div>
-        
-        <div class="glass border border-white/10 rounded-3xl overflow-hidden">
-            <table class="w-full">
-                <thead>
-                    <tr class="border-b border-white/10">
-                        <th class="text-left p-6 font-medium">Rank</th>
-                        <th class="text-left p-6 font-medium">Game</th>
-                        <th class="text-left p-6 font-medium">Score</th>
-                        <th class="text-left p-6 font-medium">Players</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b border-white/10"><td class="p-6">#1</td><td class="p-6 font-medium">Black Myth: Wukong</td><td class="p-6">94</td><td class="p-6 text-[#4A5680]">2.1M</td></tr>
-                    <tr class="border-b border-white/10"><td class="p-6">#2</td><td class="p-6 font-medium">Helldivers 2</td><td class="p-6">91</td><td class="p-6 text-[#4A5680]">1.8M</td></tr>
-                    <tr class="border-b border-white/10"><td class="p-6">#3</td><td class="p-6 font-medium">Stellar Blade 2</td><td class="p-6">89</td><td class="p-6 text-[#4A5680]">1.4M</td></tr>
-                    <tr><td class="p-6">#4</td><td class="p-6 font-medium">Doom: The Dark Ages</td><td class="p-6">88</td><td class="p-6 text-[#4A5680]">980k</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <!-- ABOUT -->
-    <div id="about" class="section pt-20 max-w-3xl mx-auto px-6">
-        <h2 class="font-display text-4xl font-semibold mb-6">About Symantic</h2>
-        <div class="space-y-6 text-lg text-[#4A5680]">
-            <p>Symantic delivers independent gaming journalism and reviews. No publisher influence. Just the truth.</p>
-        </div>
-        
-        <div class="grid grid-cols-3 gap-4 mt-12">
-            <div class="glass border border-white/10 rounded-2xl p-6 text-center">
-                <div class="font-display text-4xl font-black text-[#00F0FF]">2.8k</div>
-                <div class="text-sm mt-1">Articles Published</div>
+        <div class="max-w-3xl mx-auto space-y-4">
+            <div class="glass border border-white/10 rounded-2xl p-6">
+                <div class="font-semibold">Is Symantic free to use?</div>
+                <div class="text-[#4A5680] mt-2 text-sm">Yes, the Free plan gives you access to all news and basic AI summaries. Pro unlocks unlimited insights and ad-free experience.</div>
             </div>
-            <div class="glass border border-white/10 rounded-2xl p-6 text-center">
-                <div class="font-display text-4xl font-black text-[#00F0FF]">920+</div>
-                <div class="text-sm mt-1">Games Reviewed</div>
+            <div class="glass border border-white/10 rounded-2xl p-6">
+                <div class="font-semibold">How accurate are the AI predictions?</div>
+                <div class="text-[#4A5680] mt-2 text-sm">Our AI currently has a 94.2% accuracy rate on trending topics and game releases.</div>
             </div>
-            <div class="glass border border-white/10 rounded-2xl p-6 text-center">
-                <div class="font-display text-4xl font-black text-[#00F0FF]">1.4M</div>
-                <div class="text-sm mt-1">Monthly Readers</div>
+            <div class="glass border border-white/10 rounded-2xl p-6">
+                <div class="font-semibold">Can I cancel my Pro subscription anytime?</div>
+                <div class="text-[#4A5680] mt-2 text-sm">Yes, you can cancel anytime. Your subscription remains active until the end of the billing period.</div>
+            </div>
+            <div class="glass border border-white/10 rounded-2xl p-6">
+                <div class="font-semibold">Do you have a mobile app?</div>
+                <div class="text-[#4A5680] mt-2 text-sm">Not yet, but a mobile app is currently in development and expected later this year.</div>
+            </div>
+            <div class="glass border border-white/10 rounded-2xl p-6">
+                <div class="font-semibold">How do I cancel my subscription?</div>
+                <div class="text-[#4A5680] mt-2 text-sm">You can cancel anytime from your account settings. Your access will continue until the end of the current billing period.</div>
             </div>
         </div>
     </div>
 
     <!-- NEWSLETTER -->
-    <div class="max-w-screen-2xl mx-auto px-6 py-16 border-t border-white/10 mt-12">
-        <div class="max-w-md mx-auto text-center">
-            <h3 class="font-display text-3xl font-semibold mb-3">Stay Ahead</h3>
-            <p class="text-[#4A5680] mb-6">Weekly deep dives delivered to your inbox.</p>
-            <div class="flex">
-                <input id="newsletter-email" type="email" placeholder="you@email.com" class="flex-1 glass border border-white/10 px-5 py-3 rounded-l-2xl">
-                <button onclick="subscribeNewsletter()" class="px-7 bg-[#00F0FF] text-[#05070F] font-bold rounded-r-2xl">JOIN</button>
+    <div class="max-w-screen-2xl mx-auto px-6 pt-20">
+        <div class="glass border border-white/10 rounded-3xl p-12 text-center max-w-2xl mx-auto">
+            <h3 class="font-display text-3xl font-semibold mb-3">Stay Ahead of the Game</h3>
+            <p class="text-[#4A5680] mb-6">Get weekly deep dives, early reviews, and AI predictions delivered to your inbox.</p>
+            <div class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input type="email" placeholder="your@email.com" class="flex-1 glass border border-white/10 px-5 py-3 rounded-2xl text-sm">
+                <button onclick="subscribeNewsletter()" class="px-8 py-3 bg-[#00F0FF] text-[#05070F] font-bold rounded-2xl">Subscribe</button>
             </div>
         </div>
     </div>
 
-    <footer class="border-t border-white/10 py-8 text-sm">
-        <div class="max-w-screen-2xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-y-4 text-[#4A5680]">
-            <div>© 2026 Symantic. All rights reserved.</div>
-            <div class="flex gap-x-6">
-                <button onclick="showSection('about')">About</button>
-                <button onclick="showSection('news')">News</button>
+    <footer class="border-t border-white/10 mt-20 py-12">
+        <div class="max-w-screen-2xl mx-auto px-6 text-sm text-[#4A5680]">
+            <div class="flex flex-col md:flex-row justify-between gap-y-4">
+                <div>© 2026 Symantic. All rights reserved.</div>
+                <div class="flex gap-x-6">
+                    <button onclick="showSection('about')">About</button>
+                    <button onclick="showSection('pricing')">Pricing</button>
+                </div>
             </div>
         </div>
     </footer>
@@ -412,16 +522,8 @@
                 <h2 id="modal-title" class="font-display text-4xl font-semibold mb-4"></h2>
                 <div class="flex gap-x-4 text-sm text-[#4A5680] mb-8">
                     <span id="modal-date"></span> • <span id="modal-read"></span>
-                    <button onclick="toggleBookmarkFromModal()" id="bookmark-btn" class="ml-auto text-xl"><i class="fa-regular fa-bookmark"></i></button>
                 </div>
                 <div id="modal-content" class="text-[15px] leading-relaxed"></div>
-                
-                <div class="mt-10 border-t border-white/10 pt-8">
-                    <div class="font-semibold mb-4">Community Discussion</div>
-                    <div class="space-y-4 text-sm">
-                        <div class="flex gap-x-3"><div class="w-8 h-8 bg-white/10 rounded-full flex-shrink-0"></div><div><div class="font-medium">PixelWarrior92</div><div class="text-[#4A5680]">This is going to change everything.</div></div></div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -446,171 +548,16 @@
             { id: 12, emoji: "🏆", genre: "Sports", title: "NBA 2K27 Leak Shows Major Visual Upgrade", desc: "Next-gen visuals expected.", full: "NBA 2K27 is expected to feature a major visual overhaul.", date: "MAY 25", read: "4 MIN" },
             { id: 13, emoji: "🕹️", genre: "FPS", title: "Valorant Champions 2026 Schedule Released", desc: "Riot announces biggest esports event of the year.", full: "Valorant Champions 2026 will feature record prize pools and new format changes.", date: "MAY 24", read: "3 MIN" },
             { id: 14, emoji: "⚔️", genre: "RPG", title: "Final Fantasy XVII Development Update", desc: "Square Enix shares new details on the next mainline entry.", full: "Final Fantasy XVII is in active development with a focus on next-gen visuals and storytelling.", date: "MAY 23", read: "5 MIN" },
-            { id: 15, emoji: "🎮", genre: "Indie", title: "Celeste 2 Development Confirmed", desc: "Maddy Thorson announces sequel to the acclaimed platformer.", full: "Celeste 2 is officially in development with new mechanics and story.", date: "MAY 22", read: "3 MIN" }
+            { id: 15, emoji: "🎮", genre: "Indie", title: "Celeste 2 Development Confirmed", desc: "Maddy Thorson announces sequel to the acclaimed platformer.", full: "Celeste 2 is officially in development with new mechanics and story.", date: "MAY 22", read: "3 MIN" },
+            { id: 16, emoji: "🕹️", genre: "FPS", title: "Overwatch 3 Officially Announced", desc: "Blizzard confirms the next major entry in the series.", full: "Overwatch 3 brings major gameplay changes and a new hero roster.", date: "MAY 21", read: "4 MIN" },
+            { id: 17, emoji: "⚔️", genre: "RPG", title: "The Witcher 4 Development Update", desc: "CDPR shares new details on the next Witcher game.", full: "The Witcher 4 is using a brand new engine and will feature a new protagonist.", date: "MAY 20", read: "5 MIN" },
+            { id: 18, emoji: "🎮", genre: "Indie", title: "Hollow Knight: Silksong Release Date Leaked", desc: "Reliable sources claim Silksong is coming this year.", full: "Hollow Knight: Silksong is expected to release before the end of 2026.", date: "MAY 19", read: "3 MIN" },
+            { id: 19, emoji: "🏎️", genre: "Racing", title: "Forza Horizon 6 Location Leaked", desc: "Next Horizon game rumored to be set in Japan.", full: "Forza Horizon 6 is expected to take place in Japan with a massive open world.", date: "MAY 18", read: "4 MIN" },
+            { id: 20, emoji: "🧟", genre: "Horror", title: "Dead Space Remake Sequel in Development", desc: "EA confirms work has begun on the next Dead Space.", full: "A sequel to the successful Dead Space remake is currently in early development.", date: "MAY 17", read: "3 MIN" }
         ];
-
-        const reviewsData = [
-            { emoji: "🌌", title: "Stellar Blade 2", platform: "PS6 · 2026", score: 94, scoreColor: "#00FF9F", verdict: "A breathtaking evolution with razor-sharp combat." },
-            { emoji: "🔫", title: "Doom: The Dark Ages", platform: "Multi · 2026", score: 91, scoreColor: "#00F0FF", verdict: "Pure adrenaline. The medieval twist works brilliantly." },
-            { emoji: "🧙", title: "Avowed", platform: "PC & Xbox", score: 84, scoreColor: "#8B5CF6", verdict: "Thoughtful RPG with excellent writing." },
-            { emoji: "👾", title: "Hollow Knight: Silksong", platform: "All Platforms", score: 97, scoreColor: "#FF2D92", verdict: "A masterpiece that sets a new standard." },
-            { emoji: "🕹️", title: "Helldivers 2", platform: "PC & PS5", score: 89, scoreColor: "#00F0FF", verdict: "Chaotic fun with friends. Best played with a squad." },
-            { emoji: "⚔️", title: "Black Myth: Wukong", platform: "Multi · 2024", score: 86, scoreColor: "#8B5CF6", verdict: "Stunning action game with incredible boss fights." }
-        ];
-
-        const categoriesData = [
-            { icon: "🔫", name: "FPS", count: "156" },
-            { icon: "⚔️", name: "RPG", count: "112" },
-            { icon: "🏎️", name: "Racing", count: "78" },
-            { icon: "🧟", name: "Horror", count: "64" },
-            { icon: "🗺️", name: "Strategy", count: "91" },
-            { icon: "🤖", name: "Sci-Fi", count: "124" }
-        ];
-
-        let currentFilter = 'All';
-        let isLightMode = false;
-        let bookmarks = JSON.parse(localStorage.getItem('symantic_bookmarks')) || [];
-        let currentArticleId = null;
-
-        function renderNewsCards(containerId, data = newsData) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = '';
-            data.forEach((news, index) => {
-                const originalIndex = newsData.findIndex(n => n.id === news.id);
-                const isBookmarked = bookmarks.includes(news.id);
-                const card = document.createElement('div');
-                card.className = `news-card bg-[#090C18] border border-white/10 rounded-3xl overflow-hidden cursor-pointer relative`;
-                card.innerHTML = `
-                    <div class="h-48 flex items-center justify-center text-7xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">
-                        <span>${news.emoji}</span>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between text-xs text-[#4A5680] mb-3">
-                            <span>${news.date}</span>
-                            <span class="text-[#00F0FF]">${news.read}</span>
-                        </div>
-                        <h3 class="font-display text-[17px] font-semibold leading-tight mb-3">${news.title}</h3>
-                        <p class="text-sm text-[#4A5680]">${news.desc}</p>
-                    </div>
-                    <button onclick="event.stopImmediatePropagation(); toggleBookmarkFromCard(${news.id}, this)" class="absolute top-4 right-4 text-xl ${isBookmarked ? 'text-[#FF2D92]' : 'text-white/40'}">
-                        <i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark"></i>
-                    </button>
-                `;
-                card.onclick = () => showArticleModal(originalIndex);
-                container.appendChild(card);
-            });
-        }
-
-        function renderTrending() {
-            const container = document.getElementById('trending-grid');
-            container.innerHTML = '';
-            newsData.slice(0, 4).forEach((news, index) => {
-                const card = document.createElement('div');
-                card.className = `bg-[#090C18] border border-white/10 rounded-2xl p-5 cursor-pointer`;
-                card.innerHTML = `
-                    <div class="flex gap-x-4">
-                        <div class="text-4xl">${news.emoji}</div>
-                        <div>
-                            <div class="text-xs text-[#4A5680]">${news.date}</div>
-                            <div class="font-semibold leading-tight line-clamp-2">${news.title}</div>
-                        </div>
-                    </div>
-                `;
-                card.onclick = () => showArticleModal(index);
-                container.appendChild(card);
-            });
-        }
-
-        function renderReviews() {
-            const container = document.getElementById('reviews-grid');
-            container.innerHTML = '';
-            reviewsData.forEach(review => {
-                const card = document.createElement('div');
-                card.className = `bg-[#090C18] border border-white/10 rounded-3xl p-6`;
-                card.innerHTML = `
-                    <div class="flex justify-between mb-4">
-                        <div class="text-5xl">${review.emoji}</div>
-                        <div style="color: ${review.scoreColor}" class="font-display text-5xl font-black">${review.score}</div>
-                    </div>
-                    <div class="font-display text-xl font-semibold mb-1">${review.title}</div>
-                    <div class="text-sm text-[#4A5680] mb-4">${review.platform}</div>
-                    <p class="text-sm">${review.verdict}</p>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function renderCategories() {
-            const container = document.getElementById('categories-grid');
-            container.innerHTML = '';
-            categoriesData.forEach(cat => {
-                const card = document.createElement('div');
-                card.className = `bg-[#090C18] border border-white/10 rounded-3xl p-8 text-center cursor-pointer`;
-                card.innerHTML = `
-                    <div class="text-6xl mb-4">${cat.icon}</div>
-                    <div class="font-display text-2xl font-semibold">${cat.name}</div>
-                    <div class="text-sm text-[#4A5680]">${cat.count} articles</div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function renderHomeNews() {
-            const container = document.getElementById('home-news-grid');
-            container.innerHTML = '';
-            newsData.slice(0, 3).forEach((news, index) => {
-                const card = document.createElement('div');
-                card.className = `news-card bg-[#090C18] border border-white/10 rounded-3xl overflow-hidden cursor-pointer`;
-                card.innerHTML = `
-                    <div class="h-40 flex items-center justify-center text-6xl" style="background: linear-gradient(135deg, #120A1F, #05070F)">
-                        <span>${news.emoji}</span>
-                    </div>
-                    <div class="p-5">
-                        <div class="text-xs text-[#4A5680] mb-2">${news.date}</div>
-                        <h4 class="font-display font-semibold">${news.title}</h4>
-                    </div>
-                `;
-                card.onclick = () => showArticleModal(index);
-                container.appendChild(card);
-            });
-        }
-
-        function renderGenreFilters() {
-            const container = document.getElementById('genre-filters');
-            const genres = ['All', ...new Set(newsData.map(n => n.genre))];
-            container.innerHTML = '';
-            genres.forEach(genre => {
-                const btn = document.createElement('button');
-                btn.className = `genre-filter px-5 py-2 text-sm font-semibold rounded-2xl border border-white/10 ${genre === 'All' ? 'active bg-[#00F0FF] text-[#05070F]' : ''}`;
-                btn.innerText = genre;
-                btn.onclick = () => {
-                    currentFilter = genre;
-                    document.querySelectorAll('#genre-filters button').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    filterNews();
-                };
-                container.appendChild(btn);
-            });
-        }
-
-        function filterNews() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            const sortType = document.getElementById('sort-select').value;
-            let filtered = newsData;
-
-            if (currentFilter !== 'All') filtered = filtered.filter(n => n.genre === currentFilter);
-            if (term.length > 1) filtered = filtered.filter(n => n.title.toLowerCase().includes(term) || n.desc.toLowerCase().includes(term));
-
-            if (sortType === 'newest') filtered.sort((a, b) => b.id - a.id);
-            else if (sortType === 'oldest') filtered.sort((a, b) => a.id - b.id);
-            else if (sortType === 'az') filtered.sort((a, b) => a.title.localeCompare(b.title));
-
-            renderNewsCards('news-grid', filtered);
-        }
 
         function showArticleModal(index) {
             const news = newsData[index];
-            currentArticleId = news.id;
             const modal = document.getElementById('article-modal');
             
             document.getElementById('modal-genre').innerHTML = `<span class="px-4 py-1 text-xs font-bold rounded-2xl" style="background:rgba(139,92,246,0.2);color:#A78BFA">${news.genre}</span>`;
@@ -618,10 +565,6 @@
             document.getElementById('modal-date').innerText = news.date;
             document.getElementById('modal-read').innerText = news.read;
             document.getElementById('modal-content').innerHTML = `<p>${news.full}</p>`;
-            
-            const bookmarkBtn = document.getElementById('bookmark-btn');
-            const isBookmarked = bookmarks.includes(news.id);
-            bookmarkBtn.innerHTML = `<i class="fa-${isBookmarked ? 'solid' : 'regular'} fa-bookmark"></i>`;
             
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -631,33 +574,6 @@
             const modal = document.getElementById('article-modal');
             modal.classList.remove('flex');
             modal.classList.add('hidden');
-        }
-
-        function toggleBookmark(articleId, btnElement) {
-            if (bookmarks.includes(articleId)) {
-                bookmarks = bookmarks.filter(id => id !== articleId);
-                if (btnElement) btnElement.innerHTML = `<i class="fa-regular fa-bookmark"></i>`;
-            } else {
-                bookmarks.push(articleId);
-                if (btnElement) btnElement.innerHTML = `<i class="fa-solid fa-bookmark"></i>`;
-            }
-            localStorage.setItem('symantic_bookmarks', JSON.stringify(bookmarks));
-        }
-
-        function toggleBookmarkFromCard(articleId, btnElement) {
-            event.stopImmediatePropagation();
-            toggleBookmark(articleId, btnElement);
-        }
-
-        function toggleBookmarkFromModal() {
-            if (!currentArticleId) return;
-            const btn = document.getElementById('bookmark-btn');
-            toggleBookmark(currentArticleId, btn);
-        }
-
-        function showRandomArticle() {
-            const randomIndex = Math.floor(Math.random() * newsData.length);
-            showArticleModal(randomIndex);
         }
 
         function showSection(section) {
@@ -672,49 +588,17 @@
         }
 
         function toggleTheme() {
-            isLightMode = !isLightMode;
-            document.body.classList.toggle('light', isLightMode);
-            document.getElementById('theme-icon').className = isLightMode ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+            const isLight = document.body.classList.toggle('light');
+            document.getElementById('theme-icon').className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
         }
 
         function subscribeNewsletter() {
-            const email = document.getElementById('newsletter-email').value;
-            if (email) {
-                alert("Thank you! You've been subscribed to the Symantic Weekly Intelligence feed.");
-                document.getElementById('newsletter-email').value = '';
-            }
-        }
-
-        function loadMoreNews() {
-            alert("Loading more articles... (This would fetch more in a real app)");
-        }
-
-        function globalSearch() {
-            const term = document.getElementById('search-input').value.toLowerCase();
-            if (term.length < 2) return;
-            
-            const filtered = newsData.filter(n => 
-                n.title.toLowerCase().includes(term) || 
-                n.desc.toLowerCase().includes(term) ||
-                n.genre.toLowerCase().includes(term)
-            );
-            
-            if (filtered.length > 0) {
-                showSection('news');
-                renderNewsCards('news-grid', filtered);
-            }
+            alert("Thank you! You've been subscribed to the Symantic Weekly Intelligence feed.");
         }
 
         function initializeSymantic() {
             initTailwind();
-            renderNewsCards('news-grid');
-            renderReviews();
-            renderCategories();
-            renderHomeNews();
-            renderTrending();
-            renderGenreFilters();
             document.getElementById('home').classList.add('active');
-            currentFilter = 'All';
         }
 
         window.onload = initializeSymantic;
