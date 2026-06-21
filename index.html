@@ -6,6 +6,8 @@
     <title>SYMANTIC • Next-Gen Gaming Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
@@ -96,6 +98,13 @@
             </div>
 
             <div class="flex items-center gap-x-4">
+                <!-- Theme Switcher -->
+                <div class="hidden md:flex items-center gap-x-1 bg-zinc-900 border border-white/10 rounded-2xl p-1">
+                    <button onclick="setAccentColor('yellow')" class="w-5 h-5 bg-yellow-400 rounded-lg ring-2 ring-offset-2 ring-offset-zinc-950 ring-yellow-400" title="Yellow"></button>
+                    <button onclick="setAccentColor('cyan')" class="w-5 h-5 bg-cyan-400 rounded-lg" title="Cyan"></button>
+                    <button onclick="setAccentColor('purple')" class="w-5 h-5 bg-purple-400 rounded-lg" title="Purple"></button>
+                </div>
+
                 <button onclick="toggleLoginModal()" 
                         class="px-6 py-2.5 text-sm font-semibold rounded-2xl border border-white/30 hover:border-white/60 transition-all">
                     Log in
@@ -275,6 +284,18 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Chart.js Accuracy Trend -->
+            <div class="mt-8 glass border border-white/10 rounded-3xl p-8">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <div class="text-sm text-zinc-400">7-DAY AI ACCURACY TREND</div>
+                        <div class="font-semibold">Steadily Improving</div>
+                    </div>
+                    <div class="text-emerald-400 text-sm">+2.1% this week</div>
+                </div>
+                <canvas id="accuracyChart" height="90"></canvas>
+            </div>
         </div>
     </section>
 
@@ -340,6 +361,13 @@
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
                 <!-- Populated by JS -->
+            </div>
+
+            <div class="text-center mt-10">
+                <button onclick="loadMoreNews()" 
+                        class="px-8 py-3 border border-white/30 hover:bg-white/5 rounded-2xl text-sm font-medium transition-all">
+                    Load More News <i class="fa-solid fa-chevron-down ml-2"></i>
+                </button>
             </div>
         </div>
     </section>
@@ -587,30 +615,44 @@
             }
         ];
         
-        function populateNews() {
+        let newsShown = 3;
+
+        function populateNews(filteredData = null, append = false) {
             const container = document.getElementById('news-grid');
-            container.innerHTML = '';
+            if (!append) container.innerHTML = '';
             
-            newsData.forEach((item, index) => {
+            const data = filteredData || newsData;
+            const toShow = data.slice(0, newsShown);
+            
+            toShow.forEach((item) => {
+                const originalIndex = newsData.findIndex(n => n.title === item.title);
                 const div = document.createElement('div');
-                div.className = `news-card bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden`;
+                div.className = `news-card bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden hover:border-yellow-400/30`;
                 div.innerHTML = `
                     <div class="p-8">
                         <div class="flex justify-between text-xs mb-6">
-                            <span class="text-yellow-400">${item.date}</span>
+                            <span class="text-yellow-400 font-mono">${item.date}</span>
                             <span class="text-zinc-500">${item.read}</span>
                         </div>
                         <div class="text-5xl mb-6">${item.emoji}</div>
                         <h4 class="font-semibold text-xl leading-tight mb-3">${item.title}</h4>
                         <p class="text-zinc-400 text-sm line-clamp-3">${item.desc}</p>
+                        ${item.category ? `<span class="inline-block mt-4 text-[10px] px-3 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-mono">${item.category.toUpperCase()}</span>` : ''}
                     </div>
                     <div class="border-t border-white/10 bg-black/40 px-8 py-5 text-xs flex items-center justify-between">
-                        <span class="text-emerald-400">TRENDING</span>
-                        <button onclick="readArticle(${index})" class="text-yellow-400 hover:text-white">Read →</button>
+                        <span class="text-emerald-400"><i class="fa-solid fa-chart-line mr-1"></i>TRENDING</span>
+                        <button onclick="readArticle(${originalIndex})" class="text-yellow-400 hover:text-white font-medium">Read full →</button>
                     </div>
                 `;
                 container.appendChild(div);
             });
+        }
+
+        function loadMoreNews() {
+            newsShown = newsData.length;
+            populateNews();
+            const btns = document.querySelectorAll('#news + div button, #news ~ div button');
+            btns.forEach(b => b.style.display = 'none');
         }
         
         function readArticle(n) {
@@ -683,11 +725,67 @@
             }, 600);
         }
         
+        // Theme Switcher
+        function setAccentColor(color) {
+            const root = document.documentElement;
+            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-offset-zinc-950', 'ring-yellow-400', 'ring-cyan-400', 'ring-purple-400'));
+
+            let accentColor = '234 179 8';
+            if (color === 'cyan') accentColor = '34 211 238';
+            if (color === 'purple') accentColor = '168 85 247';
+
+            root.style.setProperty('--accent', accentColor);
+
+            // Highlight active button
+            const activeBtn = document.querySelector(`button[onclick*="${color}"]`);
+            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-offset-2', 'ring-offset-zinc-950', `ring-${color}-400`);
+        }
+
+        // Initialize Chart.js
+        function initAccuracyChart() {
+            const ctx = document.getElementById('accuracyChart');
+            if (!ctx) return;
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jun 14', 'Jun 15', 'Jun 16', 'Jun 17', 'Jun 18', 'Jun 19', 'Jun 20'],
+                    datasets: [{
+                        label: 'AI Accuracy %',
+                        data: [91.2, 92.8, 93.1, 93.5, 93.9, 94.0, 94.2],
+                        borderColor: '#facc15',
+                        backgroundColor: 'rgba(250, 204, 21, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#facc15',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { min: 88, max: 96, grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#71717a', stepSize: 2 } },
+                        x: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#71717a' } }
+                    }
+                }
+            });
+        }
+
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
                 e.preventDefault();
-                alert("🔍 Search activated (demo). Try typing a game name.");
+                const search = document.getElementById('nav-search');
+                if (search) search.focus();
+            }
+            if (e.key === "?" && document.activeElement.tagName !== "INPUT") {
+                e.preventDefault();
+                // Simple AI chat trigger (if floating button exists)
+                const chatBtn = document.querySelector('.fa-robot');
+                if (chatBtn) chatBtn.closest('button').click();
             }
         });
         
@@ -695,16 +793,19 @@
         window.onload = function() {
             populateNews();
             animateCounters();
-            
+            initAccuracyChart();
+
             // Random live reader count update
             setInterval(() => {
                 const readersEl = document.getElementById('live-readers');
-                let current = parseInt(readersEl.textContent.replace(',', ''));
-                current += Math.floor(Math.random() * 120) + 30;
-                readersEl.textContent = current.toLocaleString();
-            }, 4500);
+                if (readersEl) {
+                    let current = parseInt(readersEl.textContent.replace(/,/g, '')) || 142847;
+                    current += Math.floor(Math.random() * 150) + 40;
+                    readersEl.textContent = current.toLocaleString();
+                }
+            }, 4300);
             
-            console.log('%c✅ Symantic Premium Recreation Loaded Successfully (Single HTML - ~2100 lines)', 'color: #facc15; font-size: 13px; font-family: monospace');
+            console.log('%c✅ Symantic v2.2 - Theme Switcher + Chart.js added', 'color: #facc15; font-size: 12px');
         };
     </script>
 </body>
