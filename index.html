@@ -5,807 +5,1346 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SYMANTIC • Next-Gen Gaming Intelligence</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
         
         :root {
-            --primary: 234 179 8;
+            --primary: #00f5ff;
         }
         
         body {
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Inter', system_ui, sans-serif;
         }
         
-        .heading-font {
-            font-family: 'Space Grotesk', sans-serif;
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', sans-serif;
+            font-weight: 600;
         }
 
-        .hero-bg {
-            background: linear-gradient(45deg, #0a0a0a, #1a1a2e, #0f172a);
+        .gaming-gradient {
+            background: linear-gradient(135deg, #0a0a0f 0%, #111114 100%);
+        }
+
+        .neon-text {
+            text-shadow: 0 0 10px rgb(0 245 255 / 0.5),
+                        0 0 20px rgb(0 245 255 / 0.3);
+        }
+
+        .section-header {
+            font-size: 2.75rem;
+            line-height: 1.1;
+            font-weight: 700;
+            letter-spacing: -0.025em;
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(12px);
+            background: rgba(255,255,255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255, 0.08);
         }
 
-        .card-hover {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .metric-card {
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                       box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
         
-        .card-hover:hover {
-            transform: translateY(-8px);
+        .metric-card:hover {
+            transform: translateY(-4px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
 
         .nav-link {
-            position: relative;
+            transition: color 0.1s ease;
         }
         
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background-color: rgb(234 179 8);
-            transition: all 0.3s ease;
-        }
-        
-        .nav-link:hover:after {
-            width: 100%;
+        .nav-link:hover {
+            color: #00f5ff;
         }
 
         .news-card {
-            transition: all 0.4s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
         
         .news-card:hover {
-            transform: scale(1.03);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        .live-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .prediction-bar {
+            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .gaming-btn {
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gaming-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgb(0 245 255 / 0.3);
         }
 
         .stat-number {
             font-variant-numeric: tabular-nums;
         }
+
+        .ai-message {
+            animation: fadeInUp 0.3s ease forwards;
+        }
+
+        .nav-active {
+            color: #00f5ff;
+            position: relative;
+        }
+        
+        .nav-active:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, #00f5ff, transparent);
+        }
+
+        .modal {
+            animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .dashboard-grid {
+            background-image: 
+                linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .neon-border {
+            box-shadow: 0 0 0 1px rgba(0, 245, 255, 0.2),
+                       0 0 15px rgba(0, 245, 255, 0.1);
+        }
     </style>
 </head>
-<body class="bg-zinc-950 text-white overflow-x-hidden">
+<body class="bg-[#0a0a0f] text-white overflow-x-hidden">
     <!-- NAVBAR -->
-    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-lg">
-        <div class="max-w-screen-2xl mx-auto px-8 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-x-16">
-                <!-- Logo -->
+    <nav class="sticky top-0 z-50 border-b border-white/10 bg-[#0a0a0f]/95 backdrop-blur-xl">
+        <div class="max-w-screen-2xl mx-auto">
+            <div class="px-8 py-5 flex items-center justify-between">
                 <div class="flex items-center gap-x-3">
-                    <div class="w-9 h-9 bg-yellow-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-3xl leading-none pt-1">S</div>
-                    <div>
-                        <span class="heading-font text-3xl font-semibold tracking-tighter">SYMANTIC</span>
+                    <!-- Logo -->
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#00f5ff]/30">
+                            <span class="text-black font-black text-3xl tracking-tighter">S</span>
+                        </div>
+                        <div>
+                            <span class="font-display text-3xl font-bold tracking-tighter">SYMANTIC</span>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
-                    <a href="#" onclick="navigateTo('home')" class="nav-link text-white hover:text-yellow-400 transition-colors">Home</a>
-                    <a href="#" onclick="navigateTo('news')" class="nav-link text-white hover:text-yellow-400 transition-colors">News</a>
-                    <a href="#" onclick="navigateTo('reviews')" class="nav-link text-white hover:text-yellow-400 transition-colors">Reviews</a>
-                    <a href="#" onclick="navigateTo('dashboard')" class="nav-link text-white hover:text-yellow-400 transition-colors">Dashboard</a>
-                    <a href="#" onclick="navigateTo('pricing')" class="nav-link text-white hover:text-yellow-400 transition-colors">Pricing</a>
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-x-9 text-sm">
+                    <a href="#dashboard" class="nav-link text-white/80 hover:text-white font-medium px-1">Dashboard</a>
+                    <a href="#live-feed" class="nav-link text-white/80 hover:text-white font-medium px-1">Live Feed</a>
+                    <a href="#news" class="nav-link text-white/80 hover:text-white font-medium px-1">News</a>
+                    <a href="#demo" class="nav-link text-white/80 hover:text-white font-medium px-1">AI Demo</a>
+                    <a href="#pricing" class="nav-link text-white/80 hover:text-white font-medium px-1">Pricing</a>
+                </div>
+
+                <div class="flex items-center gap-x-4">
+                    <!-- Login -->
+                    <button onclick="showLoginModal()"
+                            class="hidden md:block px-6 py-2.5 text-sm font-semibold rounded-3xl border border-white/20 hover:bg-white/5 transition-colors">
+                        Log in
+                    </button>
+                    
+                    <!-- Get Pro -->
+                    <button onclick="showSubscribeModal()"
+                            class="gaming-btn px-8 py-2.5 text-sm font-bold rounded-3xl bg-white text-black hover:bg-[#00f5ff] hover:text-black transition-all active:scale-[0.985]">
+                        GET PRO
+                    </button>
+
+                    <!-- Mobile Menu -->
+                    <button id="mobile-menu-btn"
+                            class="md:hidden w-11 h-11 flex items-center justify-center text-white/70 hover:text-white border border-white/10 rounded-2xl"
+                            onclick="toggleMobileMenu()">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
                 </div>
             </div>
-
-            <div class="flex items-center gap-x-4">
-                <!-- Theme Switcher -->
-                <div class="hidden md:flex items-center gap-x-1 bg-zinc-900 border border-white/10 rounded-2xl p-1">
-                    <button onclick="setAccentColor('yellow')" class="w-5 h-5 bg-yellow-400 rounded-lg ring-2 ring-offset-2 ring-offset-zinc-950 ring-yellow-400" title="Yellow"></button>
-                    <button onclick="setAccentColor('cyan')" class="w-5 h-5 bg-cyan-400 rounded-lg" title="Cyan"></button>
-                    <button onclick="setAccentColor('purple')" class="w-5 h-5 bg-purple-400 rounded-lg" title="Purple"></button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0a0a0f]">
+            <div class="px-6 py-6 flex flex-col gap-y-4 text-sm">
+                <a href="#dashboard" class="py-2 text-white/80">Dashboard</a>
+                <a href="#live-feed" class="py-2 text-white/80">Live Feed</a>
+                <a href="#news" class="py-2 text-white/80">News</a>
+                <a href="#demo" class="py-2 text-white/80">AI Demo</a>
+                <a href="#pricing" class="py-2 text-white/80">Pricing</a>
+                <div class="pt-3 border-t border-white/10 flex flex-col gap-y-3">
+                    <button onclick="showLoginModal(); toggleMobileMenu()" 
+                            class="w-full py-3 text-center border border-white/20 rounded-3xl text-sm font-semibold">Log in</button>
+                    <button onclick="showSubscribeModal(); toggleMobileMenu()" 
+                            class="w-full py-3 text-center bg-white text-black font-bold rounded-3xl text-sm">GET PRO</button>
                 </div>
-
-                <button onclick="toggleLoginModal()" 
-                        class="px-6 py-2.5 text-sm font-semibold rounded-2xl border border-white/30 hover:border-white/60 transition-all">
-                    Log in
-                </button>
-                <button onclick="showProModal()" 
-                        class="px-8 py-2.5 bg-yellow-500 hover:bg-yellow-400 transition-all text-zinc-950 font-semibold rounded-2xl flex items-center gap-x-2 shadow-lg shadow-yellow-500/30">
-                    <i class="fa-solid fa-crown"></i>
-                    GET PRO
-                </button>
             </div>
         </div>
     </nav>
 
     <!-- HERO -->
-    <section id="home" class="hero-bg min-h-screen pt-24 flex items-center relative">
-        <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-2 gap-16 items-center">
-            <div class="space-y-8 pt-12">
-                <div class="inline-flex items-center gap-x-2 bg-white/10 text-yellow-400 text-sm font-medium px-5 py-2 rounded-3xl border border-yellow-400/30">
-                    <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                    AI LIVE • 94.2% ACCURACY
+    <div class="max-w-screen-2xl mx-auto px-8 pt-16 pb-12">
+        <div class="max-w-4xl">
+            <div class="inline-flex items-center gap-x-2 px-4 h-9 rounded-3xl bg-white/5 border border-white/10 mb-6">
+                <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                <span class="text-emerald-400 text-sm font-semibold tracking-[1px]">LIVE • 94.7% AI ACCURACY</span>
+            </div>
+            
+            <h1 class="section-header tracking-tighter leading-none mb-4">
+                THE FUTURE OF<br>
+                <span class="bg-gradient-to-r from-[#00f5ff] via-[#7c3aed] to-[#00f5ff] bg-clip-text text-transparent">GAMING INTELLIGENCE</span>
+            </h1>
+            
+            <p class="max-w-lg text-xl text-white/70 mb-9">
+                Sharp analysis. Honest reviews. Zero hype.<br>
+                Powered by real-time AI trained on millions of data points from Twitch, Steam, Reddit &amp; esports.
+            </p>
+            
+            <div class="flex flex-wrap items-center gap-4">
+                <button onclick="document.getElementById('dashboard').scrollIntoView({ behavior: 'smooth' })" 
+                        class="gaming-btn group flex items-center justify-center gap-x-3 px-9 h-14 rounded-3xl bg-white text-black font-bold text-base active:scale-[0.985]">
+                    <span>EXPLORE DASHBOARD</span>
+                    <i class="fa-solid fa-arrow-right group-active:translate-x-0.5 transition"></i>
+                </button>
+                
+                <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" 
+                        class="gaming-btn flex items-center justify-center gap-x-3 px-8 h-14 rounded-3xl border border-white/30 hover:bg-white/5 font-semibold text-base transition-all">
+                    <i class="fa-solid fa-robot mr-2"></i>
+                    <span>TRY AI DEMO</span>
+                </button>
+            </div>
+            
+            <div class="mt-8 flex items-center gap-x-5 text-sm text-white/50">
+                <div class="flex -space-x-2">
+                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=12" class="w-full h-full object-cover"></div>
+                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=28" class="w-full h-full object-cover"></div>
+                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=47" class="w-full h-full object-cover"></div>
                 </div>
-                
-                <h1 class="heading-font text-7xl md:text-8xl font-bold leading-none tracking-tighter">
-                    THE FUTURE OF<br>
-                    <span class="text-yellow-400">GAMING MEDIA</span>
-                </h1>
-                
-                <p class="text-2xl text-zinc-400 max-w-lg">
-                    Sharp analysis. Honest reviews. Zero hype.<br>
-                    <span class="text-yellow-300">Powered by AI.</span>
-                </p>
-                
-                <div class="flex flex-wrap gap-4">
-                    <button onclick="navigateTo('news')" 
-                            class="px-10 py-5 bg-white text-zinc-900 rounded-3xl font-semibold text-lg flex items-center gap-x-3 hover:scale-105 transition-all">
-                        <i class="fa-solid fa-newspaper"></i>
-                        EXPLORE NEWS
-                    </button>
-                    <button onclick="navigateTo('dashboard')" 
-                            class="px-10 py-5 border border-white/50 hover:border-white rounded-3xl font-semibold text-lg flex items-center gap-x-3 transition-all">
-                        <i class="fa-solid fa-chart-line"></i>
-                        VIEW DASHBOARD
-                    </button>
+                <div>Trusted by <span class="font-semibold text-white/70">142,847</span> gamers today</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TRUST BAR -->
+    <div class="border-y border-white/10 bg-white/5 py-5">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex flex-wrap justify-center md:justify-between items-center gap-x-8 gap-y-4 opacity-70 text-sm tracking-widest font-medium">
+                <div class="flex items-center gap-x-2"><i class="fa-brands fa-twitch text-[#9146FF]"></i> <span>TWITCH</span></div>
+                <div class="flex items-center gap-x-2"><i class="fa-brands fa-steam text-[#1b2838]"></i> <span>STEAM</span></div>
+                <div class="flex items-center gap-x-2"><i class="fa-brands fa-reddit text-[#FF4500]"></i> <span>REDDIT</span></div>
+                <div>ESL • BLAST • RIOT • EPIC</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STATS / DASHBOARD METRICS -->
+    <div id="dashboard" class="max-w-screen-2xl mx-auto px-8 pt-16 pb-8">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <div class="uppercase tracking-[3px] text-xs font-bold text-[#00f5ff]">REAL-TIME INTELLIGENCE</div>
+                <h2 class="text-5xl font-bold tracking-tighter">Symantic AI Dashboard</h2>
+            </div>
+            <button onclick="refreshDashboard()" 
+                    class="hidden md:flex items-center gap-x-2 px-5 py-2 text-sm border border-white/20 hover:bg-white/5 rounded-3xl font-medium transition">
+                <i class="fa-solid fa-sync-alt"></i>
+                <span>Refresh data</span>
+            </button>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <!-- Metric Cards -->
+            <div onclick="bumpMetric(this, 142847, 1247)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-white/60 text-xs font-medium tracking-widest">ACTIVE READERS</div>
+                    <i class="fa-solid fa-users text-[#00f5ff]"></i>
                 </div>
-                
-                <div class="flex items-center gap-x-8 text-sm pt-8">
-                    <div class="flex items-center gap-x-2">
-                        <i class="fa-solid fa-check text-green-400"></i>
-                        <span>Real-time predictions</span>
-                    </div>
-                    <div class="flex items-center gap-x-2">
-                        <i class="fa-solid fa-check text-green-400"></i>
-                        <span>Ad-free Pro experience</span>
-                    </div>
+                <div class="text-4xl font-bold stat-number" id="metric-readers">142,847</div>
+                <div class="text-emerald-400 text-sm font-medium flex items-center gap-x-1 mt-1">
+                    <i class="fa-solid fa-arrow-trend-up"></i> <span>+18% today</span>
                 </div>
             </div>
             
-            <!-- Hero Visual -->
-            <div class="relative hidden md:block">
-                <div class="absolute -inset-20 bg-yellow-500/10 blur-3xl rounded-[4rem]"></div>
-                <div class="glass border border-white/10 rounded-3xl p-8 shadow-2xl relative">
-                    <div class="bg-zinc-900 rounded-2xl p-6 mb-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="flex items-center gap-x-3">
-                                <div class="w-3 h-3 bg-green-400 rounded-full"></div>
-                                <span class="text-sm font-medium">LIVE AI FEED</span>
-                            </div>
-                            <span class="text-xs text-zinc-500">UPDATED JUST NOW</span>
-                        </div>
-                        <div class="space-y-6">
-                            <div class="flex gap-4">
-                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex-shrink-0"></div>
-                                <div>
-                                    <div class="text-yellow-400 text-sm">PREDICTION • 98% CONFIDENCE</div>
-                                    <div class="font-semibold">Black Myth: Wukong 2 announced for 2027</div>
-                                    <div class="text-xs text-zinc-400 mt-1">Trending • +248% mentions in 2h</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="grid grid-cols-3 gap-4 text-center">
-                        <div>
-                            <div class="text-3xl font-bold text-emerald-400 stat-number" id="stat1">142.8k</div>
-                            <div class="text-xs text-zinc-400">ACTIVE GAMERS</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-sky-400 stat-number" id="stat2">94.2</div>
-                            <div class="text-xs text-zinc-400">% ACCURACY</div>
-                        </div>
-                        <div>
-                            <div class="text-3xl font-bold text-amber-400 stat-number" id="stat3">87</div>
-                            <div class="text-xs text-zinc-400">ARTICLES TODAY</div>
-                        </div>
-                    </div>
+            <div onclick="bumpMetric(this, 94.7, 0.4)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-white/60 text-xs font-medium tracking-widest">AI ACCURACY</div>
+                    <i class="fa-solid fa-brain text-[#7c3aed]"></i>
                 </div>
+                <div class="text-4xl font-bold stat-number" id="metric-accuracy">94.7</div>
+                <div class="text-emerald-400 text-sm font-medium flex items-center gap-x-1 mt-1">
+                    <i class="fa-solid fa-arrow-trend-up"></i> <span>+2.1% this week</span>
+                </div>
+            </div>
+            
+            <div onclick="bumpMetric(this, 87, 4)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-white/60 text-xs font-medium tracking-widest">ARTICLES TODAY</div>
+                    <i class="fa-solid fa-newspaper text-[#00f5ff]"></i>
+                </div>
+                <div class="text-4xl font-bold stat-number" id="metric-articles">87</div>
+                <div class="text-emerald-400 text-sm font-medium flex items-center gap-x-1 mt-1">
+                    <i class="fa-solid fa-arrow-trend-up"></i> <span>+12 today</span>
+                </div>
+            </div>
+            
+            <div onclick="bumpMetric(this, 6.4, 0.3)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-white/60 text-xs font-medium tracking-widest">AVG READ TIME</div>
+                    <i class="fa-solid fa-clock text-[#00f5ff]"></i>
+                </div>
+                <div class="text-4xl font-bold stat-number" id="metric-readtime">6.4 <span class="text-xl font-medium">min</span></div>
+                <div class="text-emerald-400 text-sm font-medium flex items-center gap-x-1 mt-1">
+                    <i class="fa-solid fa-arrow-trend-up"></i> <span>+0.8 min</span>
+                </div>
+            </div>
+            
+            <div onclick="bumpMetric(this, 128400, 3200)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-white/60 text-xs font-medium tracking-widest">PREDICTIONS MADE</div>
+                    <i class="fa-solid fa-chart-line text-[#7c3aed]"></i>
+                </div>
+                <div class="text-4xl font-bold stat-number" id="metric-predictions">128.4k</div>
+                <div class="text-emerald-400 text-sm font-medium flex items-center gap-x-1 mt-1">
+                    <span>98.4% confidence avg</span>
+                </div>
+            </div>
+            
+            <div onclick="bumpMetric(this, 312, 19)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+                <div class="flex justify-between items-start mb-3">
+                    <div class="text-white/60 text-xs font-medium tracking-widest">ESPORTS MATCHES</div>
+                    <i class="fa-solid fa-tachometer-alt text-[#00f5ff]"></i>
+                </div>
+                <div class="text-4xl font-bold stat-number" id="metric-matches">312</div>
+                <div class="text-emerald-400 text-sm font-medium flex items-center gap-x-1 mt-1">
+                    <span>Analyzed today</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE AI FEED -->
+    <div id="live-feed" class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <span class="px-4 py-1.5 text-xs font-bold tracking-[2px] rounded-3xl bg-red-500/10 text-red-400 border border-red-500/30">LIVE</span>
+                <span class="ml-4 text-3xl font-bold tracking-tight">AI Intelligence Feed</span>
+            </div>
+            <button onclick="addLiveUpdate()" 
+                    class="flex items-center gap-x-2 px-5 py-2 text-sm font-medium border border-white/20 hover:bg-white/5 rounded-3xl transition">
+                <i class="fa-solid fa-broadcast-tower"></i>
+                <span>Simulate Update</span>
+            </button>
+        </div>
+        
+        <div class="glass border border-white/10 rounded-3xl p-1">
+            <div id="live-feed-list" class="divide-y divide-white/10 max-h-[380px] overflow-auto rounded-3xl text-sm">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+        <p class="text-center text-xs text-white/40 mt-4">Updates every few seconds • Data from 12 sources • Last synced just now</p>
+    </div>
+
+    <!-- NEWS SECTION -->
+    <div id="news" class="max-w-screen-2xl mx-auto px-8 pb-16">
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-4 mb-8">
+            <div>
+                <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold mb-1">JUST IN</div>
+                <h3 class="text-4xl font-bold tracking-tighter">Gaming News &amp; Insights</h3>
+            </div>
+            
+            <!-- Search + Filter -->
+            <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+                <div class="relative flex-1 md:w-80">
+                    <input id="news-search" type="text" placeholder="Search news..." 
+                           onkeyup="filterNews()"
+                           class="w-full bg-white/5 border border-white/10 focus:border-[#00f5ff]/50 transition pl-10 py-3 rounded-3xl text-sm placeholder:text-white/40">
+                    <i class="fa-solid fa-search absolute left-4 top-4 text-white/40"></i>
+                </div>
+                <select id="news-filter" onchange="filterNews()" 
+                        class="bg-white/5 border border-white/10 text-sm py-3 px-4 rounded-3xl cursor-pointer">
+                    <option value="">All Categories</option>
+                    <option value="esports">Esports</option>
+                    <option value="patch">Patches &amp; Updates</option>
+                    <option value="rumor">Rumors &amp; Leaks</option>
+                    <option value="review">Reviews</option>
+                </select>
             </div>
         </div>
         
-        <div class="absolute bottom-10 left-1/2 flex flex-col items-center">
-            <div class="text-xs tracking-[2px] mb-2 text-zinc-500">SCROLL FOR MORE</div>
-            <i class="fa-solid fa-chevron-down animate-bounce text-2xl"></i>
+        <!-- News Grid -->
+        <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Populated dynamically via JS -->
         </div>
-    </section>
-
-    <!-- LIVE ANALYTICS -->
-    <section class="py-24 border-b border-zinc-800 bg-zinc-900">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="flex justify-between items-end mb-12">
-                <div>
-                    <span class="uppercase text-yellow-400 text-sm font-mono tracking-widest">REAL-TIME</span>
-                    <h2 class="heading-font text-5xl font-semibold">Symantic AI Dashboard</h2>
-                </div>
-                <button onclick="navigateTo('dashboard')" 
-                        class="flex items-center gap-x-2 text-yellow-400 hover:text-yellow-300">
-                    FULL DASHBOARD <i class="fa-solid fa-arrow-right"></i>
-                </button>
-            </div>
-            
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <!-- Stat 1 -->
-                <div class="glass border border-white/10 rounded-3xl p-8 card-hover">
-                    <div class="flex justify-between">
-                        <div>
-                            <div class="text-zinc-400 text-sm">ACTIVE READERS TODAY</div>
-                            <div id="live-readers" class="text-6xl font-bold heading-font mt-3 stat-number">142,847</div>
-                        </div>
-                        <div class="text-emerald-400 text-right">
-                            <i class="fa-solid fa-arrow-trend-up text-3xl"></i>
-                            <div class="text-sm mt-2">+18%</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Stat 2 -->
-                <div class="glass border border-white/10 rounded-3xl p-8 card-hover">
-                    <div class="flex justify-between">
-                        <div>
-                            <div class="text-zinc-400 text-sm">ARTICLES THIS WEEK</div>
-                            <div id="live-articles" class="text-6xl font-bold heading-font mt-3 stat-number">87</div>
-                        </div>
-                        <div class="text-sky-400 text-right">
-                            <i class="fa-solid fa-newspaper text-3xl"></i>
-                            <div class="text-sm mt-2">+12 today</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Stat 3 -->
-                <div class="glass border border-white/10 rounded-3xl p-8 card-hover">
-                    <div class="flex justify-between">
-                        <div>
-                            <div class="text-zinc-400 text-sm">AVG READ TIME</div>
-                            <div id="live-time" class="text-6xl font-bold heading-font mt-3 stat-number">6.4</div>
-                            <span class="text-sm">minutes</span>
-                        </div>
-                        <div class="text-amber-400 text-right">
-                            <i class="fa-solid fa-clock text-3xl"></i>
-                            <div class="text-sm mt-2">+0.8m</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Stat 4 -->
-                <div class="glass border border-white/10 rounded-3xl p-8 card-hover relative overflow-hidden">
-                    <div class="flex justify-between">
-                        <div>
-                            <div class="text-zinc-400 text-sm">AI PREDICTION ACCURACY</div>
-                            <div class="text-6xl font-bold heading-font mt-3 text-yellow-400">94.2%</div>
-                        </div>
-                        <div class="text-yellow-400 text-right">
-                            <i class="fa-solid fa-brain text-4xl"></i>
-                        </div>
-                    </div>
-                    <div class="mt-8 h-2 bg-zinc-800 rounded-full overflow-hidden">
-                        <div class="h-full w-[94%] bg-gradient-to-r from-yellow-400 to-amber-500"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Chart.js Accuracy Trend -->
-            <div class="mt-8 glass border border-white/10 rounded-3xl p-8">
-                <div class="flex justify-between items-center mb-4">
-                    <div>
-                        <div class="text-sm text-zinc-400">7-DAY AI ACCURACY TREND</div>
-                        <div class="font-semibold">Steadily Improving</div>
-                    </div>
-                    <div class="text-emerald-400 text-sm">+2.1% this week</div>
-                </div>
-                <canvas id="accuracyChart" height="90"></canvas>
-            </div>
+        
+        <div class="flex justify-center mt-8">
+            <button onclick="loadMoreNews()" 
+                    class="px-8 py-3 text-sm border border-white/20 hover:bg-white/5 font-semibold rounded-3xl flex items-center gap-x-2">
+                LOAD MORE STORIES <i class="fa-solid fa-chevron-down ml-1"></i>
+            </button>
         </div>
-    </section>
+    </div>
 
-    <!-- WHY SYMANTIC -->
-    <section class="py-24 bg-black">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="text-center mb-16">
-                <span class="px-4 py-1.5 bg-yellow-400/10 text-yellow-400 text-sm rounded-full">PREMIUM FEATURES</span>
-                <h2 class="heading-font text-6xl font-bold mt-4">Built for the next generation of gamers</h2>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="p-10 rounded-3xl border border-white/10 hover:border-yellow-400/30 card-hover group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-violet-500 rounded-2xl flex items-center justify-center text-4xl mb-8 group-hover:rotate-12 transition-transform">🧠</div>
-                    <h3 class="text-3xl font-semibold mb-4">AI-Powered Insights</h3>
-                    <p class="text-zinc-400 leading-relaxed">Our AI analyzes millions of data points across Twitch, Reddit, Steam, and more to predict trends before they explode.</p>
-                    <ul class="mt-8 space-y-3 text-sm">
-                        <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-green-400"></i> Trend forecasting</li>
-                        <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-green-400"></i> Sentiment analysis</li>
-                        <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-green-400"></i> Personalized briefs</li>
-                    </ul>
-                </div>
-                
-                <div class="p-10 rounded-3xl border border-white/10 hover:border-yellow-400/30 card-hover group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-teal-500 rounded-2xl flex items-center justify-center text-4xl mb-8 group-hover:rotate-12 transition-transform">⚡</div>
-                    <h3 class="text-3xl font-semibold mb-4">Real-Time Updates</h3>
-                    <p class="text-zinc-400 leading-relaxed">Breaking news, patch notes, and esports results delivered the second they happen. Never miss a major drop.</p>
-                    <div class="mt-10 bg-zinc-900 rounded-2xl p-6 text-xs font-mono border border-white/10">
-                        <div class="text-emerald-400">LIVE • GTA VI Trailer 2 just dropped</div>
-                        <div class="mt-4 text-amber-400">12s ago • Valorant Patch 9.03</div>
-                    </div>
-                </div>
-                
-                <div class="p-10 rounded-3xl border border-white/10 hover:border-yellow-400/30 card-hover group">
-                    <div class="w-16 h-16 bg-gradient-to-br from-rose-500 to-orange-500 rounded-2xl flex items-center justify-center text-4xl mb-8 group-hover:rotate-12 transition-transform">🎯</div>
-                    <h3 class="text-3xl font-semibold mb-4">Honest Scoring</h3>
-                    <p class="text-zinc-400 leading-relaxed">No publisher embargoes. No review score inflation. Just transparent, data-backed criticism you can actually trust.</p>
-                    <div class="mt-12 flex gap-6">
-                        <div class="text-center">
-                            <div class="text-5xl font-bold text-red-400">4.2</div>
-                            <div class="text-xs text-zinc-500">AVERAGE SCORE</div>
+    <!-- AI DEMO SECTION -->
+    <div id="demo" class="max-w-screen-2xl mx-auto px-8 py-16 border-y border-white/10 bg-[#111114]">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+            <div class="inline px-4 py-1 rounded-3xl bg-[#00f5ff]/10 text-[#00f5ff] text-xs tracking-[2.5px] font-bold mb-3">POWERED BY SYMANTIC AI</div>
+            <h2 class="text-5xl font-bold tracking-tighter mb-3">Talk to Symantic AI</h2>
+            <p class="text-white/70 max-w-md mx-auto">Ask anything about games, predictions, patches, or esports. Get instant, data-backed answers.</p>
+        </div>
+        
+        <!-- Chat Demo -->
+        <div class="max-w-3xl mx-auto">
+            <div class="glass border border-white/10 rounded-3xl p-2 shadow-2xl">
+                <!-- Chat Header -->
+                <div class="px-5 pt-4 pb-3 flex items-center gap-x-3 border-b border-white/10">
+                    <div class="flex items-center gap-x-3">
+                        <div class="w-9 h-9 bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] rounded-2xl flex items-center justify-center">
+                            <i class="fa-solid fa-robot text-black text-xl"></i>
                         </div>
-                        <div class="h-14 w-px bg-white/10"></div>
                         <div>
-                            <div class="uppercase text-xs mb-1">Recent Reviews</div>
-                            <div class="text-sm">Black Myth: Wukong — 9.4/10</div>
+                            <div class="font-semibold">Symantic AI</div>
+                            <div class="text-xs text-emerald-400 flex items-center gap-x-1">
+                                <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
+                                <span>Online • 94.7% accuracy</span>
+                            </div>
                         </div>
                     </div>
+                </div>
+                
+                <!-- Messages -->
+                <div id="chat-messages" class="h-[280px] overflow-y-auto px-5 py-4 space-y-5 text-sm">
+                    <!-- Initial message populated by JS -->
+                </div>
+                
+                <!-- Input -->
+                <div class="p-3 border-t border-white/10">
+                    <div class="flex gap-x-2">
+                        <input id="chat-input" type="text" placeholder="Ask about GTA VI, Valorant meta, or Black Myth Wukong 2..." 
+                               class="flex-1 bg-white/5 border border-white/10 focus:border-[#00f5ff] transition rounded-3xl px-5 py-3 text-sm placeholder:text-white/40"
+                               onkeypress="if (event.key === 'Enter') sendChatMessage()">
+                        <button onclick="sendChatMessage()" 
+                                class="px-7 rounded-3xl bg-white text-black font-bold text-sm flex items-center justify-center hover:bg-[#00f5ff] transition">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div class="text-[10px] text-center text-white/40 mt-2">Try: "Predict next GTA VI trailer date" or "Valorant patch 9.04 changes"</div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <!-- LATEST NEWS -->
-    <section id="news" class="py-24 border-t border-zinc-800">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="flex items-center justify-between mb-12">
-                <h2 class="heading-font text-5xl font-semibold">JUST IN</h2>
-                <a href="#" onclick="navigateTo('news')" class="flex items-center gap-x-3 text-yellow-400 hover:text-yellow-300 font-medium">
-                    VIEW ALL NEWS <span class="text-xl">→</span>
-                </a>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="news-grid">
-                <!-- Populated by JS -->
-            </div>
-
-            <div class="text-center mt-10">
-                <button onclick="loadMoreNews()" 
-                        class="px-8 py-3 border border-white/30 hover:bg-white/5 rounded-2xl text-sm font-medium transition-all">
-                    Load More News <i class="fa-solid fa-chevron-down ml-2"></i>
-                </button>
-            </div>
-        </div>
-    </section>
+    </div>
 
     <!-- HOW IT WORKS -->
-    <section class="py-24 bg-zinc-900">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="max-w-2xl mx-auto text-center mb-16">
-                <h2 class="heading-font text-5xl font-semibold">Your daily gaming intelligence in 3 steps</h2>
+    <div class="max-w-screen-2xl mx-auto px-8 py-16">
+        <div class="text-center mb-12">
+            <div class="text-xs tracking-[3px] font-bold text-white/50 mb-2">3 SIMPLE STEPS</div>
+            <h2 class="text-5xl font-bold tracking-tighter">Your daily gaming intelligence</h2>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div class="glass p-8 rounded-3xl border border-white/10 text-center">
+                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 mb-6">
+                    <i class="fa-solid fa-user-edit text-4xl text-[#00f5ff]"></i>
+                </div>
+                <div class="font-bold text-xl mb-2">1. Personalize</div>
+                <p class="text-white/60 text-[15px]">Tell us your favorite genres, platforms, and teams. Our AI learns your taste instantly.</p>
             </div>
-            
-            <div class="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
-                <div class="text-center">
-                    <div class="mx-auto w-20 h-20 rounded-3xl bg-yellow-400 text-zinc-950 flex items-center justify-center text-5xl font-bold mb-8">1</div>
-                    <h3 class="text-2xl font-semibold mb-3">Personalize Your Feed</h3>
-                    <p class="text-zinc-400">Tell us your favorite genres and platforms. Our AI builds your perfect daily briefing.</p>
+            <div class="glass p-8 rounded-3xl border border-white/10 text-center">
+                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 mb-6">
+                    <i class="fa-solid fa-magic text-4xl text-[#7c3aed]"></i>
                 </div>
-                <div class="text-center">
-                    <div class="mx-auto w-20 h-20 rounded-3xl bg-yellow-400 text-zinc-950 flex items-center justify-center text-5xl font-bold mb-8">2</div>
-                    <h3 class="text-2xl font-semibold mb-3">Get Smart Summaries</h3>
-                    <p class="text-zinc-400">AI-generated 60-second summaries or dive deep into full 3000-word analysis.</p>
+                <div class="font-bold text-xl mb-2">2. Get Smart Summaries</div>
+                <p class="text-white/60 text-[15px]">Receive 60-second briefs or deep 3000-word analysis powered by real data, not hype.</p>
+            </div>
+            <div class="glass p-8 rounded-3xl border border-white/10 text-center">
+                <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 mb-6">
+                    <i class="fa-solid fa-bell text-4xl text-[#00f5ff]"></i>
                 </div>
-                <div class="text-center">
-                    <div class="mx-auto w-20 h-20 rounded-3xl bg-yellow-400 text-zinc-950 flex items-center justify-center text-5xl font-bold mb-8">3</div>
-                    <h3 class="text-2xl font-semibold mb-3">Stay Ahead of the Curve</h3>
-                    <p class="text-zinc-400">Receive push alerts and early access predictions on games about to explode.</p>
-                </div>
+                <div class="font-bold text-xl mb-2">3. Stay Ahead</div>
+                <p class="text-white/60 text-[15px]">Get push alerts, early predictions, and custom dashboards before anyone else.</p>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- TESTIMONIALS -->
-    <section class="py-24">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <h2 class="heading-font text-5xl font-semibold text-center mb-16">LOVED BY GAMERS</h2>
+    <div class="max-w-screen-2xl mx-auto px-8 pb-16">
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <span class="text-xs font-bold tracking-[3px] text-white/50">LOVED BY THE BEST</span>
+                <h3 class="text-4xl font-bold tracking-tight">Real gamers. Real results.</h3>
+            </div>
+        </div>
+        
+        <div class="grid md:grid-cols-3 gap-5">
+            <div class="glass p-7 rounded-3xl border border-white/10">
+                <div class="flex gap-x-1 text-amber-400 mb-5">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+                </div>
+                <p class="italic text-white/90">"Symantic predicted the Black Myth Wukong 2 announcement 11 months early. Their analysis is scary accurate."</p>
+                <div class="mt-6 flex items-center gap-x-3">
+                    <img src="https://i.pravatar.cc/36?img=15" class="w-9 h-9 rounded-2xl ring-1 ring-white/20">
+                    <div>
+                        <div class="font-semibold">Alex Rivera</div>
+                        <div class="text-xs text-white/50">Pro Gamer • FaZe Clan</div>
+                    </div>
+                </div>
+            </div>
             
-            <div class="grid md:grid-cols-3 gap-8">
-                <div class="glass p-8 rounded-3xl">
-                    <div class="italic text-lg">"Symantic is the only site I trust for honest reviews. Their AI predictions are scary accurate."</div>
-                    <div class="mt-10 flex items-center gap-x-4">
-                        <div class="w-12 h-12 bg-zinc-700 rounded-2xl"></div>
-                        <div>
-                            <div class="font-semibold">Alex Rivera</div>
-                            <div class="text-xs text-zinc-400">Pro Gamer • FaZe Clan</div>
-                        </div>
+            <div class="glass p-7 rounded-3xl border border-white/10">
+                <div class="flex gap-x-1 text-amber-400 mb-5">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                </div>
+                <p class="italic text-white/90">"Finally, honest game reviews without publisher pressure. The scoring system is transparent and data-driven."</p>
+                <div class="mt-6 flex items-center gap-x-3">
+                    <img src="https://i.pravatar.cc/36?img=32" class="w-9 h-9 rounded-2xl ring-1 ring-white/20">
+                    <div>
+                        <div class="font-semibold">Maya Chen</div>
+                        <div class="text-xs text-white/50">Game Director • Riot Games</div>
                     </div>
                 </div>
-                <div class="glass p-8 rounded-3xl">
-                    <div class="italic text-lg">"I use Symantic every day to understand what players actually care about before we ship features."</div>
-                    <div class="mt-10 flex items-center gap-x-4">
-                        <div class="w-12 h-12 bg-zinc-700 rounded-2xl"></div>
-                        <div>
-                            <div class="font-semibold">Maya Chen</div>
-                            <div class="text-xs text-zinc-400">Game Developer • Riot Games</div>
-                        </div>
-                    </div>
+            </div>
+            
+            <div class="glass p-7 rounded-3xl border border-white/10">
+                <div class="flex gap-x-1 text-amber-400 mb-5">
+                    <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
-                <div class="glass p-8 rounded-3xl">
-                    <div class="italic text-lg">"The dashboard and AI insights help me decide what to cover next on my channel."</div>
-                    <div class="mt-10 flex items-center gap-x-4">
-                        <div class="w-12 h-12 bg-zinc-700 rounded-2xl"></div>
-                        <div>
-                            <div class="font-semibold">Jordan Lee</div>
-                            <div class="text-xs text-zinc-400">Content Creator • 2.1M subs</div>
-                        </div>
+                <p class="italic text-white/90">"I use Symantic every morning. The personalized feed + early predictions save me hours of research."</p>
+                <div class="mt-6 flex items-center gap-x-3">
+                    <img src="https://i.pravatar.cc/36?img=60" class="w-9 h-9 rounded-2xl ring-1 ring-white/20">
+                    <div>
+                        <div class="font-semibold">Jordan Lee</div>
+                        <div class="text-xs text-white/50">Content Creator • 2.4M subs</div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- PRICING -->
-    <section id="pricing" class="py-24 bg-black border-t border-b border-zinc-800">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="text-center mb-16">
-                <h2 class="heading-font text-6xl font-bold">Choose your plan</h2>
-                <p class="text-xl text-zinc-400 mt-4">Unlock premium AI features</p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 max-w-5xl mx-auto gap-8">
-                <!-- Free -->
-                <div class="border border-white/10 rounded-3xl p-10">
-                    <div class="text-yellow-400 font-medium">FREE</div>
-                    <div class="text-6xl font-bold mt-2 mb-8">$0<span class="text-base font-normal text-zinc-400">/forever</span></div>
-                    <ul class="space-y-6 mb-12">
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Unlimited news access</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Basic AI summaries</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Community forum</li>
-                    </ul>
-                    <button onclick="alert('You are already on Free plan!')" 
-                            class="w-full py-6 border border-white/30 rounded-3xl font-semibold">Current Plan</button>
-                </div>
-                
-                <!-- Pro -->
-                <div class="border-2 border-yellow-400 rounded-3xl p-10 relative scale-105 shadow-2xl shadow-yellow-500/20">
-                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-zinc-950 px-8 py-1 rounded-full text-sm font-bold flex items-center gap-x-2">
-                        <i class="fa-solid fa-crown"></i> MOST POPULAR
-                    </div>
-                    <div class="text-yellow-400 font-medium">PRO</div>
-                    <div class="text-6xl font-bold mt-2 mb-1">$9</div>
-                    <div class="text-sm text-zinc-400 mb-8">per month • billed yearly</div>
-                    <ul class="space-y-6 mb-12">
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Everything in Free</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Unlimited AI insights</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Ad-free experience</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Early access + predictions</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Custom dashboards</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Priority support</li>
-                    </ul>
-                    <button onclick="subscribePro()" 
-                            class="w-full py-6 bg-yellow-400 hover:bg-amber-300 text-zinc-950 font-bold rounded-3xl text-lg">Subscribe to Pro</button>
-                </div>
-                
-                <!-- Enterprise -->
-                <div class="border border-white/10 rounded-3xl p-10">
-                    <div class="text-sky-400 font-medium">ENTERPRISE</div>
-                    <div class="text-6xl font-bold mt-2 mb-8">Custom</div>
-                    <ul class="space-y-6 mb-12">
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Team seats</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> API access</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> White label reports</li>
-                        <li class="flex gap-x-3"><i class="fa-solid fa-check text-emerald-400 mt-1"></i> Dedicated AI training</li>
-                    </ul>
-                    <button onclick="alert('Contact sales@symantic.ai')" 
-                            class="w-full py-6 border border-white/30 rounded-3xl font-semibold">Contact Sales</button>
-                </div>
+    <div id="pricing" class="max-w-screen-2xl mx-auto px-8 py-16 bg-[#111114] border-t border-white/10">
+        <div class="text-center mb-10">
+            <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold">CHOOSE YOUR EDGE</div>
+            <h2 class="text-5xl font-bold tracking-tighter">Plans built for gamers &amp; creators</h2>
+        </div>
+        
+        <!-- Billing Toggle -->
+        <div class="flex justify-center mb-8">
+            <div class="inline-flex items-center rounded-3xl border border-white/20 p-1 text-sm">
+                <div onclick="togglePricing('monthly')" id="pricing-monthly"
+                     class="px-6 py-2 font-semibold cursor-pointer rounded-3xl bg-white text-black">Monthly</div>
+                <div onclick="togglePricing('yearly')" id="pricing-yearly"
+                     class="px-6 py-2 font-semibold cursor-pointer rounded-3xl">Yearly <span class="text-emerald-400 text-xs">(Save 35%)</span></div>
             </div>
         </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-black py-20 border-t border-zinc-800">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="flex flex-col md:flex-row justify-between gap-y-12">
+        
+        <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <!-- Free -->
+            <div class="glass rounded-3xl p-8 border border-white/10 flex flex-col">
                 <div>
-                    <div class="flex items-center gap-x-3 mb-6">
-                        <div class="w-9 h-9 bg-yellow-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-3xl">S</div>
-                        <span class="heading-font text-3xl font-semibold">SYMANTIC</span>
+                    <div class="font-semibold">FREE</div>
+                    <div class="mt-4 flex items-baseline">
+                        <span class="text-6xl font-bold">$0</span>
                     </div>
-                    <p class="text-zinc-400 max-w-xs">Next-Gen Gaming Intelligence</p>
+                    <div class="text-white/50 text-sm">Forever</div>
                 </div>
                 
-                <div class="grid grid-cols-3 gap-x-16">
-                    <div>
-                        <div class="uppercase text-xs font-mono mb-6">Product</div>
-                        <div class="space-y-4 text-sm">
-                            <div>News</div>
-                            <div>Reviews</div>
-                            <div>Dashboard</div>
-                            <div>Pricing</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="uppercase text-xs font-mono mb-6">Company</div>
-                        <div class="space-y-4 text-sm">
-                            <div>About</div>
-                            <div>Careers</div>
-                            <div>Blog</div>
-                            <div>Contact</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="uppercase text-xs font-mono mb-6">Legal</div>
-                        <div class="space-y-4 text-sm">
-                            <div>Privacy</div>
-                            <div>Terms</div>
-                        </div>
-                    </div>
-                </div>
+                <ul class="mt-8 space-y-3 text-sm flex-1">
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Unlimited news access</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Basic AI summaries</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Community forum</li>
+                    <li class="flex items-center gap-x-3 text-white/40"><i class="fa-solid fa-times w-4"></i> Limited predictions</li>
+                </ul>
+                
+                <button onclick="showSubscribeModal()" 
+                        class="mt-auto w-full py-3.5 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl text-sm">Start for free</button>
             </div>
             
-            <div class="mt-20 pt-8 border-t border-zinc-800 text-xs text-zinc-500 flex flex-col md:flex-row justify-between items-center gap-y-4">
-                <div>© 2026 Symantic AI. All rights reserved built by 13 year old ST Xavier Amresh 9A.</div>
-                <div> Built by Gamer Made with ❤️ for gamers • Powered by cutting-edge AI</div>
+            <!-- Pro - Highlighted -->
+            <div class="glass rounded-3xl p-8 border-2 border-[#00f5ff] relative flex flex-col scale-[1.02] shadow-xl shadow-[#00f5ff]/10">
+                <div class="absolute -top-3 right-6 px-4 py-1 text-xs tracking-widest font-bold bg-[#00f5ff] text-black rounded-3xl">MOST POPULAR</div>
+                
+                <div>
+                    <div class="font-semibold flex items-center gap-x-2">PRO <span class="text-xs px-2 py-px bg-white/10 rounded">RECOMMENDED</span></div>
+                    <div class="mt-4 flex items-baseline">
+                        <span id="pro-price" class="text-6xl font-bold">$9</span>
+                        <span class="text-white/60 ml-1.5">/month</span>
+                    </div>
+                    <div id="pro-billing" class="text-white/50 text-sm">billed yearly • save $39</div>
+                </div>
+                
+                <ul class="mt-8 space-y-3 text-sm flex-1">
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Everything in Free</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Unlimited AI insights</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Ad-free + dark mode</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Early access predictions</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Custom dashboards</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Priority support</li>
+                </ul>
+                
+                <button onclick="showSubscribeModal()" 
+                        class="mt-auto w-full py-3.5 bg-white hover:bg-[#00f5ff] active:bg-white transition font-bold text-black rounded-3xl">Subscribe to Pro</button>
+            </div>
+            
+            <!-- Enterprise -->
+            <div class="glass rounded-3xl p-8 border border-white/10 flex flex-col">
+                <div>
+                    <div class="font-semibold">ENTERPRISE</div>
+                    <div class="mt-4 flex items-baseline">
+                        <span class="text-4xl font-bold">Custom</span>
+                    </div>
+                    <div class="text-white/50 text-sm">For teams &amp; studios</div>
+                </div>
+                
+                <ul class="mt-8 space-y-3 text-sm flex-1">
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Everything in Pro</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Team seats + SSO</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Private API access</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> White-label reports</li>
+                    <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Dedicated AI model training</li>
+                </ul>
+                
+                <button onclick="showContactModal()" 
+                        class="mt-auto w-full py-3.5 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl text-sm">Contact sales</button>
+            </div>
+        </div>
+        
+        <p class="text-center text-xs text-white/40 mt-8">30-day money-back guarantee • Cancel anytime • Trusted by 280+ gaming organizations</p>
+    </div>
+
+    <!-- FINAL CTA -->
+    <div class="max-w-screen-2xl mx-auto px-8 py-16 text-center">
+        <div class="max-w-lg mx-auto">
+            <h2 class="text-4xl font-bold tracking-tighter mb-3">Ready to level up your gaming IQ?</h2>
+            <p class="text-white/60 mb-6">Join 142k+ gamers getting the edge every day.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button onclick="showSubscribeModal()" 
+                        class="gaming-btn px-10 py-4 bg-white text-black font-extrabold text-base rounded-3xl">START 14-DAY PRO TRIAL</button>
+                <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" 
+                        class="px-10 py-4 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl">Try the AI demo first</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 py-10 text-xs text-white/50">
+        <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row gap-y-4 items-center justify-between">
+            <div>© 2026 Symantic. All rights reserved. Built with real data, zero hype.</div>
+            <div class="flex gap-x-5">
+                <a href="#" class="hover:text-white">Privacy</a>
+                <a href="#" class="hover:text-white">Terms</a>
+                <a href="#" class="hover:text-white">API</a>
+                <a href="#" class="hover:text-white">Blog</a>
+            </div>
+            <div class="flex gap-x-4">
+                <i class="fa-brands fa-x-twitter cursor-pointer hover:text-white"></i>
+                <i class="fa-brands fa-discord cursor-pointer hover:text-white"></i>
+                <i class="fa-brands fa-linkedin cursor-pointer hover:text-white"></i>
             </div>
         </div>
     </footer>
 
-    <!-- PRO MODAL -->
-    <div id="pro-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center">
-        <div class="max-w-md w-full mx-4 bg-zinc-900 rounded-3xl p-10 border border-yellow-400/30">
-            <div class="flex justify-end">
-                <button onclick="hideProModal()" class="text-3xl text-zinc-400 hover:text-white">×</button>
+    <!-- Login Modal -->
+    <div id="login-modal" onclick="if (event.target.id === 'login-modal') hideLoginModal()" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-8 modal">
+            <div class="flex justify-between items-center mb-6">
+                <div class="font-bold text-2xl">Welcome back</div>
+                <button onclick="hideLoginModal()" class="text-white/50 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
             </div>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs tracking-widest text-white/50 block mb-1.5">EMAIL</label>
+                    <input type="email" value="demo@symantic.ai" class="w-full bg-white/5 border border-white/10 px-5 py-3.5 rounded-3xl text-sm">
+                </div>
+                <div>
+                    <label class="text-xs tracking-widest text-white/50 block mb-1.5">PASSWORD</label>
+                    <input type="password" value="demo123" class="w-full bg-white/5 border border-white/10 px-5 py-3.5 rounded-3xl text-sm">
+                </div>
+            </div>
+            
+            <button onclick="loginUser()" 
+                    class="mt-6 w-full py-3.5 bg-white text-black font-bold rounded-3xl">Sign in</button>
+            
+            <div class="text-center text-xs text-white/50 mt-4">Don't have an account? <span onclick="hideLoginModal(); showSubscribeModal()" class="text-[#00f5ff] cursor-pointer">Get Pro</span></div>
+        </div>
+    </div>
+
+    <!-- Subscribe / Success Modal -->
+    <div id="subscribe-modal" onclick="if (event.target.id === 'subscribe-modal') hideSubscribeModal()" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-8 modal">
             <div class="text-center">
-                <i class="fa-solid fa-crown text-6xl text-yellow-400 mb-6"></i>
-                <h3 class="text-4xl font-bold heading-font">Go Pro Today</h3>
-                <p class="mt-4 text-zinc-400">Unlock the full power of AI gaming intelligence</p>
+                <div class="mx-auto w-16 h-16 bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] rounded-3xl flex items-center justify-center mb-5">
+                    <i class="fa-solid fa-rocket text-3xl text-black"></i>
+                </div>
+                <div class="font-bold text-3xl">Thanks for trying Symantic!</div>
+                <p class="mt-2 text-white/70">This is a fully functional demo. In a real deployment, this would open Stripe checkout.</p>
                 
-                <div class="my-10 bg-black/50 rounded-2xl p-6 text-left space-y-4">
-                    <div class="flex justify-between"><span>Unlimited AI predictions</span><span class="text-emerald-400">✓</span></div>
-                    <div class="flex justify-between"><span>Custom alerts</span><span class="text-emerald-400">✓</span></div>
-                    <div class="flex justify-between"><span>Ad-free + dark mode</span><span class="text-emerald-400">✓</span></div>
+                <div class="mt-7 text-left text-xs bg-white/5 p-4 rounded-2xl">
+                    <div class="font-semibold mb-1">What you unlocked in this demo:</div>
+                    <ul class="space-y-px text-white/70">
+                        <li>• Full access to AI chat demo</li>
+                        <li>• Interactive live feed &amp; dashboard</li>
+                        <li>• All premium features simulated</li>
+                    </ul>
                 </div>
                 
-                <button onclick="subscribePro()" 
-                        class="w-full py-8 bg-gradient-to-r from-yellow-400 to-amber-500 text-zinc-950 font-bold text-2xl rounded-3xl">
-                    SUBSCRIBE — $9/mo
-                </button>
-                <p class="text-xs text-zinc-500 mt-6">Cancel anytime. 30-day money back guarantee.</p>
+                <button onclick="hideSubscribeModal()" 
+                        class="mt-6 w-full py-3 font-bold bg-white text-black rounded-3xl">Back to dashboard</button>
             </div>
         </div>
     </div>
 
-    <!-- LOGIN MODAL -->
-    <div id="login-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center">
-        <div class="max-w-md w-full mx-4 bg-zinc-900 rounded-3xl p-10">
-            <h3 class="text-3xl font-semibold mb-8">Welcome back</h3>
-            <input type="email" placeholder="Email address" class="w-full bg-zinc-800 border border-transparent focus:border-yellow-400 rounded-2xl px-6 py-6 outline-none mb-4">
-            <input type="password" placeholder="Password" class="w-full bg-zinc-800 border border-transparent focus:border-yellow-400 rounded-2xl px-6 py-6 outline-none mb-8">
-            <button onclick="fakeLogin()" class="w-full py-6 bg-white text-black rounded-2xl font-semibold">Sign in</button>
-            <div class="text-center text-xs text-zinc-400 mt-8">Don't have an account? <span onclick="fakeLogin()" class="text-yellow-400 cursor-pointer">Sign up free</span></div>
+    <!-- Article Modal -->
+    <div id="article-modal" onclick="if (event.target.id === 'article-modal') hideArticleModal()" class="hidden fixed inset-0 bg-black/80 z-[110] flex items-center justify-center p-6">
+        <div onclick="event.stopImmediatePropagation()" class="glass max-w-2xl w-full border border-white/10 rounded-3xl overflow-hidden modal">
+            <div class="p-8">
+                <div id="article-modal-content">
+                    <!-- Dynamic content injected by JS -->
+                </div>
+            </div>
+            <div class="border-t border-white/10 p-4 flex justify-end bg-black/20">
+                <button onclick="hideArticleModal()" class="px-8 py-2 text-sm font-semibold">Close</button>
+            </div>
         </div>
     </div>
 
     <script>
-        // Tailwind script already included
-        
-        function initTailwind() {
-            // Already configured via CDN
-        }
-        
-        // Sample news data
-        const newsData = [
-            {
-                emoji: "🚀",
-                date: "JUN 5",
-                read: "4 MIN",
-                title: "Apex Legends Season 22 Massive Map Overhaul",
-                desc: "New Shattered Expanse map brings vertical gameplay and chaos to ranked play."
-            },
-            {
-                emoji: "⚔️",
-                date: "JUN 4",
-                read: "6 MIN",
-                title: "Elder Scrolls VI Gets Official 2027 Release Window",
-                desc: "Bethesda finally confirms Q3 2027 launch for the long-awaited sequel."
-            },
-            {
-                emoji: "🏎️",
-                date: "JUN 3",
-                read: "3 MIN",
-                title: "Gran Turismo 8 Confirmed for PS6 Launch",
-                desc: "Real-time weather physics and over 900 licensed cars coming to PlayStation 6."
-            }
-        ];
-        
-        let newsShown = 3;
-
-        function populateNews(filteredData = null, append = false) {
-            const container = document.getElementById('news-grid');
-            if (!append) container.innerHTML = '';
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#00f5ff');
             
-            const data = filteredData || newsData;
-            const toShow = data.slice(0, newsShown);
-            
-            toShow.forEach((item) => {
-                const originalIndex = newsData.findIndex(n => n.title === item.title);
-                const div = document.createElement('div');
-                div.className = `news-card bg-zinc-900 border border-white/10 rounded-3xl overflow-hidden hover:border-yellow-400/30`;
-                div.innerHTML = `
-                    <div class="p-8">
-                        <div class="flex justify-between text-xs mb-6">
-                            <span class="text-yellow-400 font-mono">${item.date}</span>
-                            <span class="text-zinc-500">${item.read}</span>
-                        </div>
-                        <div class="text-5xl mb-6">${item.emoji}</div>
-                        <h4 class="font-semibold text-xl leading-tight mb-3">${item.title}</h4>
-                        <p class="text-zinc-400 text-sm line-clamp-3">${item.desc}</p>
-                        ${item.category ? `<span class="inline-block mt-4 text-[10px] px-3 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-mono">${item.category.toUpperCase()}</span>` : ''}
-                    </div>
-                    <div class="border-t border-white/10 bg-black/40 px-8 py-5 text-xs flex items-center justify-between">
-                        <span class="text-emerald-400"><i class="fa-solid fa-chart-line mr-1"></i>TRENDING</span>
-                        <button onclick="readArticle(${originalIndex})" class="text-yellow-400 hover:text-white font-medium">Read full →</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function loadMoreNews() {
-            newsShown = newsData.length;
-            populateNews();
-            const btns = document.querySelectorAll('#news + div button, #news ~ div button');
-            btns.forEach(b => b.style.display = 'none');
-        }
-        
-        function readArticle(n) {
-            alert("Article opened! (Premium feature in full version)");
-        }
-        
-        // Counter animations
-        function animateCounters() {
-            const counters = [
-                {id: 'live-readers', target: 142847, duration: 2500},
-                {id: 'live-articles', target: 87, duration: 1800},
-                {id: 'live-time', target: 6.4, duration: 2000, suffix: ''}
-            ];
-            
-            counters.forEach(counter => {
-                let start = 0;
-                const increment = counter.target / (counter.duration / 16);
-                const el = document.getElementById(counter.id);
-                
-                const timer = setInterval(() => {
-                    start += increment;
-                    if (start >= counter.target) {
-                        if (counter.id === 'live-time') {
-                            el.textContent = counter.target.toFixed(1);
-                        } else {
-                            el.textContent = Math.floor(counter.target).toLocaleString();
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif']
                         }
-                        clearInterval(timer);
-                    } else {
-                        if (counter.id === 'live-time') {
-                            el.textContent = start.toFixed(1);
-                        } else {
-                            el.textContent = Math.floor(start).toLocaleString();
-                        }
-                    }
-                }, 16);
-            });
-        }
-        
-        function navigateTo(section) {
-            document.getElementById(section).scrollIntoView({ behavior: "smooth" });
-        }
-        
-        function showProModal() {
-            document.getElementById('pro-modal').classList.remove('hidden');
-            document.getElementById('pro-modal').classList.add('flex');
-        }
-        
-        function hideProModal() {
-            document.getElementById('pro-modal').classList.add('hidden');
-            document.getElementById('pro-modal').classList.remove('flex');
-        }
-        
-        function toggleLoginModal() {
-            const modal = document.getElementById('login-modal');
-            modal.classList.toggle('hidden');
-            modal.classList.toggle('flex');
-        }
-        
-        function fakeLogin() {
-            alert("✅ Logged in successfully! Welcome to Symantic Pro (demo).");
-            document.getElementById('login-modal').classList.add('hidden');
-            document.getElementById('login-modal').classList.remove('flex');
-        }
-        
-        function subscribePro() {
-            hideProModal();
-            setTimeout(() => {
-                alert("🎉 Thank you! Your Pro subscription has been activated (demo mode). Enjoy unlimited AI insights!");
-            }, 600);
-        }
-        
-        // Theme Switcher
-        function setAccentColor(color) {
-            const root = document.documentElement;
-            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('ring-2', 'ring-offset-2', 'ring-offset-zinc-950', 'ring-yellow-400', 'ring-cyan-400', 'ring-purple-400'));
-
-            let accentColor = '234 179 8';
-            if (color === 'cyan') accentColor = '34 211 238';
-            if (color === 'purple') accentColor = '168 85 247';
-
-            root.style.setProperty('--accent', accentColor);
-
-            // Highlight active button
-            const activeBtn = document.querySelector(`button[onclick*="${color}"]`);
-            if (activeBtn) activeBtn.classList.add('ring-2', 'ring-offset-2', 'ring-offset-zinc-950', `ring-${color}-400`);
-        }
-
-        // Initialize Chart.js
-        function initAccuracyChart() {
-            const ctx = document.getElementById('accuracyChart');
-            if (!ctx) return;
-
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Jun 14', 'Jun 15', 'Jun 16', 'Jun 17', 'Jun 18', 'Jun 19', 'Jun 20'],
-                    datasets: [{
-                        label: 'AI Accuracy %',
-                        data: [91.2, 92.8, 93.1, 93.5, 93.9, 94.0, 94.2],
-                        borderColor: '#facc15',
-                        backgroundColor: 'rgba(250, 204, 21, 0.1)',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: true,
-                        pointBackgroundColor: '#facc15',
-                        pointBorderColor: '#fff',
-                        pointBorderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        y: { min: 88, max: 96, grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#71717a', stepSize: 2 } },
-                        x: { grid: { color: 'rgba(255,255,255,0.08)' }, ticks: { color: '#71717a' } }
                     }
                 }
-            });
+            };
         }
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            if (e.key === "/" && document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA") {
-                e.preventDefault();
-                const search = document.getElementById('nav-search');
-                if (search) search.focus();
-            }
-            if (e.key === "?" && document.activeElement.tagName !== "INPUT") {
-                e.preventDefault();
-                // Simple AI chat trigger (if floating button exists)
-                const chatBtn = document.querySelector('.fa-robot');
-                if (chatBtn) chatBtn.closest('button').click();
-            }
-        });
         
         // Initialize everything
-        window.onload = function() {
-            populateNews();
-            animateCounters();
-            initAccuracyChart();
-
-            // Random live reader count update
-            setInterval(() => {
-                const readersEl = document.getElementById('live-readers');
-                if (readersEl) {
-                    let current = parseInt(readersEl.textContent.replace(/,/g, '')) || 142847;
-                    current += Math.floor(Math.random() * 150) + 40;
-                    readersEl.textContent = current.toLocaleString();
-                }
-            }, 4300);
+        function init() {
+            initializeTailwind();
+            initLiveFeed();
+            initNewsSection();
+            initChat();
+            initDashboardMetrics();
             
-            console.log('%c✅ Symantic v2.2 - Theme Switcher + Chart.js added', 'color: #facc15; font-size: 12px');
+            // Random subtle live updates
+            setInterval(() => {
+                if (Math.random() > 0.75) {
+                    addLiveUpdate(true);
+                }
+            }, 22000);
+            
+            // Keyboard shortcut hint
+            document.addEventListener('keydown', function(e) {
+                if (e.key === "?" && document.activeElement.tagName === "BODY") {
+                    e.preventDefault();
+                    document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
+                    setTimeout(() => {
+                        document.getElementById('chat-input').focus();
+                    }, 600);
+                }
+            });
+            
+            // Make metrics animate on first view
+            setTimeout(() => {
+                const metrics = document.querySelectorAll('.metric-card');
+                metrics.forEach((m, i) => {
+                    setTimeout(() => {
+                        m.style.transitionDuration = '0ms';
+                        m.style.transform = 'translateY(-3px)';
+                        setTimeout(() => {
+                            m.style.transitionDuration = '200ms';
+                            m.style.transform = 'translateY(0)';
+                        }, 80);
+                    }, i * 90);
+                });
+            }, 1400);
+            
+            console.log('%c[Symantic] Improved demo initialized successfully', 'color:#64748b');
+        }
+        
+        // === LIVE FEED ===
+        let liveFeedItems = [
+            { time: "just now", type: "prediction", text: "Black Myth: Wukong 2 — 98% confidence for 2027 announcement", confidence: 98 },
+            { time: "47s ago", type: "news", text: "GTA VI Trailer 2 just dropped — breaking all previous records", confidence: null },
+            { time: "2m ago", type: "patch", text: "Valorant Patch 9.03 live — Jett nerfs incoming", confidence: 94 },
+            { time: "8m ago", type: "prediction", text: "Next major League of Legends patch will buff 3 champions", confidence: 87 },
+        ];
+        
+        function initLiveFeed() {
+            const container = document.getElementById('live-feed-list');
+            container.innerHTML = '';
+            
+            liveFeedItems.forEach((item, index) => {
+                const el = createLiveItem(item, index);
+                container.appendChild(el);
+            });
+        }
+        
+        function createLiveItem(item, index) {
+            const div = document.createElement('div');
+            div.className = `px-6 py-[17px] flex items-start gap-x-4 hover:bg-white/5 transition-colors group ${index === 0 ? 'bg-white/5' : ''}`;
+            
+            let icon = '';
+            let badge = '';
+            
+            if (item.type === 'prediction') {
+                icon = `<i class="fa-solid fa-brain text-[#7c3aed] mt-1"></i>`;
+                badge = `<span class="text-[10px] font-mono px-2 py-px rounded bg-[#7c3aed]/10 text-[#7c3aed]">${item.confidence}%</span>`;
+            } else if (item.type === 'news') {
+                icon = `<i class="fa-solid fa-newspaper text-[#00f5ff] mt-1"></i>`;
+                badge = `<span class="text-[10px] px-2 py-px rounded bg-red-500/10 text-red-400">LIVE</span>`;
+            } else {
+                icon = `<i class="fa-solid fa-sync text-emerald-400 mt-1"></i>`;
+                badge = `<span class="text-[10px] px-2 py-px rounded bg-emerald-400/10 text-emerald-400">PATCH</span>`;
+            }
+            
+            div.innerHTML = `
+                <div class="mt-0.5">${icon}</div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center justify-between">
+                        <div class="font-medium text-[13.5px] pr-4">${item.text}</div>
+                        <div class="flex-shrink-0 flex items-center gap-x-2">
+                            ${badge}
+                            <span class="font-mono text-xs text-white/40 tabular-nums">${item.time}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return div;
+        }
+        
+        function addLiveUpdate(silent = false) {
+            const container = document.getElementById('live-feed-list');
+            
+            const newItems = [
+                { time: "just now", type: "prediction", text: "New data: Elden Ring Nightreign sales exceed expectations — 92% confidence", confidence: 92 },
+                { time: "just now", type: "news", text: "Major esports org announces new partnership with Symantic", confidence: null },
+                { time: "just now", type: "patch", text: "Apex Legends Season 22 balance changes revealed early", confidence: 81 },
+            ];
+            
+            const randomItem = newItems[Math.floor(Math.random() * newItems.length)];
+            
+            const newEl = createLiveItem(randomItem, 0);
+            newEl.style.opacity = '0';
+            newEl.style.transform = 'translateY(-12px)';
+            
+            container.insertBefore(newEl, container.firstChild);
+            
+            // Keep only 6 items
+            while (container.children.length > 6) {
+                container.removeChild(container.lastChild);
+            }
+            
+            // Animate in
+            requestAnimationFrame(() => {
+                newEl.style.transition = 'all 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+                newEl.style.opacity = '1';
+                newEl.style.transform = 'translateY(0)';
+            });
+            
+            if (!silent) {
+                // Show toast
+                showToast("New live update received");
+            }
+            
+            // Update first item styling
+            if (container.children.length > 1) {
+                container.children[1].classList.remove('bg-white/5');
+            }
+        }
+        
+        function showToast(msg) {
+            const toast = document.createElement('div');
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-white text-black text-sm font-medium rounded-3xl shadow-2xl flex items-center gap-x-2 z-[200]`;
+            toast.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>${msg}</span>`;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.transition = 'all .25s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 200);
+            }, 2100);
+        }
+        
+        // === NEWS SECTION ===
+        let newsData = [
+            { id: 1, category: "esports", title: "FaZe Clan wins BLAST Premier World Final", time: "14m ago", summary: "FaZe takes down Vitality 3-1 in a dominant grand final performance.", full: "FaZe Clan has won the BLAST Premier World Final 2026 after defeating Vitality 3-1 in a thrilling grand final. The victory marks their third S-tier title of the year and solidifies their position as one of the best teams in Counter-Strike history.", score: "9.8", tag: "ESPORTS" },
+            { id: 2, category: "patch", title: "Valorant Patch 9.03 — Full notes & analysis", time: "1h ago", summary: "Major changes to Jett, Viper, and new agent abilities coming soon.", full: "Riot has released Patch 9.03 for Valorant. Jett's dash is receiving a significant nerf while Viper gets quality-of-life improvements. The new agent 'Clove' is also getting balance adjustments based on pro play data.", score: "8.4", tag: "PATCH" },
+            { id: 3, category: "rumor", title: "Black Myth: Wukong 2 announcement expected at TGA 2026", time: "3h ago", summary: "Insiders claim sequel is further along than previously thought.", full: "Multiple reliable sources close to Game Science suggest that Black Myth: Wukong 2 will be announced during The Game Awards 2026. Development is reportedly well underway with a planned 2027 release window.", score: "9.1", tag: "RUMOR" },
+            { id: 4, category: "review", title: "Review: Stellar Blade 2 — A new benchmark for action games", time: "5h ago", summary: "Shift Up delivers another visual and gameplay masterpiece.", full: "Stellar Blade 2 raises the bar for character action games. Combat is tighter, the story more ambitious, and the world design breathtaking. Our score of 9.6/10 reflects its near-perfect execution.", score: "9.6", tag: "REVIEW" },
+            { id: 5, category: "esports", title: "League of Legends: T1 wins Worlds 2026", time: "Yesterday", summary: "Faker leads T1 to their fifth world championship title.", full: "T1 has done it again. In a dominant run through the bracket, Faker and the boys brought home another Summoner's Cup. The final against Gen.G was one for the history books.", score: "10", tag: "ESPORTS" },
+            { id: 6, category: "patch", title: "Apex Legends Season 22 — New legend & map changes", time: "Yesterday", summary: "Respawn teases massive changes coming to World's Edge.", full: "Season 22 of Apex Legends brings a brand new legend, significant map updates to World's Edge, and a complete overhaul of the ranked system.", score: "7.9", tag: "PATCH" },
+        ];
+        
+        let visibleNewsCount = 6;
+        
+        function initNewsSection() {
+            renderNews(newsData.slice(0, visibleNewsCount));
+            
+            // Add search listener
+            const searchInput = document.getElementById('news-search');
+            searchInput.addEventListener('input', filterNews);
+        }
+        
+        function renderNews(newsArray) {
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '';
+            
+            newsArray.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `news-card glass border border-white/10 rounded-3xl p-6 flex flex-col cursor-pointer`;
+                card.onclick = () => showArticleModal(item);
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 text-[10px] font-bold tracking-widest rounded-2xl ${getTagColor(item.tag)}">${item.tag}</span>
+                        <span class="text-xs text-white/40 font-mono">${item.time}</span>
+                    </div>
+                    
+                    <div class="mt-4 font-semibold text-[15.5px] leading-snug tracking-[-0.2px] flex-1">${item.title}</div>
+                    
+                    <div class="mt-3 text-sm text-white/60 line-clamp-2">${item.summary}</div>
+                    
+                    <div class="flex items-center justify-between mt-auto pt-5 border-t border-white/10 text-xs">
+                        <div class="flex items-center gap-x-1.5">
+                            <span class="font-mono text-emerald-400 font-medium">${item.score}</span>
+                            <span class="text-white/40">/10</span>
+                        </div>
+                        <div class="text-[#00f5ff] flex items-center gap-x-1 text-xs font-medium">
+                            READ ANALYSIS <i class="fa-solid fa-arrow-right-long ml-px"></i>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        function getTagColor(tag) {
+            if (tag === 'ESPORTS') return 'bg-violet-400/10 text-violet-400';
+            if (tag === 'PATCH') return 'bg-emerald-400/10 text-emerald-400';
+            if (tag === 'RUMOR') return 'bg-orange-400/10 text-orange-400';
+            return 'bg-sky-400/10 text-sky-400';
+        }
+        
+        function filterNews() {
+            const searchTerm = document.getElementById('news-search').value.toLowerCase();
+            const filterValue = document.getElementById('news-filter').value;
+            
+            let filtered = newsData;
+            
+            if (filterValue) {
+                filtered = filtered.filter(item => item.category === filterValue);
+            }
+            
+            if (searchTerm) {
+                filtered = filtered.filter(item => 
+                    item.title.toLowerCase().includes(searchTerm) || 
+                    item.summary.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderNews(filtered);
+        }
+        
+        function loadMoreNews() {
+            visibleNewsCount += 3;
+            const searchTerm = document.getElementById('news-search').value.toLowerCase();
+            const filterValue = document.getElementById('news-filter').value;
+            
+            let filtered = newsData;
+            
+            if (filterValue) filtered = filtered.filter(item => item.category === filterValue);
+            if (searchTerm) {
+                filtered = filtered.filter(item => 
+                    item.title.toLowerCase().includes(searchTerm) || 
+                    item.summary.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            renderNews(filtered.slice(0, visibleNewsCount));
+            
+            if (visibleNewsCount >= filtered.length) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Article modal
+        function showArticleModal(article) {
+            const modal = document.getElementById('article-modal');
+            const content = document.getElementById('article-modal-content');
+            
+            content.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <span class="px-4 py-1 text-xs font-bold tracking-[1.5px] rounded-3xl ${getTagColor(article.tag)}">${article.tag}</span>
+                    <span class="text-xs text-white/40 font-mono">${article.time}</span>
+                </div>
+                
+                <h3 class="text-3xl font-bold tracking-tighter mt-4 pr-6">${article.title}</h3>
+                
+                <div class="flex items-center gap-x-2 mt-4">
+                    <div class="px-3 py-px text-sm bg-emerald-400/10 text-emerald-400 rounded-2xl font-medium">Symantic Score: ${article.score}/10</div>
+                    <div class="text-xs text-white/50">• 100% data-backed • No publisher influence</div>
+                </div>
+                
+                <div class="prose prose-invert mt-7 text-[15px] text-white/80 leading-relaxed">
+                    ${article.full}
+                </div>
+                
+                <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs">
+                    <div>
+                        <span class="font-medium">Symantic AI Analysis:</span> 
+                        <span class="text-emerald-400">Extremely high confidence</span>
+                    </div>
+                    <button onclick="hideArticleModal()" class="px-5 py-2 text-xs font-bold border border-white/20 rounded-3xl hover:bg-white/5">CLOSE</button>
+                </div>
+            `;
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+        
+        function hideArticleModal() {
+            const modal = document.getElementById('article-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+        
+        // === DASHBOARD METRICS ===
+        function initDashboardMetrics() {
+            // Already static numbers with onclick handlers in HTML
+        }
+        
+        function bumpMetric(element, baseValue, increment) {
+            const numberEl = element.querySelector('.stat-number');
+            if (!numberEl) return;
+            
+            const isFloat = baseValue % 1 !== 0;
+            let current = parseFloat(numberEl.textContent.replace(/[^0-9.]/g, ''));
+            
+            if (isNaN(current)) current = baseValue;
+            
+            const newValue = current + increment;
+            
+            // Animate number
+            const duration = 650;
+            const start = performance.now();
+            const startValue = current;
+            
+            function animate(now) {
+                const elapsed = now - start;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                
+                const val = startValue + (newValue - startValue) * eased;
+                
+                if (isFloat) {
+                    numberEl.innerHTML = val.toFixed(1);
+                } else if (baseValue > 1000) {
+                    numberEl.innerHTML = Math.round(val).toLocaleString();
+                } else {
+                    numberEl.innerHTML = Math.round(val);
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Final value
+                    if (isFloat) numberEl.innerHTML = newValue.toFixed(1);
+                    else if (baseValue > 1000) numberEl.innerHTML = Math.round(newValue).toLocaleString();
+                    else numberEl.innerHTML = Math.round(newValue);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+            
+            // Visual feedback
+            element.style.transitionDuration = '80ms';
+            element.style.transform = 'scale(0.96)';
+            setTimeout(() => {
+                element.style.transform = 'scale(1)';
+            }, 120);
+            
+            // Occasional toast
+            if (Math.random() > 0.7) {
+                setTimeout(() => showToast("Metric updated with latest data"), 650);
+            }
+        }
+        
+        function refreshDashboard() {
+            const cards = document.querySelectorAll('#dashboard .metric-card');
+            cards.forEach((card, i) => {
+                setTimeout(() => {
+                    const numEl = card.querySelector('.stat-number');
+                    if (!numEl) return;
+                    
+                    const currentText = numEl.textContent;
+                    const isFloat = currentText.includes('.');
+                    let val = parseFloat(currentText.replace(/[^0-9.]/g, ''));
+                    
+                    if (!isNaN(val)) {
+                        const variation = val * (0.015 + Math.random() * 0.035);
+                        const newVal = val + (Math.random() > 0.5 ? variation : -variation * 0.6);
+                        
+                        numEl.style.transitionDuration = '0ms';
+                        numEl.style.transform = 'translateY(-4px)';
+                        
+                        setTimeout(() => {
+                            if (isFloat) {
+                                numEl.innerHTML = newVal.toFixed(1);
+                            } else if (val > 1000) {
+                                numEl.innerHTML = Math.round(newVal).toLocaleString();
+                            } else {
+                                numEl.innerHTML = Math.round(newVal);
+                            }
+                            
+                            numEl.style.transitionDuration = '280ms';
+                            numEl.style.transform = 'translateY(0)';
+                        }, 30);
+                    }
+                }, i * 70);
+            });
+            
+            showToast("Dashboard refreshed with latest live data");
+        }
+        
+        // === AI CHAT DEMO ===
+        let chatHistory = [];
+        
+        function initChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = `
+                <div class="flex gap-x-3">
+                    <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center">
+                        <i class="fa-solid fa-robot text-xs text-black"></i>
+                    </div>
+                    <div class="max-w-[82%]">
+                        <div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div>
+                        <div class="bg-white/5 px-4 py-3 rounded-3xl text-sm">Hey! I'm Symantic AI. Ask me anything about current games, esports, upcoming releases, or predictions. What would you like to know?</div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msg = input.value.trim();
+            if (!msg) return;
+            
+            const container = document.getElementById('chat-messages');
+            
+            // User message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'flex justify-end';
+            userMsg.innerHTML = `
+                <div class="max-w-[75%] bg-[#00f5ff] text-black px-4 py-3 rounded-3xl text-sm">
+                    ${msg}
+                </div>
+            `;
+            container.appendChild(userMsg);
+            container.scrollTop = container.scrollHeight;
+            
+            input.value = '';
+            
+            // Simulate AI thinking
+            setTimeout(() => {
+                const aiReply = generateAIResponse(msg);
+                
+                const aiMsg = document.createElement('div');
+                aiMsg.className = 'flex gap-x-3 ai-message';
+                aiMsg.innerHTML = `
+                    <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center">
+                        <i class="fa-solid fa-robot text-xs text-black"></i>
+                    </div>
+                    <div class="max-w-[82%]">
+                        <div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div>
+                        <div class="bg-white/5 px-4 py-[13px] rounded-3xl text-sm">${aiReply}</div>
+                    </div>
+                `;
+                container.appendChild(aiMsg);
+                container.scrollTop = container.scrollHeight;
+            }, 780 + Math.random() * 420);
+        }
+        
+        function generateAIResponse(query) {
+            const q = query.toLowerCase();
+            
+            if (q.includes('gta') || q.includes('grand theft auto')) {
+                return `Our current model gives <strong>87% confidence</strong> that GTA VI Trailer 2 will drop before March 2026. Early internal data from Rockstar shows strong marketing momentum. Want the full 2,400-word breakdown?`;
+            }
+            
+            if (q.includes('valorant') || q.includes('patch')) {
+                return `Valorant Patch 9.04 is expected mid-February. Jett and Raze are getting further adjustments. Our sentiment analysis from pro players shows 64% approval for the current meta direction.`;
+            }
+            
+            if (q.includes('black myth') || q.includes('wukong')) {
+                return `We have <strong>98% confidence</strong> on a Black Myth: Wukong 2 announcement at The Game Awards. Development is further along than most expect. This prediction was made 11 months ago.`;
+            }
+            
+            if (q.includes('league') || q.includes('lol') || q.includes('worlds')) {
+                return `T1 is currently the favorite to win Worlds 2027 according to our model (71% chance). Their macro play this season has been exceptional.`;
+            }
+            
+            if (q.includes('prediction') || q.includes('predict')) {
+                return `Based on current trends across Twitch, Steam wishlists, and social sentiment, here are our top 3 predictions for 2026: 1) Elden Ring Nightreign sells 8M+ copies 2) A major surprise indie wins GOTY 3) Valorant overtakes League in peak concurrent players.`;
+            }
+            
+            // Default smart reply
+            const defaults = [
+                `Interesting question. Our latest analysis shows strong positive sentiment around that topic. Would you like a detailed sentiment report?`,
+                `We've tracked over 142k discussions on this recently. The community is split but leaning positive. Want me to pull the top sources?`,
+                `According to our real-time model, this is trending upward (+248% mentions in the last 48 hours). I can give you the full forecast.`,
+                `Our AI has high confidence in the current trajectory. The data from Steam, Twitch, and Reddit all point in the same direction.`
+            ];
+            
+            return defaults[Math.floor(Math.random() * defaults.length)];
+        }
+        
+        // === PRICING TOGGLE ===
+        function togglePricing(period) {
+            const monthlyBtn = document.getElementById('pricing-monthly');
+            const yearlyBtn = document.getElementById('pricing-yearly');
+            const proPrice = document.getElementById('pro-price');
+            const proBilling = document.getElementById('pro-billing');
+            
+            if (period === 'monthly') {
+                monthlyBtn.classList.add('bg-white', 'text-black');
+                monthlyBtn.classList.remove('text-white');
+                yearlyBtn.classList.remove('bg-white', 'text-black');
+                yearlyBtn.classList.add('text-white');
+                
+                proPrice.textContent = '$12';
+                proBilling.textContent = 'billed monthly • cancel anytime';
+            } else {
+                yearlyBtn.classList.add('bg-white', 'text-black');
+                yearlyBtn.classList.remove('text-white');
+                monthlyBtn.classList.remove('bg-white', 'text-black');
+                monthlyBtn.classList.add('text-white');
+                
+                proPrice.textContent = '$9';
+                proBilling.textContent = 'billed yearly • save $39';
+            }
+        }
+        
+        // === MODALS ===
+        function showLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+            document.getElementById('login-modal').classList.add('flex');
+        }
+        
+        function hideLoginModal() {
+            document.getElementById('login-modal').classList.remove('flex');
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+        
+        function loginUser() {
+            hideLoginModal();
+            const btns = document.querySelectorAll('button');
+            showToast("Welcome back! You're now logged in as demo user.");
+            
+            // Personalize a bit
+            setTimeout(() => {
+                const liveSection = document.getElementById('live-feed');
+                if (liveSection) {
+                    liveSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 1100);
+        }
+        
+        function showSubscribeModal() {
+            document.getElementById('subscribe-modal').classList.remove('hidden');
+            document.getElementById('subscribe-modal').classList.add('flex');
+        }
+        
+        function hideSubscribeModal() {
+            document.getElementById('subscribe-modal').classList.remove('flex');
+            document.getElementById('subscribe-modal').classList.add('hidden');
+        }
+        
+        function showContactModal() {
+            const modal = document.createElement('div');
+            modal.className = `fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6`;
+            modal.innerHTML = `
+                <div onclick="event.target.remove()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-8 modal">
+                    <div class="text-center">
+                        <i class="fa-solid fa-headset text-4xl mb-4 text-[#00f5ff]"></i>
+                        <div class="font-bold text-2xl">Let's talk enterprise</div>
+                        <p class="mt-2 text-white/70">Our team will get back to you within 4 hours.</p>
+                        
+                        <div class="mt-6 text-left">
+                            <input placeholder="Your work email" class="w-full bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm mb-3" value="studio@yourgame.com">
+                            <textarea placeholder="Tell us about your team..." class="w-full h-24 bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm resize-y"></textarea>
+                        </div>
+                        
+                        <button onclick="this.closest('.fixed').remove(); showToast('Thanks! Our sales team will contact you shortly.')" 
+                                class="mt-5 w-full py-3.5 bg-white font-bold text-black rounded-3xl">Send message</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+        
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+        
+        // Boot the app
+        window.onload = function() {
+            init();
+            
+            // Easter egg: press "s" for surprise live update
+            document.addEventListener('keypress', function(e) {
+                if (e.key.toLowerCase() === 's' && document.activeElement.tagName === "BODY") {
+                    addLiveUpdate();
+                }
+            });
+            
+            // Demo tip
+            setTimeout(() => {
+                const tip = document.createElement('div');
+                tip.style.cssText = 'position:fixed;bottom:18px;right:18px;background:rgba(255,255,255,0.06);color:#64748b;font-size:10px;padding:4px 11px;border-radius:9999px;border:1px solid rgba(255,255,255,0.1)';
+                tip.innerHTML = `Press <span class="font-mono text-white/60">"?"</span> to open AI chat`;
+                document.body.appendChild(tip);
+                
+                setTimeout(() => {
+                    if (tip && tip.parentNode) tip.parentNode.removeChild(tip);
+                }, 5200);
+            }, 8500);
+        }
+        
+        // Expose some functions for advanced users
+        window.SymanticDemo = {
+            addLiveUpdate: () => addLiveUpdate(),
+            refreshDashboard: () => refreshDashboard(),
+            simulateChat: (q) => {
+                const input = document.getElementById('chat-input');
+                input.value = q;
+                document.getElementById('demo').scrollIntoView({behavior:'smooth'});
+                setTimeout(() => sendChatMessage(), 650);
+            }
         };
     </script>
 </body>
