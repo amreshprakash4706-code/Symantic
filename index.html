@@ -3,15 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SYMANTIC — Next-Gen Gaming Intelligence. Real-time AI analysis, predictions, and honest reviews for gamers and esports fans.">
+    <meta name="theme-color" content="#00f5ff">
     <title>SYMANTIC • Next-Gen Gaming Intelligence</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
         
         :root {
             --primary: #00f5ff;
+            --accent: #7c3aed;
         }
         
         body {
@@ -23,20 +28,11 @@
             font-weight: 600;
         }
 
-        .gaming-gradient {
-            background: linear-gradient(135deg, #0a0a0f 0%, #111114 100%);
-        }
-
-        .neon-text {
-            text-shadow: 0 0 10px rgb(0 245 255 / 0.5),
-                        0 0 20px rgb(0 245 255 / 0.3);
-        }
-
         .section-header {
             font-size: 2.75rem;
-            line-height: 1.1;
+            line-height: 1.05;
             font-weight: 700;
-            letter-spacing: -0.025em;
+            letter-spacing: -0.03em;
         }
 
         .glass {
@@ -47,20 +43,39 @@
 
         .metric-card {
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
-                       box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+                       box-shadow 0.2s cubic-bezier(0.4, 0.0, 0.2, 1),
+                       border-color 0.2s ease;
         }
         
         .metric-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
             box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            border-color: rgba(0, 245, 255, 0.3);
         }
 
         .nav-link {
-            transition: color 0.1s ease;
+            transition: color 0.1s ease, transform 0.1s ease;
+            position: relative;
         }
         
         .nav-link:hover {
             color: #00f5ff;
+            transform: translateY(-1px);
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, #00f5ff, transparent);
+            transition: width 0.2s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
         }
 
         .news-card {
@@ -70,14 +85,7 @@
         .news-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
-        }
-
-        .live-dot {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        .prediction-bar {
-            transition: width 1.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-color: rgba(0, 245, 255, 0.2);
         }
 
         .gaming-btn {
@@ -91,6 +99,10 @@
             box-shadow: 0 10px 15px -3px rgb(0 245 255 / 0.3);
         }
 
+        .gaming-btn:active {
+            transform: scale(0.985);
+        }
+
         .stat-number {
             font-variant-numeric: tabular-nums;
         }
@@ -99,35 +111,106 @@
             animation: fadeInUp 0.3s ease forwards;
         }
 
-        .nav-active {
-            color: #00f5ff;
-            position: relative;
-        }
-        
-        .nav-active:after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(to right, #00f5ff, transparent);
-        }
-
         .modal {
             animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        .dashboard-grid {
-            background-image: 
-                linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+        .live-item {
+            transition: all 0.2s ease;
         }
 
-        .neon-border {
-            box-shadow: 0 0 0 1px rgba(0, 245, 255, 0.2),
-                       0 0 15px rgba(0, 245, 255, 0.1);
+        .live-item:hover {
+            background-color: rgba(255,255,255,0.04);
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+        }
+        
+        .typing-dot {
+            width: 5px;
+            height: 5px;
+            background: #64748b;
+            border-radius: 50%;
+            animation: typingBounce 1.2s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(2) { animation-delay: 0.15s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes typingBounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .quick-prompt {
+            transition: all 0.15s ease;
+            font-size: 12px;
+        }
+        
+        .quick-prompt:hover {
+            background-color: rgba(0, 245, 255, 0.1);
+            border-color: rgba(0, 245, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .filter-tab {
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .filter-tab.active {
+            color: #00f5ff;
+            background: rgba(0, 245, 255, 0.08);
+        }
+        
+        .filter-tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 2px;
+            background: #00f5ff;
+            border-radius: 2px;
+        }
+
+        .back-to-top {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.2);
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 25px -5px rgb(0 245 255 / 0.2);
+        }
+
+        .gaming-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                       box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        
+        .gaming-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.15);
+        }
+
+        .prediction-bar {
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            height: 6px;
+            background: linear-gradient(to right, #00f5ff, #7c3aed);
+            border-radius: 9999px;
+        }
+
+        .confidence-bar {
+            height: 6px;
+            background: linear-gradient(to right, #00f5ff, #7c3aed);
+            border-radius: 9999px;
+            transition: width 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
     </style>
 </head>
@@ -137,9 +220,8 @@
         <div class="max-w-screen-2xl mx-auto">
             <div class="px-8 py-5 flex items-center justify-between">
                 <div class="flex items-center gap-x-3">
-                    <!-- Logo -->
-                    <div class="flex items-center gap-x-3">
-                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#00f5ff]/30">
+                    <div class="flex items-center gap-x-3 group">
+                        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#00f5ff]/30 group-hover:shadow-[#00f5ff]/50 transition-all">
                             <span class="text-black font-black text-3xl tracking-tighter">S</span>
                         </div>
                         <div>
@@ -148,51 +230,47 @@
                     </div>
                 </div>
 
-                <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center gap-x-9 text-sm">
                     <a href="#dashboard" class="nav-link text-white/80 hover:text-white font-medium px-1">Dashboard</a>
                     <a href="#live-feed" class="nav-link text-white/80 hover:text-white font-medium px-1">Live Feed</a>
+                    <a href="#predictions" class="nav-link text-white/80 hover:text-white font-medium px-1">Predictions</a>
                     <a href="#news" class="nav-link text-white/80 hover:text-white font-medium px-1">News</a>
                     <a href="#demo" class="nav-link text-white/80 hover:text-white font-medium px-1">AI Demo</a>
                     <a href="#pricing" class="nav-link text-white/80 hover:text-white font-medium px-1">Pricing</a>
                 </div>
 
                 <div class="flex items-center gap-x-4">
-                    <!-- Login -->
                     <button onclick="showLoginModal()"
-                            class="hidden md:block px-6 py-2.5 text-sm font-semibold rounded-3xl border border-white/20 hover:bg-white/5 transition-colors">
+                            class="hidden md:block px-6 py-2.5 text-sm font-semibold rounded-3xl border border-white/20 hover:bg-white/5 transition-colors active:scale-[0.985]">
                         Log in
                     </button>
                     
-                    <!-- Get Pro -->
                     <button onclick="showSubscribeModal()"
                             class="gaming-btn px-8 py-2.5 text-sm font-bold rounded-3xl bg-white text-black hover:bg-[#00f5ff] hover:text-black transition-all active:scale-[0.985]">
                         GET PRO
                     </button>
 
-                    <!-- Mobile Menu -->
                     <button id="mobile-menu-btn"
-                            class="md:hidden w-11 h-11 flex items-center justify-center text-white/70 hover:text-white border border-white/10 rounded-2xl"
-                            onclick="toggleMobileMenu()">
-                        <i class="fa-solid fa-bars text-xl"></i>
+                            class="md:hidden w-11 h-11 flex items-center justify-center text-white/70 hover:text-white border border-white/10 rounded-2xl transition-colors"
+                            onclick="toggleMobileMenu()"
+                            aria-label="Toggle mobile menu">
+                        <i class="fa-solid fa-bars text-xl transition-transform" id="mobile-menu-icon"></i>
                     </button>
                 </div>
             </div>
         </div>
         
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0a0a0f]">
+        <div id="mobile-menu" class="hidden md:hidden border-t border-white/10 bg-[#0a0a0f] overflow-hidden transition-all duration-300">
             <div class="px-6 py-6 flex flex-col gap-y-4 text-sm">
-                <a href="#dashboard" class="py-2 text-white/80">Dashboard</a>
-                <a href="#live-feed" class="py-2 text-white/80">Live Feed</a>
-                <a href="#news" class="py-2 text-white/80">News</a>
-                <a href="#demo" class="py-2 text-white/80">AI Demo</a>
-                <a href="#pricing" class="py-2 text-white/80">Pricing</a>
+                <a href="#dashboard" class="py-2 text-white/80 active:text-white transition-colors" onclick="toggleMobileMenu()">Dashboard</a>
+                <a href="#live-feed" class="py-2 text-white/80 active:text-white transition-colors" onclick="toggleMobileMenu()">Live Feed</a>
+                <a href="#predictions" class="py-2 text-white/80 active:text-white transition-colors" onclick="toggleMobileMenu()">Predictions</a>
+                <a href="#news" class="py-2 text-white/80 active:text-white transition-colors" onclick="toggleMobileMenu()">News</a>
+                <a href="#demo" class="py-2 text-white/80 active:text-white transition-colors" onclick="toggleMobileMenu()">AI Demo</a>
+                <a href="#pricing" class="py-2 text-white/80 active:text-white transition-colors" onclick="toggleMobileMenu()">Pricing</a>
                 <div class="pt-3 border-t border-white/10 flex flex-col gap-y-3">
-                    <button onclick="showLoginModal(); toggleMobileMenu()" 
-                            class="w-full py-3 text-center border border-white/20 rounded-3xl text-sm font-semibold">Log in</button>
-                    <button onclick="showSubscribeModal(); toggleMobileMenu()" 
-                            class="w-full py-3 text-center bg-white text-black font-bold rounded-3xl text-sm">GET PRO</button>
+                    <button onclick="showLoginModal(); toggleMobileMenu()" class="w-full py-3 text-center border border-white/20 rounded-3xl text-sm font-semibold active:bg-white/5">Log in</button>
+                    <button onclick="showSubscribeModal(); toggleMobileMenu()" class="w-full py-3 text-center bg-white text-black font-bold rounded-3xl text-sm active:bg-[#00f5ff]">GET PRO</button>
                 </div>
             </div>
         </div>
@@ -232,9 +310,9 @@
             
             <div class="mt-8 flex items-center gap-x-5 text-sm text-white/50">
                 <div class="flex -space-x-2">
-                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=12" class="w-full h-full object-cover"></div>
-                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=28" class="w-full h-full object-cover"></div>
-                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=47" class="w-full h-full object-cover"></div>
+                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=12" class="w-full h-full object-cover" alt=""></div>
+                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=28" class="w-full h-full object-cover" alt=""></div>
+                    <div class="w-7 h-7 rounded-full ring-2 ring-[#0a0a0f] overflow-hidden"><img src="https://i.pravatar.cc/28?img=47" class="w-full h-full object-cover" alt=""></div>
                 </div>
                 <div>Trusted by <span class="font-semibold text-white/70">142,847</span> gamers today</div>
             </div>
@@ -253,23 +331,20 @@
         </div>
     </div>
 
-    <!-- STATS / DASHBOARD METRICS -->
+    <!-- DASHBOARD -->
     <div id="dashboard" class="max-w-screen-2xl mx-auto px-8 pt-16 pb-8">
         <div class="flex items-end justify-between mb-8">
             <div>
                 <div class="uppercase tracking-[3px] text-xs font-bold text-[#00f5ff]">REAL-TIME INTELLIGENCE</div>
                 <h2 class="text-5xl font-bold tracking-tighter">Symantic AI Dashboard</h2>
             </div>
-            <button onclick="refreshDashboard()" 
-                    class="hidden md:flex items-center gap-x-2 px-5 py-2 text-sm border border-white/20 hover:bg-white/5 rounded-3xl font-medium transition">
+            <button onclick="refreshDashboard()" class="hidden md:flex items-center gap-x-2 px-5 py-2 text-sm border border-white/20 hover:bg-white/5 rounded-3xl font-medium transition active:scale-[0.985]">
                 <i class="fa-solid fa-sync-alt"></i>
                 <span>Refresh data</span>
             </button>
         </div>
 
-        <!-- Metrics Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <!-- Metric Cards -->
             <div onclick="bumpMetric(this, 142847, 1247)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-3">
                     <div class="text-white/60 text-xs font-medium tracking-widest">ACTIVE READERS</div>
@@ -336,28 +411,77 @@
                 </div>
             </div>
         </div>
+
+        <!-- AI Accuracy Chart -->
+        <div class="mt-6">
+            <div class="glass p-6 rounded-3xl border border-white/10">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-5 gap-y-2">
+                    <div>
+                        <div class="text-xs tracking-[2px] font-bold text-white/60">MODEL PERFORMANCE</div>
+                        <div class="font-semibold text-lg">AI Prediction Accuracy — Last 7 Days</div>
+                    </div>
+                    <div class="flex items-center gap-x-2 text-sm">
+                        <div class="px-3 py-1 bg-emerald-400/10 text-emerald-400 rounded-2xl text-xs font-medium">+2.3% MoM</div>
+                        <div class="text-white/40 text-xs">Updated live</div>
+                    </div>
+                </div>
+                <div class="relative h-[140px]">
+                    <canvas id="accuracyChart"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- LIVE AI FEED -->
+    <!-- LIVE FEED -->
     <div id="live-feed" class="max-w-screen-2xl mx-auto px-8 pt-8 pb-16">
-        <div class="flex items-center justify-between mb-6">
-            <div>
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-y-4">
+            <div class="flex items-center gap-x-4">
                 <span class="px-4 py-1.5 text-xs font-bold tracking-[2px] rounded-3xl bg-red-500/10 text-red-400 border border-red-500/30">LIVE</span>
-                <span class="ml-4 text-3xl font-bold tracking-tight">AI Intelligence Feed</span>
+                <span class="text-3xl font-bold tracking-tight">AI Intelligence Feed</span>
             </div>
-            <button onclick="addLiveUpdate()" 
-                    class="flex items-center gap-x-2 px-5 py-2 text-sm font-medium border border-white/20 hover:bg-white/5 rounded-3xl transition">
+            
+            <div class="flex items-center gap-x-1 bg-white/5 border border-white/10 rounded-3xl p-1 text-sm">
+                <button onclick="filterLiveFeed('all')" id="filter-all" class="filter-tab active px-5 py-1.5 rounded-3xl font-medium">All</button>
+                <button onclick="filterLiveFeed('prediction')" id="filter-prediction" class="filter-tab px-5 py-1.5 rounded-3xl font-medium flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-brain text-[#7c3aed]"></i> <span>Predictions</span>
+                </button>
+                <button onclick="filterLiveFeed('news')" id="filter-news" class="filter-tab px-5 py-1.5 rounded-3xl font-medium flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-newspaper text-[#00f5ff]"></i> <span>News</span>
+                </button>
+                <button onclick="filterLiveFeed('patch')" id="filter-patch" class="filter-tab px-5 py-1.5 rounded-3xl font-medium flex items-center gap-x-1.5">
+                    <i class="fa-solid fa-sync text-emerald-400"></i> <span>Patches</span>
+                </button>
+            </div>
+            
+            <button onclick="addLiveUpdate()" class="flex items-center gap-x-2 px-5 py-2 text-sm font-medium border border-white/20 hover:bg-white/5 rounded-3xl transition active:scale-[0.985]">
                 <i class="fa-solid fa-broadcast-tower"></i>
                 <span>Simulate Update</span>
             </button>
         </div>
         
         <div class="glass border border-white/10 rounded-3xl p-1">
-            <div id="live-feed-list" class="divide-y divide-white/10 max-h-[380px] overflow-auto rounded-3xl text-sm">
-                <!-- Populated by JS -->
+            <div id="live-feed-list" class="divide-y divide-white/10 max-h-[420px] overflow-auto rounded-3xl text-sm">
             </div>
         </div>
         <p class="text-center text-xs text-white/40 mt-4">Updates every few seconds • Data from 12 sources • Last synced just now</p>
+    </div>
+
+    <!-- TOP PREDICTIONS SECTION -->
+    <div id="predictions" class="max-w-screen-2xl mx-auto px-8 pb-16">
+        <div class="flex items-end justify-between mb-8">
+            <div>
+                <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold mb-1">HIGHEST CONFIDENCE</div>
+                <h3 class="text-4xl font-bold tracking-tighter">Top AI Predictions</h3>
+            </div>
+            <button onclick="refreshPredictions()" class="hidden md:flex items-center gap-x-2 px-5 py-2 text-sm border border-white/20 hover:bg-white/5 rounded-3xl font-medium transition active:scale-[0.985]">
+                <i class="fa-solid fa-sync-alt"></i>
+                <span>Refresh predictions</span>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="predictions-grid">
+            <!-- Populated by JS -->
+        </div>
     </div>
 
     <!-- NEWS SECTION -->
@@ -365,19 +489,21 @@
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-4 mb-8">
             <div>
                 <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold mb-1">JUST IN</div>
-                <h3 class="text-4xl font-bold tracking-tighter">Gaming News &amp; Insights</h3>
+                <div class="flex items-center gap-x-3">
+                    <h3 class="text-4xl font-bold tracking-tighter">Gaming News &amp; Insights</h3>
+                    <div id="saved-count" class="hidden items-center gap-x-1.5 px-3 py-1 bg-white/5 border border-white/10 rounded-2xl text-xs cursor-pointer hover:bg-white/10" onclick="showSavedArticles()">
+                        <i class="fa-solid fa-bookmark text-[#00f5ff]"></i>
+                        <span id="saved-count-text">0 saved</span>
+                    </div>
+                </div>
             </div>
             
-            <!-- Search + Filter -->
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 <div class="relative flex-1 md:w-80">
-                    <input id="news-search" type="text" placeholder="Search news..." 
-                           onkeyup="filterNews()"
-                           class="w-full bg-white/5 border border-white/10 focus:border-[#00f5ff]/50 transition pl-10 py-3 rounded-3xl text-sm placeholder:text-white/40">
+                    <input id="news-search" type="text" placeholder="Search news..." onkeyup="debounceFilterNews()" class="w-full bg-white/5 border border-white/10 focus:border-[#00f5ff]/50 transition pl-10 py-3 rounded-3xl text-sm placeholder:text-white/40">
                     <i class="fa-solid fa-search absolute left-4 top-4 text-white/40"></i>
                 </div>
-                <select id="news-filter" onchange="filterNews()" 
-                        class="bg-white/5 border border-white/10 text-sm py-3 px-4 rounded-3xl cursor-pointer">
+                <select id="news-filter" onchange="filterNews()" class="bg-white/5 border border-white/10 text-sm py-3 px-4 rounded-3xl cursor-pointer">
                     <option value="">All Categories</option>
                     <option value="esports">Esports</option>
                     <option value="patch">Patches &amp; Updates</option>
@@ -387,20 +513,17 @@
             </div>
         </div>
         
-        <!-- News Grid -->
         <div id="news-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <!-- Populated dynamically via JS -->
         </div>
         
         <div class="flex justify-center mt-8">
-            <button onclick="loadMoreNews()" 
-                    class="px-8 py-3 text-sm border border-white/20 hover:bg-white/5 font-semibold rounded-3xl flex items-center gap-x-2">
+            <button id="load-more-btn" onclick="loadMoreNews()" class="px-8 py-3 text-sm border border-white/20 hover:bg-white/5 font-semibold rounded-3xl flex items-center gap-x-2 active:scale-[0.985]">
                 LOAD MORE STORIES <i class="fa-solid fa-chevron-down ml-1"></i>
             </button>
         </div>
     </div>
 
-    <!-- AI DEMO SECTION -->
+    <!-- AI DEMO -->
     <div id="demo" class="max-w-screen-2xl mx-auto px-8 py-16 border-y border-white/10 bg-[#111114]">
         <div class="max-w-3xl mx-auto text-center mb-10">
             <div class="inline px-4 py-1 rounded-3xl bg-[#00f5ff]/10 text-[#00f5ff] text-xs tracking-[2.5px] font-bold mb-3">POWERED BY SYMANTIC AI</div>
@@ -408,17 +531,17 @@
             <p class="text-white/70 max-w-md mx-auto">Ask anything about games, predictions, patches, or esports. Get instant, data-backed answers.</p>
         </div>
         
-        <!-- Chat Demo -->
         <div class="max-w-3xl mx-auto">
             <div class="glass border border-white/10 rounded-3xl p-2 shadow-2xl">
-                <!-- Chat Header -->
                 <div class="px-5 pt-4 pb-3 flex items-center gap-x-3 border-b border-white/10">
                     <div class="flex items-center gap-x-3">
-                        <div class="w-9 h-9 bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] rounded-2xl flex items-center justify-center">
+                        <div class="w-9 h-9 bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] rounded-2xl flex items-center justify-center ring-1 ring-white/20">
                             <i class="fa-solid fa-robot text-black text-xl"></i>
                         </div>
                         <div>
-                            <div class="font-semibold">Symantic AI</div>
+                            <div class="font-semibold flex items-center gap-x-2">Symantic AI 
+                                <span class="text-[10px] px-2 py-px bg-emerald-400/10 text-emerald-400 rounded">LIVE</span>
+                            </div>
                             <div class="text-xs text-emerald-400 flex items-center gap-x-1">
                                 <div class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
                                 <span>Online • 94.7% accuracy</span>
@@ -427,19 +550,14 @@
                     </div>
                 </div>
                 
-                <!-- Messages -->
-                <div id="chat-messages" class="h-[280px] overflow-y-auto px-5 py-4 space-y-5 text-sm">
-                    <!-- Initial message populated by JS -->
-                </div>
+                <div class="px-5 pt-4 pb-1 flex flex-wrap gap-2" id="quick-prompts"></div>
                 
-                <!-- Input -->
+                <div id="chat-messages" class="h-[300px] overflow-y-auto px-5 py-4 space-y-5 text-sm"></div>
+                
                 <div class="p-3 border-t border-white/10">
                     <div class="flex gap-x-2">
-                        <input id="chat-input" type="text" placeholder="Ask about GTA VI, Valorant meta, or Black Myth Wukong 2..." 
-                               class="flex-1 bg-white/5 border border-white/10 focus:border-[#00f5ff] transition rounded-3xl px-5 py-3 text-sm placeholder:text-white/40"
-                               onkeypress="if (event.key === 'Enter') sendChatMessage()">
-                        <button onclick="sendChatMessage()" 
-                                class="px-7 rounded-3xl bg-white text-black font-bold text-sm flex items-center justify-center hover:bg-[#00f5ff] transition">
+                        <input id="chat-input" type="text" placeholder="Ask about GTA VI, Valorant meta, or Black Myth Wukong 2..." class="flex-1 bg-white/5 border border-white/10 focus:border-[#00f5ff] transition rounded-3xl px-5 py-3 text-sm placeholder:text-white/40" onkeypress="if (event.key === 'Enter') sendChatMessage()">
+                        <button onclick="sendChatMessage()" class="px-7 rounded-3xl bg-white text-black font-bold text-sm flex items-center justify-center hover:bg-[#00f5ff] transition active:scale-95" aria-label="Send message">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
                     </div>
@@ -457,21 +575,21 @@
         </div>
         
         <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <div class="glass p-8 rounded-3xl border border-white/10 text-center">
+            <div class="glass p-8 rounded-3xl border border-white/10 text-center gaming-card">
                 <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 mb-6">
                     <i class="fa-solid fa-user-edit text-4xl text-[#00f5ff]"></i>
                 </div>
                 <div class="font-bold text-xl mb-2">1. Personalize</div>
                 <p class="text-white/60 text-[15px]">Tell us your favorite genres, platforms, and teams. Our AI learns your taste instantly.</p>
             </div>
-            <div class="glass p-8 rounded-3xl border border-white/10 text-center">
+            <div class="glass p-8 rounded-3xl border border-white/10 text-center gaming-card">
                 <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 mb-6">
                     <i class="fa-solid fa-magic text-4xl text-[#7c3aed]"></i>
                 </div>
                 <div class="font-bold text-xl mb-2">2. Get Smart Summaries</div>
                 <p class="text-white/60 text-[15px]">Receive 60-second briefs or deep 3000-word analysis powered by real data, not hype.</p>
             </div>
-            <div class="glass p-8 rounded-3xl border border-white/10 text-center">
+            <div class="glass p-8 rounded-3xl border border-white/10 text-center gaming-card">
                 <div class="mx-auto w-16 h-16 flex items-center justify-center rounded-2xl bg-white/5 mb-6">
                     <i class="fa-solid fa-bell text-4xl text-[#00f5ff]"></i>
                 </div>
@@ -491,13 +609,13 @@
         </div>
         
         <div class="grid md:grid-cols-3 gap-5">
-            <div class="glass p-7 rounded-3xl border border-white/10">
+            <div class="glass p-7 rounded-3xl border border-white/10 gaming-card">
                 <div class="flex gap-x-1 text-amber-400 mb-5">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
                 </div>
                 <p class="italic text-white/90">"Symantic predicted the Black Myth Wukong 2 announcement 11 months early. Their analysis is scary accurate."</p>
                 <div class="mt-6 flex items-center gap-x-3">
-                    <img src="https://i.pravatar.cc/36?img=15" class="w-9 h-9 rounded-2xl ring-1 ring-white/20">
+                    <img src="https://i.pravatar.cc/36?img=15" class="w-9 h-9 rounded-2xl ring-1 ring-white/20" alt="">
                     <div>
                         <div class="font-semibold">Alex Rivera</div>
                         <div class="text-xs text-white/50">Pro Gamer • FaZe Clan</div>
@@ -505,13 +623,13 @@
                 </div>
             </div>
             
-            <div class="glass p-7 rounded-3xl border border-white/10">
+            <div class="glass p-7 rounded-3xl border border-white/10 gaming-card">
                 <div class="flex gap-x-1 text-amber-400 mb-5">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
                 <p class="italic text-white/90">"Finally, honest game reviews without publisher pressure. The scoring system is transparent and data-driven."</p>
                 <div class="mt-6 flex items-center gap-x-3">
-                    <img src="https://i.pravatar.cc/36?img=32" class="w-9 h-9 rounded-2xl ring-1 ring-white/20">
+                    <img src="https://i.pravatar.cc/36?img=32" class="w-9 h-9 rounded-2xl ring-1 ring-white/20" alt="">
                     <div>
                         <div class="font-semibold">Maya Chen</div>
                         <div class="text-xs text-white/50">Game Director • Riot Games</div>
@@ -519,13 +637,13 @@
                 </div>
             </div>
             
-            <div class="glass p-7 rounded-3xl border border-white/10">
+            <div class="glass p-7 rounded-3xl border border-white/10 gaming-card">
                 <div class="flex gap-x-1 text-amber-400 mb-5">
                     <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
                 </div>
                 <p class="italic text-white/90">"I use Symantic every morning. The personalized feed + early predictions save me hours of research."</p>
                 <div class="mt-6 flex items-center gap-x-3">
-                    <img src="https://i.pravatar.cc/36?img=60" class="w-9 h-9 rounded-2xl ring-1 ring-white/20">
+                    <img src="https://i.pravatar.cc/36?img=60" class="w-9 h-9 rounded-2xl ring-1 ring-white/20" alt="">
                     <div>
                         <div class="font-semibold">Jordan Lee</div>
                         <div class="text-xs text-white/50">Content Creator • 2.4M subs</div>
@@ -542,51 +660,36 @@
             <h2 class="text-5xl font-bold tracking-tighter">Plans built for gamers &amp; creators</h2>
         </div>
         
-        <!-- Billing Toggle -->
         <div class="flex justify-center mb-8">
             <div class="inline-flex items-center rounded-3xl border border-white/20 p-1 text-sm">
-                <div onclick="togglePricing('monthly')" id="pricing-monthly"
-                     class="px-6 py-2 font-semibold cursor-pointer rounded-3xl bg-white text-black">Monthly</div>
-                <div onclick="togglePricing('yearly')" id="pricing-yearly"
-                     class="px-6 py-2 font-semibold cursor-pointer rounded-3xl">Yearly <span class="text-emerald-400 text-xs">(Save 35%)</span></div>
+                <div onclick="togglePricing('monthly')" id="pricing-monthly" class="px-6 py-2 font-semibold cursor-pointer rounded-3xl bg-white text-black transition-all">Monthly</div>
+                <div onclick="togglePricing('yearly')" id="pricing-yearly" class="px-6 py-2 font-semibold cursor-pointer rounded-3xl transition-all">Yearly <span class="text-emerald-400 text-xs">(Save 35%)</span></div>
             </div>
         </div>
         
         <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            <!-- Free -->
             <div class="glass rounded-3xl p-8 border border-white/10 flex flex-col">
                 <div>
                     <div class="font-semibold">FREE</div>
-                    <div class="mt-4 flex items-baseline">
-                        <span class="text-6xl font-bold">$0</span>
-                    </div>
+                    <div class="mt-4 flex items-baseline"><span class="text-6xl font-bold">$0</span></div>
                     <div class="text-white/50 text-sm">Forever</div>
                 </div>
-                
                 <ul class="mt-8 space-y-3 text-sm flex-1">
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Unlimited news access</li>
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Basic AI summaries</li>
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Community forum</li>
                     <li class="flex items-center gap-x-3 text-white/40"><i class="fa-solid fa-times w-4"></i> Limited predictions</li>
                 </ul>
-                
-                <button onclick="showSubscribeModal()" 
-                        class="mt-auto w-full py-3.5 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl text-sm">Start for free</button>
+                <button onclick="showSubscribeModal()" class="mt-auto w-full py-3.5 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl text-sm active:scale-[0.985]">Start for free</button>
             </div>
             
-            <!-- Pro - Highlighted -->
             <div class="glass rounded-3xl p-8 border-2 border-[#00f5ff] relative flex flex-col scale-[1.02] shadow-xl shadow-[#00f5ff]/10">
                 <div class="absolute -top-3 right-6 px-4 py-1 text-xs tracking-widest font-bold bg-[#00f5ff] text-black rounded-3xl">MOST POPULAR</div>
-                
                 <div>
                     <div class="font-semibold flex items-center gap-x-2">PRO <span class="text-xs px-2 py-px bg-white/10 rounded">RECOMMENDED</span></div>
-                    <div class="mt-4 flex items-baseline">
-                        <span id="pro-price" class="text-6xl font-bold">$9</span>
-                        <span class="text-white/60 ml-1.5">/month</span>
-                    </div>
+                    <div class="mt-4 flex items-baseline"><span id="pro-price" class="text-6xl font-bold">$9</span><span class="text-white/60 ml-1.5">/month</span></div>
                     <div id="pro-billing" class="text-white/50 text-sm">billed yearly • save $39</div>
                 </div>
-                
                 <ul class="mt-8 space-y-3 text-sm flex-1">
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Everything in Free</li>
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Unlimited AI insights</li>
@@ -595,21 +698,15 @@
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Custom dashboards</li>
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Priority support</li>
                 </ul>
-                
-                <button onclick="showSubscribeModal()" 
-                        class="mt-auto w-full py-3.5 bg-white hover:bg-[#00f5ff] active:bg-white transition font-bold text-black rounded-3xl">Subscribe to Pro</button>
+                <button onclick="showSubscribeModal()" class="mt-auto w-full py-3.5 bg-white hover:bg-[#00f5ff] active:bg-white transition font-bold text-black rounded-3xl active:scale-[0.985]">Subscribe to Pro</button>
             </div>
             
-            <!-- Enterprise -->
             <div class="glass rounded-3xl p-8 border border-white/10 flex flex-col">
                 <div>
                     <div class="font-semibold">ENTERPRISE</div>
-                    <div class="mt-4 flex items-baseline">
-                        <span class="text-4xl font-bold">Custom</span>
-                    </div>
+                    <div class="mt-4 flex items-baseline"><span class="text-4xl font-bold">Custom</span></div>
                     <div class="text-white/50 text-sm">For teams &amp; studios</div>
                 </div>
-                
                 <ul class="mt-8 space-y-3 text-sm flex-1">
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Everything in Pro</li>
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Team seats + SSO</li>
@@ -617,9 +714,7 @@
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> White-label reports</li>
                     <li class="flex items-center gap-x-3"><i class="fa-solid fa-check text-emerald-400 w-4"></i> Dedicated AI model training</li>
                 </ul>
-                
-                <button onclick="showContactModal()" 
-                        class="mt-auto w-full py-3.5 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl text-sm">Contact sales</button>
+                <button onclick="showContactModal()" class="mt-auto w-full py-3.5 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl text-sm active:scale-[0.985]">Contact sales</button>
             </div>
         </div>
         
@@ -631,12 +726,9 @@
         <div class="max-w-lg mx-auto">
             <h2 class="text-4xl font-bold tracking-tighter mb-3">Ready to level up your gaming IQ?</h2>
             <p class="text-white/60 mb-6">Join 142k+ gamers getting the edge every day.</p>
-            
             <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <button onclick="showSubscribeModal()" 
-                        class="gaming-btn px-10 py-4 bg-white text-black font-extrabold text-base rounded-3xl">START 14-DAY PRO TRIAL</button>
-                <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" 
-                        class="px-10 py-4 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl">Try the AI demo first</button>
+                <button onclick="showSubscribeModal()" class="gaming-btn px-10 py-4 bg-white text-black font-extrabold text-base rounded-3xl active:scale-[0.985]">START 14-DAY PRO TRIAL</button>
+                <button onclick="document.getElementById('demo').scrollIntoView({ behavior: 'smooth' })" class="px-10 py-4 border border-white/30 hover:bg-white/5 font-semibold rounded-3xl active:scale-[0.985]">Try the AI demo first</button>
             </div>
         </div>
     </div>
@@ -644,30 +736,29 @@
     <!-- FOOTER -->
     <footer class="border-t border-white/10 py-10 text-xs text-white/50">
         <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row gap-y-4 items-center justify-between">
-            <div>© 2026 Symantic. All rights reserved. Built with real data, zero hype by <a href="mailto:amreshprakash4706@gmail.com" class="hover:text-white">Amresh</a>.</div>
+            <div>© 2026 Symantic. All rights reserved. Built with real data, zero hype by <a href="mailto:amreshprakash4706@gmail.com" class="hover:text-white transition-colors">Amresh</a>.</div>
             <div class="flex gap-x-5">
-                <a href="#" class="hover:text-white">Privacy</a>
-                <a href="#" class="hover:text-white">Terms</a>
-                <a href="#" class="hover:text-white">API</a>
-                <a href="#" class="hover:text-white">Blog</a>
+                <a href="#" class="hover:text-white transition-colors">Privacy</a>
+                <a href="#" class="hover:text-white transition-colors">Terms</a>
+                <a href="#" class="hover:text-white transition-colors">API</a>
+                <a href="#" class="hover:text-white transition-colors">Blog</a>
             </div>
             <div class="flex gap-x-4">
-                <a href="mailto:amreshprakash4706@gmail.com"><i class="fa-solid fa-envelope cursor-pointer hover:text-white"></i></a>
-                <i class="fa-brands fa-x-twitter cursor-pointer hover:text-white"></i>
-                <i class="fa-brands fa-discord cursor-pointer hover:text-white"></i>
-                <i class="fa-brands fa-linkedin cursor-pointer hover:text-white"></i>
+                <a href="mailto:amreshprakash4706@gmail.com" class="hover:text-white transition-colors"><i class="fa-solid fa-envelope"></i></a>
+                <i class="fa-brands fa-x-twitter cursor-pointer hover:text-white transition-colors"></i>
+                <i class="fa-brands fa-discord cursor-pointer hover:text-white transition-colors"></i>
+                <i class="fa-brands fa-linkedin cursor-pointer hover:text-white transition-colors"></i>
             </div>
         </div>
     </footer>
 
-    <!-- Login Modal -->
+    <!-- Modals (Login, Subscribe, Article, Contact) -->
     <div id="login-modal" onclick="if (event.target.id === 'login-modal') hideLoginModal()" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6">
         <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-8 modal">
             <div class="flex justify-between items-center mb-6">
                 <div class="font-bold text-2xl">Welcome back</div>
-                <button onclick="hideLoginModal()" class="text-white/50 hover:text-white"><i class="fa-solid fa-times text-xl"></i></button>
+                <button onclick="hideLoginModal()" class="text-white/50 hover:text-white transition-colors" aria-label="Close"><i class="fa-solid fa-times text-xl"></i></button>
             </div>
-            
             <div class="space-y-4">
                 <div>
                     <label class="text-xs tracking-widest text-white/50 block mb-1.5">EMAIL</label>
@@ -678,15 +769,11 @@
                     <input type="password" value="demo123" class="w-full bg-white/5 border border-white/10 px-5 py-3.5 rounded-3xl text-sm">
                 </div>
             </div>
-            
-            <button onclick="loginUser()" 
-                    class="mt-6 w-full py-3.5 bg-white text-black font-bold rounded-3xl">Sign in</button>
-            
-            <div class="text-center text-xs text-white/50 mt-4">Don't have an account? <span onclick="hideLoginModal(); showSubscribeModal()" class="text-[#00f5ff] cursor-pointer">Get Pro</span></div>
+            <button onclick="loginUser()" class="mt-6 w-full py-3.5 bg-white text-black font-bold rounded-3xl active:scale-[0.985]">Sign in</button>
+            <div class="text-center text-xs text-white/50 mt-4">Don't have an account? <span onclick="hideLoginModal(); showSubscribeModal()" class="text-[#00f5ff] cursor-pointer hover:underline">Get Pro</span></div>
         </div>
     </div>
 
-    <!-- Subscribe / Success Modal -->
     <div id="subscribe-modal" onclick="if (event.target.id === 'subscribe-modal') hideSubscribeModal()" class="hidden fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6">
         <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-8 modal">
             <div class="text-center">
@@ -695,7 +782,6 @@
                 </div>
                 <div class="font-bold text-3xl">Thanks for trying Symantic!</div>
                 <p class="mt-2 text-white/70">This is a fully functional demo. In a real deployment, this would open Stripe checkout.</p>
-                
                 <div class="mt-7 text-left text-xs bg-white/5 p-4 rounded-2xl">
                     <div class="font-semibold mb-1">What you unlocked in this demo:</div>
                     <ul class="space-y-px text-white/70">
@@ -704,112 +790,150 @@
                         <li>• All premium features simulated</li>
                     </ul>
                 </div>
-                
-                <button onclick="hideSubscribeModal()" 
-                        class="mt-6 w-full py-3 font-bold bg-white text-black rounded-3xl">Back to dashboard</button>
+                <button onclick="hideSubscribeModal()" class="mt-6 w-full py-3 font-bold bg-white text-black rounded-3xl active:scale-[0.985]">Back to dashboard</button>
             </div>
         </div>
     </div>
 
-    <!-- Article Modal -->
     <div id="article-modal" onclick="if (event.target.id === 'article-modal') hideArticleModal()" class="hidden fixed inset-0 bg-black/80 z-[110] flex items-center justify-center p-6">
         <div onclick="event.stopImmediatePropagation()" class="glass max-w-2xl w-full border border-white/10 rounded-3xl overflow-hidden modal">
             <div class="p-8">
-                <div id="article-modal-content">
-                    <!-- Dynamic content injected by JS -->
-                </div>
+                <div id="article-modal-content"></div>
             </div>
             <div class="border-t border-white/10 p-4 flex justify-end bg-black/20">
-                <button onclick="hideArticleModal()" class="px-8 py-2 text-sm font-semibold">Close</button>
+                <button onclick="hideArticleModal()" class="px-8 py-2 text-sm font-semibold hover:bg-white/5 rounded-3xl transition-colors">Close</button>
             </div>
         </div>
     </div>
 
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="back-to-top hidden fixed bottom-6 right-6 w-11 h-11 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl flex items-center justify-center z-[90]" aria-label="Back to top">
+        <i class="fa-solid fa-arrow-up text-white/70"></i>
+    </button>
+
     <script>
-        // Tailwind script
+        // Tailwind + Global State
         function initializeTailwind() {
-            document.documentElement.style.setProperty('--accent', '#00f5ff');
-            
-            tailwind.config = {
-                theme: {
-                    extend: {
-                        fontFamily: {
-                            'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif']
-                        }
-                    }
-                }
-            };
+            tailwind.config = { theme: { extend: { fontFamily: { 'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'] } } } };
         }
         
-        // Initialize everything
+        let savedArticles = JSON.parse(localStorage.getItem('symantic_saved') || '[]');
+        let currentLiveFilter = 'all';
+        let accuracyChartInstance = null;
+        let chatHistory = [];
+
         function init() {
             initializeTailwind();
             initLiveFeed();
             initNewsSection();
             initChat();
-            initDashboardMetrics();
+            initQuickPrompts();
+            initAccuracyChart();
+            initPredictions();
+            initBackToTop();
+            updateSavedCount();
             
-            // Random subtle live updates
             setInterval(() => {
-                if (Math.random() > 0.75) {
-                    addLiveUpdate(true);
-                }
-            }, 22000);
+                if (Math.random() > 0.72) addLiveUpdate(true);
+            }, 18500);
             
-            // Keyboard shortcut hint
             document.addEventListener('keydown', function(e) {
                 if (e.key === "?" && document.activeElement.tagName === "BODY") {
                     e.preventDefault();
                     document.getElementById('demo').scrollIntoView({ behavior: 'smooth' });
-                    setTimeout(() => {
-                        document.getElementById('chat-input').focus();
-                    }, 600);
+                    setTimeout(() => document.getElementById('chat-input').focus(), 650);
                 }
             });
             
-            // Make metrics animate on first view
             setTimeout(() => {
                 const metrics = document.querySelectorAll('.metric-card');
                 metrics.forEach((m, i) => {
                     setTimeout(() => {
                         m.style.transitionDuration = '0ms';
-                        m.style.transform = 'translateY(-3px)';
+                        m.style.transform = 'translateY(-4px)';
                         setTimeout(() => {
-                            m.style.transitionDuration = '200ms';
+                            m.style.transitionDuration = '220ms';
                             m.style.transform = 'translateY(0)';
                         }, 80);
-                    }, i * 90);
+                    }, i * 85);
                 });
-            }, 1400);
+            }, 1350);
             
-            console.log('%c[Symantic] Improved demo initialized successfully', 'color:#64748b');
+            console.log('%c[Symantic v3] Final improved version initialized', 'color:#64748b');
         }
-        
-        // === LIVE FEED ===
+
+        // Back to Top
+        function initBackToTop() {
+            const btn = document.querySelector('.back-to-top');
+            if (!btn) return;
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 600) {
+                    btn.classList.remove('hidden');
+                    btn.classList.add('flex');
+                } else {
+                    btn.classList.remove('flex');
+                    btn.classList.add('hidden');
+                }
+            });
+        }
+
+        // Chart.js
+        function initAccuracyChart() {
+            const ctx = document.getElementById('accuracyChart');
+            if (!ctx) return;
+            if (accuracyChartInstance) accuracyChartInstance.destroy();
+            
+            accuracyChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan 19', 'Jan 20', 'Jan 21', 'Jan 22', 'Jan 23', 'Jan 24', 'Jan 25'],
+                    datasets: [{
+                        label: 'AI Accuracy %',
+                        data: [92.1, 93.4, 91.8, 94.2, 93.9, 94.5, 94.7],
+                        borderColor: '#00f5ff',
+                        backgroundColor: 'rgba(0, 245, 255, 0.12)',
+                        borderWidth: 3,
+                        tension: 0.35,
+                        fill: true,
+                        pointBackgroundColor: '#00f5ff',
+                        pointBorderColor: '#0a0a0f',
+                        pointBorderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, tooltip: { backgroundColor: '#111114', borderColor: '#00f5ff', borderWidth: 1, displayColors: false } },
+                    scales: {
+                        x: { grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#64748b', font: { size: 11 } } },
+                        y: { min: 88, max: 96, grid: { color: 'rgba(255,255,255,0.06)' }, ticks: { color: '#64748b', font: { size: 11 }, callback: v => v + '%' } }
+                    }
+                }
+            });
+        }
+
+        // Live Feed
         let liveFeedItems = [
-            { time: "just now", type: "prediction", text: "Black Myth: Wukong 2 — 98% confidence for 2027 announcement", confidence: 98 },
-            { time: "47s ago", type: "news", text: "GTA VI Trailer 2 just dropped — breaking all previous records", confidence: null },
-            { time: "2m ago", type: "patch", text: "Valorant Patch 9.03 live — Jett nerfs incoming", confidence: 94 },
-            { time: "8m ago", type: "prediction", text: "Next major League of Legends patch will buff 3 champions", confidence: 87 },
+            { id: 1, time: "just now", type: "prediction", text: "Black Myth: Wukong 2 — 98% confidence for 2027 announcement", confidence: 98 },
+            { id: 2, time: "47s ago", type: "news", text: "GTA VI Trailer 2 just dropped — breaking all previous records", confidence: null },
+            { id: 3, time: "2m ago", type: "patch", text: "Valorant Patch 9.03 live — Jett nerfs incoming", confidence: 94 },
+            { id: 4, time: "8m ago", type: "prediction", text: "Next major League of Legends patch will buff 3 champions", confidence: 87 },
+            { id: 5, time: "14m ago", type: "news", text: "FaZe Clan wins BLAST Premier World Final 2026", confidence: null },
         ];
         
         function initLiveFeed() {
             const container = document.getElementById('live-feed-list');
             container.innerHTML = '';
-            
-            liveFeedItems.forEach((item, index) => {
-                const el = createLiveItem(item, index);
-                container.appendChild(el);
-            });
+            liveFeedItems.forEach(item => container.appendChild(createLiveItem(item)));
         }
         
-        function createLiveItem(item, index) {
+        function createLiveItem(item) {
             const div = document.createElement('div');
-            div.className = `px-6 py-[17px] flex items-start gap-x-4 hover:bg-white/5 transition-colors group ${index === 0 ? 'bg-white/5' : ''}`;
+            div.className = `live-item px-6 py-[17px] flex items-start gap-x-4 group border-l-2 border-transparent hover:border-[#00f5ff]/30`;
+            div.dataset.type = item.type;
+            div.dataset.id = item.id;
             
-            let icon = '';
-            let badge = '';
-            
+            let icon = '', badge = '';
             if (item.type === 'prediction') {
                 icon = `<i class="fa-solid fa-brain text-[#7c3aed] mt-1"></i>`;
                 badge = `<span class="text-[10px] font-mono px-2 py-px rounded bg-[#7c3aed]/10 text-[#7c3aed]">${item.confidence}%</span>`;
@@ -825,79 +949,116 @@
                 <div class="mt-0.5">${icon}</div>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-center justify-between">
-                        <div class="font-medium text-[13.5px] pr-4">${item.text}</div>
-                        <div class="flex-shrink-0 flex items-center gap-x-2">
-                            ${badge}
-                            <span class="font-mono text-xs text-white/40 tabular-nums">${item.time}</span>
-                        </div>
+                        <div class="font-medium text-[13.5px] pr-4 leading-snug">${item.text}</div>
+                        <div class="flex-shrink-0 flex items-center gap-x-2">${badge}<span class="font-mono text-xs text-white/40 tabular-nums">${item.time}</span></div>
                     </div>
                 </div>
             `;
-            
+            div.onclick = () => showToast(`More details coming soon for: ${item.text.substring(0, 55)}...`, 'info');
             return div;
+        }
+        
+        function filterLiveFeed(type) {
+            currentLiveFilter = type;
+            document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(`filter-${type}`).classList.add('active');
+            
+            const items = document.getElementById('live-feed-list').children;
+            for (let item of items) {
+                item.style.display = (type === 'all' || item.dataset.type === type) ? '' : 'none';
+            }
         }
         
         function addLiveUpdate(silent = false) {
             const container = document.getElementById('live-feed-list');
-            
-            const newItems = [
-                { time: "just now", type: "prediction", text: "New data: Elden Ring Nightreign sales exceed expectations — 92% confidence", confidence: 92 },
-                { time: "just now", type: "news", text: "Major esports org announces new partnership with Symantic", confidence: null },
-                { time: "just now", type: "patch", text: "Apex Legends Season 22 balance changes revealed early", confidence: 81 },
+            const newItemsPool = [
+                { id: Date.now(), time: "just now", type: "prediction", text: "Elden Ring Nightreign sales exceed expectations — 92% confidence", confidence: 92 },
+                { id: Date.now() + 1, time: "just now", type: "news", text: "Major esports org announces new partnership with Symantic", confidence: null },
+                { id: Date.now() + 2, time: "just now", type: "patch", text: "Apex Legends Season 22 balance changes revealed early", confidence: 81 },
             ];
-            
-            const randomItem = newItems[Math.floor(Math.random() * newItems.length)];
-            
-            const newEl = createLiveItem(randomItem, 0);
+            const randomItem = newItemsPool[Math.floor(Math.random() * newItemsPool.length)];
+            const newEl = createLiveItem(randomItem);
             newEl.style.opacity = '0';
-            newEl.style.transform = 'translateY(-12px)';
-            
+            newEl.style.transform = 'translateY(-14px)';
             container.insertBefore(newEl, container.firstChild);
             
-            // Keep only 6 items
-            while (container.children.length > 6) {
-                container.removeChild(container.lastChild);
-            }
+            while (container.children.length > 7) container.removeChild(container.lastChild);
             
-            // Animate in
             requestAnimationFrame(() => {
-                newEl.style.transition = 'all 0.4s cubic-bezier(0.34,1.56,0.64,1)';
+                newEl.style.transition = 'all 0.45s cubic-bezier(0.34,1.56,0.64,1)';
                 newEl.style.opacity = '1';
                 newEl.style.transform = 'translateY(0)';
             });
             
-            if (!silent) {
-                // Show toast
-                showToast("New live update received");
-            }
-            
-            // Update first item styling
-            if (container.children.length > 1) {
-                container.children[1].classList.remove('bg-white/5');
-            }
+            if (currentLiveFilter !== 'all' && newEl.dataset.type !== currentLiveFilter) newEl.style.display = 'none';
+            if (!silent) showToast("New live intelligence received", 'success');
+        }
+
+        // Top Predictions Section
+        let predictionsData = [
+            { id: 1, title: "Black Myth: Wukong 2 Announcement", confidence: 98, date: "TGA 2026", category: "Rumor" },
+            { id: 2, title: "GTA VI Trailer 2 Release", confidence: 87, date: "Before March 2026", category: "Prediction" },
+            { id: 3, title: "Valorant Patch 9.04 Meta Shift", confidence: 91, date: "Mid February", category: "Patch" },
+            { id: 4, title: "Elden Ring Nightreign Sales", confidence: 92, date: "Q1 2026", category: "Prediction" },
+            { id: 5, title: "T1 Wins Worlds 2027", confidence: 71, date: "Late 2027", category: "Esports" },
+        ];
+        
+        function initPredictions() {
+            renderPredictions(predictionsData);
         }
         
-        function showToast(msg) {
-            const toast = document.createElement('div');
-            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-white text-black text-sm font-medium rounded-3xl shadow-2xl flex items-center gap-x-2 z-[200]`;
-            toast.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>${msg}</span>`;
-            document.body.appendChild(toast);
+        function renderPredictions(data) {
+            const grid = document.getElementById('predictions-grid');
+            grid.innerHTML = '';
+            
+            data.forEach(pred => {
+                const card = document.createElement('div');
+                card.className = `glass border border-white/10 rounded-3xl p-6 gaming-card`;
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <span class="px-3 py-1 text-[10px] font-bold tracking-widest rounded-2xl ${pred.category === 'Esports' ? 'bg-violet-400/10 text-violet-400' : pred.category === 'Patch' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-orange-400/10 text-orange-400'}">${pred.category}</span>
+                        <span class="text-xs text-white/40 font-mono">${pred.date}</span>
+                    </div>
+                    <div class="font-semibold text-[15.5px] leading-snug mb-4">${pred.title}</div>
+                    
+                    <div class="mb-2 flex justify-between text-xs">
+                        <span class="text-white/60">AI Confidence</span>
+                        <span class="font-mono text-emerald-400 font-medium">${pred.confidence}%</span>
+                    </div>
+                    <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                        <div class="confidence-bar" style="width: ${pred.confidence}%"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+        
+        function refreshPredictions() {
+            const grid = document.getElementById('predictions-grid');
+            grid.style.transition = 'opacity 0.2s';
+            grid.style.opacity = '0.3';
             
             setTimeout(() => {
-                toast.style.transition = 'all .25s ease';
-                toast.style.opacity = '0';
-                setTimeout(() => toast.remove(), 200);
-            }, 2100);
+                predictionsData.forEach(p => {
+                    p.confidence = Math.max(65, Math.min(98, p.confidence + (Math.random() - 0.5) * 6));
+                });
+                renderPredictions(predictionsData);
+                grid.style.opacity = '1';
+                showToast("Predictions refreshed with latest model output", 'success');
+            }, 280);
         }
-        
-        // === NEWS SECTION ===
+
+        // News Section with localStorage persistence
         let newsData = [
-            { id: 1, category: "esports", title: "FaZe Clan wins BLAST Premier World Final", time: "14m ago", summary: "FaZe takes down Vitality 3-1 in a dominant grand final performance.", full: "FaZe Clan has won the BLAST Premier World Final 2026 after defeating Vitality 3-1 in a thrilling grand final. The victory marks their third S-tier title of the year and solidifies their position as one of the best teams in Counter-Strike history.", score: "9.8", tag: "ESPORTS" },
-            { id: 2, category: "patch", title: "Valorant Patch 9.03 — Full notes & analysis", time: "1h ago", summary: "Major changes to Jett, Viper, and new agent abilities coming soon.", full: "Riot has released Patch 9.03 for Valorant. Jett's dash is receiving a significant nerf while Viper gets quality-of-life improvements. The new agent 'Clove' is also getting balance adjustments based on pro play data.", score: "8.4", tag: "PATCH" },
-            { id: 3, category: "rumor", title: "Black Myth: Wukong 2 announcement expected at TGA 2026", time: "3h ago", summary: "Insiders claim sequel is further along than previously thought.", full: "Multiple reliable sources close to Game Science suggest that Black Myth: Wukong 2 will be announced during The Game Awards 2026. Development is reportedly well underway with a planned 2027 release window.", score: "9.1", tag: "RUMOR" },
-            { id: 4, category: "review", title: "Review: Stellar Blade 2 — A new benchmark for action games", time: "5h ago", summary: "Shift Up delivers another visual and gameplay masterpiece.", full: "Stellar Blade 2 raises the bar for character action games. Combat is tighter, the story more ambitious, and the world design breathtaking. Our score of 9.6/10 reflects its near-perfect execution.", score: "9.6", tag: "REVIEW" },
-            { id: 5, category: "esports", title: "League of Legends: T1 wins Worlds 2026", time: "Yesterday", summary: "Faker leads T1 to their fifth world championship title.", full: "T1 has done it again. In a dominant run through the bracket, Faker and the boys brought home another Summoner's Cup. The final against Gen.G was one for the history books.", score: "10", tag: "ESPORTS" },
-            { id: 6, category: "patch", title: "Apex Legends Season 22 — New legend & map changes", time: "Yesterday", summary: "Respawn teases massive changes coming to World's Edge.", full: "Season 22 of Apex Legends brings a brand new legend, significant map updates to World's Edge, and a complete overhaul of the ranked system.", score: "7.9", tag: "PATCH" },
+            { id: 1, category: "esports", title: "FaZe Clan wins BLAST Premier World Final", time: "14m ago", summary: "FaZe takes down Vitality 3-1 in a dominant grand final performance.", full: "FaZe Clan has won the BLAST Premier World Final 2026 after defeating Vitality 3-1 in a thrilling grand final.", score: "9.8", tag: "ESPORTS" },
+            { id: 2, category: "patch", title: "Valorant Patch 9.03 — Full notes & analysis", time: "1h ago", summary: "Major changes to Jett, Viper, and new agent abilities coming soon.", full: "Riot has released Patch 9.03 for Valorant with significant Jett nerfs and Viper improvements.", score: "8.4", tag: "PATCH" },
+            { id: 3, category: "rumor", title: "Black Myth: Wukong 2 announcement expected at TGA 2026", time: "3h ago", summary: "Insiders claim sequel is further along than previously thought.", full: "Multiple reliable sources suggest Black Myth: Wukong 2 will be announced at The Game Awards 2026.", score: "9.1", tag: "RUMOR" },
+            { id: 4, category: "review", title: "Review: Stellar Blade 2 — A new benchmark for action games", time: "5h ago", summary: "Shift Up delivers another visual and gameplay masterpiece.", full: "Stellar Blade 2 raises the bar for character action games with tighter combat and breathtaking world design.", score: "9.6", tag: "REVIEW" },
+            { id: 5, category: "esports", title: "League of Legends: T1 wins Worlds 2026", time: "Yesterday", summary: "Faker leads T1 to their fifth world championship title.", full: "T1 has done it again, bringing home another Summoner's Cup in dominant fashion.", score: "10", tag: "ESPORTS" },
+            { id: 6, category: "patch", title: "Apex Legends Season 22 — New legend & map changes", time: "Yesterday", summary: "Respawn teases massive changes coming to World's Edge.", full: "Season 22 brings a brand new legend and significant map updates to World's Edge.", score: "7.9", tag: "PATCH" },
+            { id: 7, category: "rumor", title: "GTA VI release window narrowed to Fall 2026", time: "2d ago", summary: "Rockstar insiders point to September-November window.", full: "New leaks suggest GTA VI is targeting a Fall 2026 release with marketing ramping up soon.", score: "8.7", tag: "RUMOR" },
+            { id: 8, category: "review", title: "Review: Monster Hunter Wilds — Best entry yet", time: "2d ago", summary: "Capcom delivers the most ambitious hunting experience ever.", full: "Monster Hunter Wilds expands the formula with a new wound system and seamless open world.", score: "9.3", tag: "REVIEW" },
+            { id: 9, category: "esports", title: "Valorant Champions 2026: Gen.G takes the crown", time: "3d ago", summary: "Gen.G dominates the international stage in Seoul.", full: "Gen.G won Valorant Champions 2026, defeating Sentinels 3-1 in the grand final.", score: "9.5", tag: "ESPORTS" },
         ];
         
         let visibleNewsCount = 6;
@@ -905,9 +1066,14 @@
         function initNewsSection() {
             renderNews(newsData.slice(0, visibleNewsCount));
             
-            // Add search listener
+            let searchTimeout;
             const searchInput = document.getElementById('news-search');
-            searchInput.addEventListener('input', filterNews);
+            window.debounceFilterNews = () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => filterNews(), 180);
+            };
+            
+            document.getElementById('news-filter').addEventListener('change', filterNews);
         }
         
         function renderNews(newsArray) {
@@ -915,28 +1081,28 @@
             grid.innerHTML = '';
             
             newsArray.forEach(item => {
+                const isSaved = savedArticles.some(a => a.id === item.id);
                 const card = document.createElement('div');
-                card.className = `news-card glass border border-white/10 rounded-3xl p-6 flex flex-col cursor-pointer`;
-                card.onclick = () => showArticleModal(item);
+                card.className = `news-card glass border border-white/10 rounded-3xl p-6 flex flex-col cursor-pointer gaming-card`;
+                card.onclick = (e) => {
+                    if (!e.target.closest('.news-bookmark')) showArticleModal(item);
+                };
                 
                 card.innerHTML = `
                     <div class="flex justify-between items-start">
-                        <span class="px-3 py-1 text-[10px] font-bold tracking-widest rounded-2xl ${getTagColor(item.tag)}">${item.tag}</span>
-                        <span class="text-xs text-white/40 font-mono">${item.time}</span>
+                        <span onclick="event.stopImmediatePropagation(); applyCategoryFilter('${item.category}');" class="px-3 py-1 text-[10px] font-bold tracking-widest rounded-2xl cursor-pointer hover:opacity-80 transition-opacity ${getTagColor(item.tag)}">${item.tag}</span>
+                        <div class="flex items-center gap-x-2">
+                            <span class="text-xs text-white/40 font-mono">${item.time}</span>
+                            <button onclick="event.stopImmediatePropagation(); toggleBookmark(${item.id}, this)" class="news-bookmark text-white/40 hover:text-red-400 transition-colors ${isSaved ? 'saved' : ''}">
+                                <i class="fa-${isSaved ? 'solid' : 'regular'} fa-bookmark"></i>
+                            </button>
+                        </div>
                     </div>
-                    
                     <div class="mt-4 font-semibold text-[15.5px] leading-snug tracking-[-0.2px] flex-1">${item.title}</div>
-                    
                     <div class="mt-3 text-sm text-white/60 line-clamp-2">${item.summary}</div>
-                    
                     <div class="flex items-center justify-between mt-auto pt-5 border-t border-white/10 text-xs">
-                        <div class="flex items-center gap-x-1.5">
-                            <span class="font-mono text-emerald-400 font-medium">${item.score}</span>
-                            <span class="text-white/40">/10</span>
-                        </div>
-                        <div class="text-[#00f5ff] flex items-center gap-x-1 text-xs font-medium">
-                            READ ANALYSIS <i class="fa-solid fa-arrow-right-long ml-px"></i>
-                        </div>
+                        <div class="flex items-center gap-x-1.5"><span class="font-mono text-emerald-400 font-medium">${item.score}</span><span class="text-white/40">/10</span></div>
+                        <div class="text-[#00f5ff] flex items-center gap-x-1 text-xs font-medium">READ ANALYSIS <i class="fa-solid fa-arrow-right-long ml-px"></i></div>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -950,81 +1116,174 @@
             return 'bg-sky-400/10 text-sky-400';
         }
         
+        function applyCategoryFilter(category) {
+            document.getElementById('news-filter').value = category;
+            filterNews();
+            document.getElementById('news').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        
         function filterNews() {
-            const searchTerm = document.getElementById('news-search').value.toLowerCase();
+            const searchTerm = document.getElementById('news-search').value.toLowerCase().trim();
             const filterValue = document.getElementById('news-filter').value;
-            
             let filtered = newsData;
             
-            if (filterValue) {
-                filtered = filtered.filter(item => item.category === filterValue);
-            }
+            if (filterValue) filtered = filtered.filter(item => item.category === filterValue);
+            if (searchTerm) filtered = filtered.filter(item => item.title.toLowerCase().includes(searchTerm) || item.summary.toLowerCase().includes(searchTerm));
             
-            if (searchTerm) {
-                filtered = filtered.filter(item => 
-                    item.title.toLowerCase().includes(searchTerm) || 
-                    item.summary.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            renderNews(filtered);
+            renderNews(filtered.slice(0, visibleNewsCount));
         }
         
         function loadMoreNews() {
             visibleNewsCount += 3;
-            const searchTerm = document.getElementById('news-search').value.toLowerCase();
+            const searchTerm = document.getElementById('news-search').value.toLowerCase().trim();
             const filterValue = document.getElementById('news-filter').value;
-            
             let filtered = newsData;
-            
             if (filterValue) filtered = filtered.filter(item => item.category === filterValue);
-            if (searchTerm) {
-                filtered = filtered.filter(item => 
-                    item.title.toLowerCase().includes(searchTerm) || 
-                    item.summary.toLowerCase().includes(searchTerm)
-                );
+            if (searchTerm) filtered = filtered.filter(item => item.title.toLowerCase().includes(searchTerm) || item.summary.toLowerCase().includes(searchTerm));
+            renderNews(filtered.slice(0, visibleNewsCount));
+            if (visibleNewsCount >= filtered.length) document.getElementById('load-more-btn').style.display = 'none';
+        }
+        
+        function toggleBookmark(articleId, element) {
+            const article = newsData.find(a => a.id === articleId);
+            if (!article) return;
+            
+            const index = savedArticles.findIndex(a => a.id === articleId);
+            
+            if (index > -1) {
+                savedArticles.splice(index, 1);
+                element.classList.remove('saved');
+                element.innerHTML = '<i class="fa-regular fa-bookmark"></i>';
+                showToast("Removed from reading list", 'info');
+            } else {
+                savedArticles.push(article);
+                element.classList.add('saved');
+                element.innerHTML = '<i class="fa-solid fa-bookmark"></i>';
+                showToast("Saved to reading list", 'success');
             }
             
-            renderNews(filtered.slice(0, visibleNewsCount));
+            localStorage.setItem('symantic_saved', JSON.stringify(savedArticles));
+            updateSavedCount();
+        }
+        
+        function updateSavedCount() {
+            const countEl = document.getElementById('saved-count');
+            const textEl = document.getElementById('saved-count-text');
+            if (!countEl || !textEl) return;
             
-            if (visibleNewsCount >= filtered.length) {
-                event.target.style.display = 'none';
+            if (savedArticles.length > 0) {
+                countEl.style.display = 'flex';
+                textEl.textContent = `${savedArticles.length} saved`;
+            } else {
+                countEl.style.display = 'none';
             }
         }
         
-        // Article modal
+        function showSavedArticles() {
+            if (savedArticles.length === 0) return;
+            const grid = document.getElementById('news-grid');
+            grid.innerHTML = '';
+            
+            savedArticles.forEach(item => {
+                const card = document.createElement('div');
+                card.className = `news-card glass border border-white/10 rounded-3xl p-6 flex flex-col cursor-pointer gaming-card`;
+                card.onclick = () => showArticleModal(item);
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="px-3 py-1 text-[10px] font-bold tracking-widest rounded-2xl ${getTagColor(item.tag)}">${item.tag}</span>
+                        <div class="flex items-center gap-x-2">
+                            <span class="text-xs text-white/40 font-mono">${item.time}</span>
+                            <button onclick="event.stopImmediatePropagation(); toggleBookmark(${item.id}, this)" class="news-bookmark saved text-red-400"><i class="fa-solid fa-bookmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="mt-4 font-semibold text-[15.5px] leading-snug tracking-[-0.2px] flex-1">${item.title}</div>
+                    <div class="mt-3 text-sm text-white/60 line-clamp-2">${item.summary}</div>
+                    <div class="flex items-center justify-between mt-auto pt-5 border-t border-white/10 text-xs">
+                        <div class="flex items-center gap-x-1.5"><span class="font-mono text-emerald-400 font-medium">${item.score}</span><span class="text-white/40">/10</span></div>
+                        <div class="text-[#00f5ff] flex items-center gap-x-1 text-xs font-medium">READ ANALYSIS <i class="fa-solid fa-arrow-right-long ml-px"></i></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            
+            const msg = document.createElement('div');
+            msg.className = 'col-span-full text-center py-4 text-sm text-white/50';
+            msg.innerHTML = `Showing your <span class="font-medium text-white/70">${savedArticles.length} saved articles</span>. <span class="cursor-pointer underline" onclick="resetNewsView()">Show all news</span>`;
+            grid.appendChild(msg);
+        }
+        
+        function resetNewsView() {
+            visibleNewsCount = 6;
+            document.getElementById('news-search').value = '';
+            document.getElementById('news-filter').value = '';
+            renderNews(newsData.slice(0, visibleNewsCount));
+        }
+        
         function showArticleModal(article) {
             const modal = document.getElementById('article-modal');
             const content = document.getElementById('article-modal-content');
+            const isSaved = savedArticles.some(a => a.id === article.id);
             
             content.innerHTML = `
                 <div class="flex justify-between items-start">
                     <span class="px-4 py-1 text-xs font-bold tracking-[1.5px] rounded-3xl ${getTagColor(article.tag)}">${article.tag}</span>
                     <span class="text-xs text-white/40 font-mono">${article.time}</span>
                 </div>
-                
                 <h3 class="text-3xl font-bold tracking-tighter mt-4 pr-6">${article.title}</h3>
-                
                 <div class="flex items-center gap-x-2 mt-4">
                     <div class="px-3 py-px text-sm bg-emerald-400/10 text-emerald-400 rounded-2xl font-medium">Symantic Score: ${article.score}/10</div>
                     <div class="text-xs text-white/50">• 100% data-backed • No publisher influence</div>
                 </div>
-                
-                <div class="prose prose-invert mt-7 text-[15px] text-white/80 leading-relaxed">
-                    ${article.full}
-                </div>
-                
+                <div class="prose prose-invert mt-7 text-[15px] text-white/80 leading-relaxed">${article.full}</div>
                 <div class="mt-8 pt-6 border-t border-white/10 flex items-center justify-between text-xs">
-                    <div>
-                        <span class="font-medium">Symantic AI Analysis:</span> 
-                        <span class="text-emerald-400">Extremely high confidence</span>
+                    <div class="flex items-center gap-x-3">
+                        <button onclick="toggleBookmarkFromModal(${article.id}, this)" class="flex items-center gap-x-2 px-4 py-2 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors ${isSaved ? 'text-red-400 border-red-400/30' : ''}">
+                            <i class="fa-${isSaved ? 'solid' : 'regular'} fa-bookmark"></i>
+                            <span>${isSaved ? 'Saved' : 'Save for later'}</span>
+                        </button>
+                        <button onclick="navigator.clipboard.writeText(window.location.href); showToast('Link copied to clipboard')" class="flex items-center gap-x-2 px-4 py-2 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors">
+                            <i class="fa-solid fa-link"></i> <span>Share</span>
+                        </button>
                     </div>
                     <button onclick="hideArticleModal()" class="px-5 py-2 text-xs font-bold border border-white/20 rounded-3xl hover:bg-white/5">CLOSE</button>
                 </div>
             `;
-            
             modal.classList.remove('hidden');
             modal.classList.add('flex');
+        }
+        
+        function toggleBookmarkFromModal(articleId, btn) {
+            const article = newsData.find(a => a.id === articleId);
+            if (!article) return;
+            const index = savedArticles.findIndex(a => a.id === articleId);
+            const icon = btn.querySelector('i');
+            const text = btn.querySelector('span');
+            
+            if (index > -1) {
+                savedArticles.splice(index, 1);
+                btn.classList.remove('text-red-400', 'border-red-400/30');
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+                text.textContent = 'Save for later';
+            } else {
+                savedArticles.push(article);
+                btn.classList.add('text-red-400', 'border-red-400/30');
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+                text.textContent = 'Saved';
+            }
+            
+            localStorage.setItem('symantic_saved', JSON.stringify(savedArticles));
+            updateSavedCount();
+            setTimeout(() => {
+                const searchTerm = document.getElementById('news-search').value.toLowerCase().trim();
+                const filterValue = document.getElementById('news-filter').value;
+                let filtered = newsData;
+                if (filterValue) filtered = filtered.filter(i => i.category === filterValue);
+                if (searchTerm) filtered = filtered.filter(i => i.title.toLowerCase().includes(searchTerm) || i.summary.toLowerCase().includes(searchTerm));
+                renderNews(filtered.slice(0, visibleNewsCount));
+            }, 300);
         }
         
         function hideArticleModal() {
@@ -1032,66 +1291,40 @@
             modal.classList.remove('flex');
             modal.classList.add('hidden');
         }
-        
-        // === DASHBOARD METRICS ===
-        function initDashboardMetrics() {
-            // Already static numbers with onclick handlers in HTML
-        }
-        
+
+        // Dashboard Metrics
         function bumpMetric(element, baseValue, increment) {
             const numberEl = element.querySelector('.stat-number');
             if (!numberEl) return;
-            
             const isFloat = baseValue % 1 !== 0;
-            let current = parseFloat(numberEl.textContent.replace(/[^0-9.]/g, ''));
-            
-            if (isNaN(current)) current = baseValue;
-            
+            let current = parseFloat(numberEl.textContent.replace(/[^0-9.]/g, '')) || baseValue;
             const newValue = current + increment;
             
-            // Animate number
             const duration = 650;
             const start = performance.now();
-            const startValue = current;
             
             function animate(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+                const progress = Math.min((now - start) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const val = current + (newValue - current) * eased;
                 
-                const val = startValue + (newValue - startValue) * eased;
+                if (isFloat) numberEl.innerHTML = val.toFixed(1);
+                else if (baseValue > 1000) numberEl.innerHTML = Math.round(val).toLocaleString();
+                else numberEl.innerHTML = Math.round(val);
                 
-                if (isFloat) {
-                    numberEl.innerHTML = val.toFixed(1);
-                } else if (baseValue > 1000) {
-                    numberEl.innerHTML = Math.round(val).toLocaleString();
-                } else {
-                    numberEl.innerHTML = Math.round(val);
-                }
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    // Final value
+                if (progress < 1) requestAnimationFrame(animate);
+                else {
                     if (isFloat) numberEl.innerHTML = newValue.toFixed(1);
                     else if (baseValue > 1000) numberEl.innerHTML = Math.round(newValue).toLocaleString();
                     else numberEl.innerHTML = Math.round(newValue);
                 }
             }
-            
             requestAnimationFrame(animate);
             
-            // Visual feedback
-            element.style.transitionDuration = '80ms';
             element.style.transform = 'scale(0.96)';
-            setTimeout(() => {
-                element.style.transform = 'scale(1)';
-            }, 120);
+            setTimeout(() => element.style.transform = 'scale(1)', 120);
             
-            // Occasional toast
-            if (Math.random() > 0.7) {
-                setTimeout(() => showToast("Metric updated with latest data"), 650);
-            }
+            if (Math.random() > 0.65) setTimeout(() => showToast("Metric updated with latest live data"), 680);
         }
         
         function refreshDashboard() {
@@ -1100,53 +1333,117 @@
                 setTimeout(() => {
                     const numEl = card.querySelector('.stat-number');
                     if (!numEl) return;
-                    
-                    const currentText = numEl.textContent;
-                    const isFloat = currentText.includes('.');
-                    let val = parseFloat(currentText.replace(/[^0-9.]/g, ''));
-                    
+                    let val = parseFloat(numEl.textContent.replace(/[^0-9.]/g, ''));
                     if (!isNaN(val)) {
-                        const variation = val * (0.015 + Math.random() * 0.035);
-                        const newVal = val + (Math.random() > 0.5 ? variation : -variation * 0.6);
-                        
+                        const variation = val * (0.012 + Math.random() * 0.028);
+                        const newVal = val + (Math.random() > 0.5 ? variation : -variation * 0.55);
                         numEl.style.transitionDuration = '0ms';
-                        numEl.style.transform = 'translateY(-4px)';
-                        
+                        numEl.style.transform = 'translateY(-5px)';
                         setTimeout(() => {
-                            if (isFloat) {
-                                numEl.innerHTML = newVal.toFixed(1);
-                            } else if (val > 1000) {
-                                numEl.innerHTML = Math.round(newVal).toLocaleString();
-                            } else {
-                                numEl.innerHTML = Math.round(newVal);
-                            }
-                            
+                            if (numEl.textContent.includes('.')) numEl.innerHTML = newVal.toFixed(1);
+                            else if (val > 1000) numEl.innerHTML = Math.round(newVal).toLocaleString();
+                            else numEl.innerHTML = Math.round(newVal);
                             numEl.style.transitionDuration = '280ms';
                             numEl.style.transform = 'translateY(0)';
                         }, 30);
                     }
-                }, i * 70);
+                }, i * 65);
             });
             
-            showToast("Dashboard refreshed with latest live data");
+            setTimeout(() => {
+                if (accuracyChartInstance) {
+                    const newData = accuracyChartInstance.data.datasets[0].data.map(v => Math.max(90, Math.min(96, v + (Math.random() - 0.5) * 0.6)));
+                    accuracyChartInstance.data.datasets[0].data = newData;
+                    accuracyChartInstance.update();
+                }
+            }, 420);
+            
+            showToast("Dashboard refreshed with latest live data", 'success');
         }
-        
-        // === AI CHAT DEMO ===
-        let chatHistory = [];
-        
+
+        // AI Chat
         function initChat() {
             const container = document.getElementById('chat-messages');
             container.innerHTML = `
                 <div class="flex gap-x-3">
-                    <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center">
+                    <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
                         <i class="fa-solid fa-robot text-xs text-black"></i>
                     </div>
                     <div class="max-w-[82%]">
                         <div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div>
-                        <div class="bg-white/5 px-4 py-3 rounded-3xl text-sm">Hey! I'm Symantic AI. Ask me anything about current games, esports, upcoming releases, or predictions. What would you like to know?</div>
+                        <div class="bg-white/5 px-4 py-3 rounded-3xl text-sm">Hey! I'm Symantic AI. Ask me anything about current games, esports, upcoming releases, or predictions.</div>
                     </div>
                 </div>
             `;
+            chatHistory = [];
+        }
+        
+        function initQuickPrompts() {
+            const container = document.getElementById('quick-prompts');
+            const prompts = [
+                { text: "GTA VI release date?", query: "When is GTA VI releasing?" },
+                { text: "Valorant meta right now", query: "What's the current Valorant meta?" },
+                { text: "Black Myth Wukong 2 prediction", query: "Black Myth Wukong 2 announcement prediction" },
+                { text: "Best FPS game 2026", query: "What is the best FPS game right now?" }
+            ];
+            container.innerHTML = prompts.map(p => `<button onclick="quickPrompt('${p.query}')" class="quick-prompt px-3.5 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-white/80">${p.text}</button>`).join('');
+        }
+        
+        function quickPrompt(query) {
+            const container = document.getElementById('chat-messages');
+            const userMsg = document.createElement('div');
+            userMsg.className = 'flex justify-end';
+            userMsg.innerHTML = `<div class="max-w-[75%] bg-[#00f5ff] text-black px-4 py-3 rounded-3xl text-sm">${query}</div>`;
+            container.appendChild(userMsg);
+            container.scrollTop = container.scrollHeight;
+            
+            setTimeout(() => {
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const aiReply = generateAIResponse(query);
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-x-3 ai-message';
+                    aiMsg.innerHTML = `
+                        <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+                            <i class="fa-solid fa-robot text-xs text-black"></i>
+                        </div>
+                        <div class="max-w-[82%]">
+                            <div class="text-xs text-white/50 mb-px flex items-center gap-x-2">SYMANTIC AI • just now 
+                                <button onclick="copyToClipboard(this)" class="text-white/40 hover:text-white/70 transition-colors"><i class="fa-solid fa-copy text-xs"></i></button>
+                            </div>
+                            <div class="bg-white/5 px-4 py-[13px] rounded-3xl text-sm">${aiReply}</div>
+                        </div>
+                    `;
+                    container.appendChild(aiMsg);
+                    container.scrollTop = container.scrollHeight;
+                    chatHistory.push({ role: 'user', content: query });
+                    chatHistory.push({ role: 'assistant', content: aiReply });
+                    if (chatHistory.length > 6) chatHistory = chatHistory.slice(-6);
+                }, 1250);
+            }, 380);
+        }
+        
+        function showTypingIndicator() {
+            const container = document.getElementById('chat-messages');
+            const typing = document.createElement('div');
+            typing.id = 'typing-indicator';
+            typing.className = 'flex gap-x-3';
+            typing.innerHTML = `
+                <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+                    <i class="fa-solid fa-robot text-xs text-black"></i>
+                </div>
+                <div class="bg-white/5 px-4 py-3 rounded-3xl">
+                    <div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>
+                </div>
+            `;
+            container.appendChild(typing);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function removeTypingIndicator() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
         }
         
         function sendChatMessage() {
@@ -1155,75 +1452,82 @@
             if (!msg) return;
             
             const container = document.getElementById('chat-messages');
-            
-            // User message
             const userMsg = document.createElement('div');
             userMsg.className = 'flex justify-end';
-            userMsg.innerHTML = `
-                <div class="max-w-[75%] bg-[#00f5ff] text-black px-4 py-3 rounded-3xl text-sm">
-                    ${msg}
-                </div>
-            `;
+            userMsg.innerHTML = `<div class="max-w-[75%] bg-[#00f5ff] text-black px-4 py-3 rounded-3xl text-sm">${msg}</div>`;
             container.appendChild(userMsg);
             container.scrollTop = container.scrollHeight;
-            
             input.value = '';
             
-            // Simulate AI thinking
             setTimeout(() => {
-                const aiReply = generateAIResponse(msg);
-                
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'flex gap-x-3 ai-message';
-                aiMsg.innerHTML = `
-                    <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center">
-                        <i class="fa-solid fa-robot text-xs text-black"></i>
-                    </div>
-                    <div class="max-w-[82%]">
-                        <div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div>
-                        <div class="bg-white/5 px-4 py-[13px] rounded-3xl text-sm">${aiReply}</div>
-                    </div>
-                `;
-                container.appendChild(aiMsg);
-                container.scrollTop = container.scrollHeight;
-            }, 780 + Math.random() * 420);
+                showTypingIndicator();
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const aiReply = generateAIResponse(msg);
+                    const aiMsg = document.createElement('div');
+                    aiMsg.className = 'flex gap-x-3 ai-message';
+                    aiMsg.innerHTML = `
+                        <div class="w-8 h-8 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+                            <i class="fa-solid fa-robot text-xs text-black"></i>
+                        </div>
+                        <div class="max-w-[82%]">
+                            <div class="text-xs text-white/50 mb-px flex items-center gap-x-2">SYMANTIC AI • just now 
+                                <button onclick="copyToClipboard(this)" class="text-white/40 hover:text-white/70 transition-colors"><i class="fa-solid fa-copy text-xs"></i></button>
+                            </div>
+                            <div class="bg-white/5 px-4 py-[13px] rounded-3xl text-sm">${aiReply}</div>
+                        </div>
+                    `;
+                    container.appendChild(aiMsg);
+                    container.scrollTop = container.scrollHeight;
+                    chatHistory.push({ role: 'user', content: msg });
+                    chatHistory.push({ role: 'assistant', content: aiReply });
+                    if (chatHistory.length > 6) chatHistory = chatHistory.slice(-6);
+                }, 1350 + Math.random() * 450);
+            }, 420);
+        }
+        
+        function copyToClipboard(element) {
+            const text = element.closest('.max-w-\\[82\\%\\]').querySelector('.bg-white\\/5').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const original = element.innerHTML;
+                element.innerHTML = '<i class="fa-solid fa-check text-xs"></i>';
+                setTimeout(() => element.innerHTML = original, 1400);
+            });
         }
         
         function generateAIResponse(query) {
             const q = query.toLowerCase();
+            const context = chatHistory.length > 0 ? chatHistory[chatHistory.length - 1].content : '';
             
             if (q.includes('gta') || q.includes('grand theft auto')) {
-                return `Our current model gives <strong>87% confidence</strong> that GTA VI Trailer 2 will drop before March 2026. Early internal data from Rockstar shows strong marketing momentum. Want the full 2,400-word breakdown?`;
+                return `Our current model gives <strong>87% confidence</strong> that GTA VI Trailer 2 will drop before March 2026. The game is targeting a Fall 2026 release window.`;
             }
-            
-            if (q.includes('valorant') || q.includes('patch')) {
-                return `Valorant Patch 9.04 is expected mid-February. Jett and Raze are getting further adjustments. Our sentiment analysis from pro players shows 64% approval for the current meta direction.`;
+            if (q.includes('valorant') && (q.includes('meta') || q.includes('patch'))) {
+                return `Valorant Patch 9.04 is expected mid-February. Our sentiment analysis shows <strong>64% approval</strong> for the current meta direction.`;
             }
-            
             if (q.includes('black myth') || q.includes('wukong')) {
-                return `We have <strong>98% confidence</strong> on a Black Myth: Wukong 2 announcement at The Game Awards. Development is further along than most expect. This prediction was made 11 months ago.`;
+                return `We have <strong>98% confidence</strong> on a Black Myth: Wukong 2 announcement at The Game Awards. This remains our highest confidence call.`;
             }
-            
             if (q.includes('league') || q.includes('lol') || q.includes('worlds')) {
-                return `T1 is currently the favorite to win Worlds 2027 according to our model (71% chance). Their macro play this season has been exceptional.`;
+                return `T1 is currently the favorite to win Worlds 2027 according to our model (<strong>71% chance</strong>). Gen.G and LNG are close behind.`;
             }
-            
             if (q.includes('prediction') || q.includes('predict')) {
-                return `Based on current trends across Twitch, Steam wishlists, and social sentiment, here are our top 3 predictions for 2026: 1) Elden Ring Nightreign sells 8M+ copies 2) A major surprise indie wins GOTY 3) Valorant overtakes League in peak concurrent players.`;
+                return `Top 3 predictions for 2026:<br>1. Elden Ring Nightreign sells <strong>8M+</strong> copies<br>2. A surprise indie wins GOTY<br>3. Valorant overtakes League in peak players`;
+            }
+            if (q.includes('best fps')) {
+                return `Right now <strong>Counter-Strike 2</strong> and <strong>Valorant</strong> are fighting for the top spot. <strong>Apex Legends</strong> has seen +34% resurgence recently.`;
             }
             
-            // Default smart reply
             const defaults = [
-                `Interesting question. Our latest analysis shows strong positive sentiment around that topic. Would you like a detailed sentiment report?`,
-                `We've tracked over 142k discussions on this recently. The community is split but leaning positive. Want me to pull the top sources?`,
-                `According to our real-time model, this is trending upward (+248% mentions in the last 48 hours). I can give you the full forecast.`,
-                `Our AI has high confidence in the current trajectory. The data from Steam, Twitch, and Reddit all point in the same direction.`
+                `Our latest analysis shows strong positive sentiment. Would you like a detailed report?`,
+                `We've tracked over <strong>142k discussions</strong> recently. The community is leaning positive (58%).`,
+                `This is trending upward <strong>(+248% mentions in 48h)</strong>. I can give you the full forecast.`,
+                `Our AI has high confidence. Data from Steam, Twitch, and Reddit all align.`
             ];
-            
             return defaults[Math.floor(Math.random() * defaults.length)];
         }
-        
-        // === PRICING TOGGLE ===
+
+        // Pricing Toggle
         function togglePricing(period) {
             const monthlyBtn = document.getElementById('pricing-monthly');
             const yearlyBtn = document.getElementById('pricing-yearly');
@@ -1235,7 +1539,6 @@
                 monthlyBtn.classList.remove('text-white');
                 yearlyBtn.classList.remove('bg-white', 'text-black');
                 yearlyBtn.classList.add('text-white');
-                
                 proPrice.textContent = '$12';
                 proBilling.textContent = 'billed monthly • cancel anytime';
             } else {
@@ -1243,47 +1546,33 @@
                 yearlyBtn.classList.remove('text-white');
                 monthlyBtn.classList.remove('bg-white', 'text-black');
                 monthlyBtn.classList.add('text-white');
-                
                 proPrice.textContent = '$9';
                 proBilling.textContent = 'billed yearly • save $39';
             }
         }
-        
-        // === MODALS ===
+
+        // Modals
         function showLoginModal() {
             document.getElementById('login-modal').classList.remove('hidden');
             document.getElementById('login-modal').classList.add('flex');
         }
-        
         function hideLoginModal() {
             document.getElementById('login-modal').classList.remove('flex');
             document.getElementById('login-modal').classList.add('hidden');
         }
-        
         function loginUser() {
             hideLoginModal();
-            const btns = document.querySelectorAll('button');
-            showToast("Welcome back! You're now logged in as demo user.");
-            
-            // Personalize a bit
-            setTimeout(() => {
-                const liveSection = document.getElementById('live-feed');
-                if (liveSection) {
-                    liveSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 1100);
+            showToast("Welcome back! You're now logged in as demo user.", 'success');
+            setTimeout(() => document.getElementById('live-feed').scrollIntoView({ behavior: 'smooth', block: 'center' }), 1100);
         }
-        
         function showSubscribeModal() {
             document.getElementById('subscribe-modal').classList.remove('hidden');
             document.getElementById('subscribe-modal').classList.add('flex');
         }
-        
         function hideSubscribeModal() {
             document.getElementById('subscribe-modal').classList.remove('flex');
             document.getElementById('subscribe-modal').classList.add('hidden');
         }
-        
         function showContactModal() {
             const modal = document.createElement('div');
             modal.className = `fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6`;
@@ -1293,14 +1582,11 @@
                         <i class="fa-solid fa-headset text-4xl mb-4 text-[#00f5ff]"></i>
                         <div class="font-bold text-2xl">Let's talk enterprise</div>
                         <p class="mt-2 text-white/70">Our team will get back to you within 4 hours.</p>
-                        
                         <div class="mt-6 text-left">
                             <input placeholder="Your work email" class="w-full bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm mb-3" value="studio@yourgame.com">
                             <textarea placeholder="Tell us about your team..." class="w-full h-24 bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm resize-y"></textarea>
                         </div>
-                        
-                        <button onclick="this.closest('.fixed').remove(); showToast('Thanks! Our sales team will contact you shortly.')" 
-                                class="mt-5 w-full py-3.5 bg-white font-bold text-black rounded-3xl">Send message</button>
+                        <button onclick="this.closest('.fixed').remove(); showToast('Thanks! Our sales team will contact you shortly.', 'success')" class="mt-5 w-full py-3.5 bg-white font-bold text-black rounded-3xl active:scale-[0.985]">Send message</button>
                     </div>
                 </div>
             `;
@@ -1309,34 +1595,52 @@
         
         function toggleMobileMenu() {
             const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+            const icon = document.getElementById('mobile-menu-icon');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                icon.classList.add('fa-times');
+                icon.classList.remove('fa-bars');
+            } else {
+                menu.classList.add('hidden');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
         }
-        
-        // Boot the app
+
+        // Toast
+        function showToast(msg, type = 'success') {
+            const toast = document.createElement('div');
+            let icon = type === 'success' ? '<i class="fa-solid fa-check-double"></i>' : '<i class="fa-solid fa-info-circle"></i>';
+            let bg = type === 'success' ? 'bg-white text-black' : 'bg-white/90 text-black';
+            toast.className = `fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 ${bg} text-sm font-medium rounded-3xl shadow-2xl flex items-center gap-x-2 z-[200]`;
+            toast.innerHTML = `${icon} <span>${msg}</span>`;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.transition = 'all .25s ease';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 200);
+            }, 2300);
+        }
+
+        // Boot
         window.onload = function() {
             init();
             
-            // Easter egg: press "s" for surprise live update
             document.addEventListener('keypress', function(e) {
                 if (e.key.toLowerCase() === 's' && document.activeElement.tagName === "BODY") {
                     addLiveUpdate();
                 }
             });
             
-            // Demo tip
             setTimeout(() => {
                 const tip = document.createElement('div');
-                tip.style.cssText = 'position:fixed;bottom:18px;right:18px;background:rgba(255,255,255,0.06);color:#64748b;font-size:10px;padding:4px 11px;border-radius:9999px;border:1px solid rgba(255,255,255,0.1)';
+                tip.style.cssText = 'position:fixed;bottom:18px;right:18px;background:rgba(255,255,255,0.06);color:#64748b;font-size:10px;padding:4px 11px;border-radius:9999px;border:1px solid rgba(255,255,255,0.1);z-index:50';
                 tip.innerHTML = `Press <span class="font-mono text-white/60">"?"</span> to open AI chat`;
                 document.body.appendChild(tip);
-                
-                setTimeout(() => {
-                    if (tip && tip.parentNode) tip.parentNode.removeChild(tip);
-                }, 5200);
-            }, 8500);
-        }
+                setTimeout(() => tip.parentNode && tip.parentNode.removeChild(tip), 5800);
+            }, 9200);
+        };
         
-        // Expose some functions for advanced users
         window.SymanticDemo = {
             addLiveUpdate: () => addLiveUpdate(),
             refreshDashboard: () => refreshDashboard(),
@@ -1345,7 +1649,8 @@
                 input.value = q;
                 document.getElementById('demo').scrollIntoView({behavior:'smooth'});
                 setTimeout(() => sendChatMessage(), 650);
-            }
+            },
+            filterLive: (type) => filterLiveFeed(type)
         };
     </script>
 </body>
