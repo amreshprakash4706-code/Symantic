@@ -250,6 +250,10 @@
                         GET PRO
                     </button>
 
+                    <button onclick="toggleTheme()" class="w-10 h-10 flex items-center justify-center border border-white/20 hover:bg-white/5 rounded-2xl transition-colors" title="Toggle theme">
+                        <i class="fa-solid fa-moon text-lg" id="theme-icon"></i>
+                    </button>
+
                     <button id="mobile-menu-btn"
                             class="md:hidden w-11 h-11 flex items-center justify-center text-white/70 hover:text-white border border-white/10 rounded-2xl transition-colors"
                             onclick="toggleMobileMenu()"
@@ -778,19 +782,38 @@
         <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-8 modal">
             <div class="text-center">
                 <div class="mx-auto w-16 h-16 bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] rounded-3xl flex items-center justify-center mb-5">
-                    <i class="fa-solid fa-rocket text-3xl text-black"></i>
+                    <i class="fa-solid fa-credit-card text-3xl text-black"></i>
                 </div>
-                <div class="font-bold text-3xl">Thanks for trying Symantic!</div>
-                <p class="mt-2 text-white/70">This is a fully functional demo. In a real deployment, this would open Stripe checkout.</p>
-                <div class="mt-7 text-left text-xs bg-white/5 p-4 rounded-2xl">
-                    <div class="font-semibold mb-1">What you unlocked in this demo:</div>
-                    <ul class="space-y-px text-white/70">
-                        <li>• Full access to AI chat demo</li>
-                        <li>• Interactive live feed &amp; dashboard</li>
-                        <li>• All premium features simulated</li>
-                    </ul>
+                <div class="font-bold text-3xl">Subscribe to Pro</div>
+                <p class="mt-1 text-white/70">Start your 14-day free trial. Cancel anytime.</p>
+                
+                <!-- Fake Checkout Form -->
+                <div class="mt-6 text-left space-y-4">
+                    <div>
+                        <label class="text-xs tracking-widest text-white/50 block mb-1.5">CARD NUMBER</label>
+                        <input type="text" value="4242 4242 4242 4242" class="w-full bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm font-mono">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs tracking-widest text-white/50 block mb-1.5">EXPIRY</label>
+                            <input type="text" value="12/28" class="w-full bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm">
+                        </div>
+                        <div>
+                            <label class="text-xs tracking-widest text-white/50 block mb-1.5">CVC</label>
+                            <input type="text" value="424" class="w-full bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs tracking-widest text-white/50 block mb-1.5">NAME ON CARD</label>
+                        <input type="text" value="Alex Rivera" class="w-full bg-white/5 border border-white/10 px-5 py-3 rounded-3xl text-sm">
+                    </div>
                 </div>
-                <button onclick="hideSubscribeModal()" class="mt-6 w-full py-3 font-bold bg-white text-black rounded-3xl active:scale-[0.985]">Back to dashboard</button>
+                
+                <button onclick="processFakeCheckout()" class="mt-6 w-full py-3.5 font-bold bg-white text-black rounded-3xl active:scale-[0.985] flex items-center justify-center gap-x-2">
+                    <span>Start 14-Day Free Trial</span>
+                </button>
+                
+                <div class="text-[10px] text-white/40 mt-3">You won't be charged until after your trial ends.</div>
             </div>
         </div>
     </div>
@@ -823,6 +846,7 @@
 
         function init() {
             initializeTailwind();
+            applyTheme();
             initLiveFeed();
             initNewsSection();
             initChat();
@@ -835,6 +859,28 @@
             setInterval(() => {
                 if (Math.random() > 0.72) addLiveUpdate(true);
             }, 18500);
+            
+            // Extra real-time updates
+            setInterval(() => {
+                if (Math.random() > 0.85) {
+                    const metrics = document.querySelectorAll('#dashboard .metric-card');
+                    if (metrics.length > 0) {
+                        const randomMetric = metrics[Math.floor(Math.random() * metrics.length)];
+                        const numEl = randomMetric.querySelector('.stat-number');
+                        if (numEl) {
+                            let val = parseFloat(numEl.textContent.replace(/[^0-9.]/g, ''));
+                            if (!isNaN(val) && val > 50) {
+                                const newVal = val + (Math.random() > 0.5 ? 1 : -0.6);
+                                if (numEl.textContent.includes('.')) {
+                                    numEl.innerHTML = newVal.toFixed(1);
+                                } else if (val > 1000) {
+                                    numEl.innerHTML = Math.round(newVal).toLocaleString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }, 22000);
             
             document.addEventListener('keydown', function(e) {
                 if (e.key === "?" && document.activeElement.tagName === "BODY") {
@@ -858,7 +904,7 @@
                 });
             }, 1350);
             
-            console.log('%c[Symantic v3] Final improved version initialized', 'color:#64748b');
+            console.log('%c[Symantic v4] All requested improvements applied (Smart AI, Live updates, Theme, Checkout, Clickable Predictions)', 'color:#64748b');
         }
 
         // Back to Top
@@ -1013,7 +1059,8 @@
             
             data.forEach(pred => {
                 const card = document.createElement('div');
-                card.className = `glass border border-white/10 rounded-3xl p-6 gaming-card`;
+                card.className = `glass border border-white/10 rounded-3xl p-6 gaming-card cursor-pointer`;
+                card.onclick = () => showPredictionModal(pred);
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-4">
                         <span class="px-3 py-1 text-[10px] font-bold tracking-widest rounded-2xl ${pred.category === 'Esports' ? 'bg-violet-400/10 text-violet-400' : pred.category === 'Patch' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-orange-400/10 text-orange-400'}">${pred.category}</span>
@@ -1031,6 +1078,42 @@
                 `;
                 grid.appendChild(card);
             });
+        }
+        
+        function showPredictionModal(pred) {
+            const modal = document.createElement('div');
+            modal.className = `fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6`;
+            modal.innerHTML = `
+                <div onclick="event.target.remove()" class="glass max-w-lg w-full border border-white/10 rounded-3xl p-8 modal">
+                    <div class="flex justify-between items-start">
+                        <span class="px-4 py-1 text-xs font-bold tracking-widest rounded-3xl ${pred.category === 'Esports' ? 'bg-violet-400/10 text-violet-400' : pred.category === 'Patch' ? 'bg-emerald-400/10 text-emerald-400' : 'bg-orange-400/10 text-orange-400'}">${pred.category}</span>
+                        <span class="text-xs text-white/40 font-mono">${pred.date}</span>
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold tracking-tight mt-5">${pred.title}</h3>
+                    
+                    <div class="mt-6">
+                        <div class="flex justify-between text-sm mb-2">
+                            <span class="text-white/60">AI Confidence</span>
+                            <span class="font-mono text-emerald-400 font-bold">${pred.confidence}%</span>
+                        </div>
+                        <div class="h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div class="confidence-bar" style="width: ${pred.confidence}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 text-sm text-white/70 leading-relaxed">
+                        Our model has analyzed thousands of data points including social sentiment, betting odds, historical patterns, and insider signals. 
+                        This prediction has a <strong>${pred.confidence}% confidence score</strong>.
+                    </div>
+                    
+                    <div class="mt-8 flex gap-3">
+                        <button onclick="this.closest('.fixed').remove(); showToast('Added to watchlist')" class="flex-1 py-3 border border-white/20 hover:bg-white/5 rounded-3xl font-semibold text-sm">Add to Watchlist</button>
+                        <button onclick="this.closest('.fixed').remove()" class="flex-1 py-3 bg-white text-black font-bold rounded-3xl active:scale-[0.985]">Close</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
         }
         
         function refreshPredictions() {
@@ -1573,6 +1656,33 @@
             document.getElementById('subscribe-modal').classList.remove('flex');
             document.getElementById('subscribe-modal').classList.add('hidden');
         }
+        
+        function processFakeCheckout() {
+            const modalContent = document.querySelector('#subscribe-modal .glass');
+            modalContent.innerHTML = `
+                <div class="text-center py-8">
+                    <div class="mx-auto w-16 h-16 bg-emerald-400/10 rounded-3xl flex items-center justify-center mb-5">
+                        <i class="fa-solid fa-check text-4xl text-emerald-400"></i>
+                    </div>
+                    <div class="font-bold text-3xl">Welcome to Pro!</div>
+                    <p class="mt-2 text-white/70">Your 14-day free trial has started.</p>
+                    
+                    <div class="mt-8 text-left bg-white/5 p-5 rounded-2xl text-sm">
+                        <div class="font-semibold mb-2">What's unlocked now:</div>
+                        <ul class="space-y-1 text-white/80">
+                            <li>✓ Unlimited AI insights</li>
+                            <li>✓ Early access to predictions</li>
+                            <li>✓ Custom dashboards</li>
+                            <li>✓ Priority support</li>
+                        </ul>
+                    </div>
+                    
+                    <button onclick="hideSubscribeModal(); showToast('Pro features activated!')" class="mt-6 w-full py-3.5 font-bold bg-white text-black rounded-3xl active:scale-[0.985]">
+                        Start Exploring Pro Features
+                    </button>
+                </div>
+            `;
+        }
         function showContactModal() {
             const modal = document.createElement('div');
             modal.className = `fixed inset-0 bg-black/70 z-[100] flex items-center justify-center p-6`;
@@ -1604,6 +1714,36 @@
                 menu.classList.add('hidden');
                 icon.classList.remove('fa-times');
                 icon.classList.add('fa-bars');
+            }
+        }
+        
+        // Theme Toggle
+        let currentTheme = localStorage.getItem('symantic_theme') || 'dark';
+        
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme();
+            localStorage.setItem('symantic_theme', currentTheme);
+        }
+        
+        function applyTheme() {
+            const icon = document.getElementById('theme-icon');
+            if (!icon) return;
+            
+            if (currentTheme === 'light') {
+                document.documentElement.style.setProperty('--bg-primary', '#f8fafc');
+                document.documentElement.style.setProperty('--text-primary', '#0f172a');
+                document.body.style.background = '#f8fafc';
+                document.body.style.color = '#0f172a';
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                document.documentElement.style.setProperty('--bg-primary', '#0a0a0f');
+                document.documentElement.style.setProperty('--text-primary', '#ffffff');
+                document.body.style.background = '#0a0a0f';
+                document.body.style.color = '#ffffff';
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
             }
         }
 
