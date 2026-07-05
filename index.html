@@ -1878,144 +1878,78 @@
                 setTimeout(() => element.innerHTML = original, 1500);
             });
         }
-        
-       // ==================== GROQ REAL AI (Protected) ====================
+  // ==================== GROQ (Real + Protected) ====================
 async function generateAIResponse(query) {
     try {
         const response = await fetch("/api/groq", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 messages: [
-                    {
-                        role: "system",
-                        content: "You are Symantic AI, a helpful gaming assistant. Give clear and accurate answers about games, esports, patches, and predictions."
-                    },
-                    {
-                        role: "user",
-                        content: query
-                    }
+                    { role: "system", content: "You are Symantic AI, a helpful gaming assistant." },
+                    { role: "user", content: query }
                 ]
             })
         });
-
         const data = await response.json();
-
-        if (data.choices && data.choices[0]) {
-            return data.choices[0].message.content;
-        } else {
-            return "Sorry, I couldn't get a response right now.";
-        }
-    } catch (error) {
-        console.error("Groq Error:", error);
-        return "Sorry, there was a connection error. Please try again later.";
+        return data.choices?.[0]?.message?.content || "Sorry, something went wrong.";
+    } catch (e) {
+        return "Sorry, connection error.";
     }
 }
 
-
-// ==================== sendChatMessage ====================
 async function sendChatMessage() {
     const input = document.getElementById('chat-input');
     const msg = input.value.trim();
     if (!msg) return;
 
     const container = document.getElementById('chat-messages');
-
-    const userMsg = document.createElement('div');
-    userMsg.className = 'flex justify-end';
-    userMsg.innerHTML = `<div class="max-w-[78%] bg-[#00f5ff] text-black px-5 py-3.5 rounded-3xl text-sm">${msg}</div>`;
-    container.appendChild(userMsg);
+    container.innerHTML += `<div class="flex justify-end"><div class="max-w-[78%] bg-[#00f5ff] text-black px-5 py-3.5 rounded-3xl text-sm">${msg}</div></div>`;
     container.scrollTop = container.scrollHeight;
-
     input.value = '';
 
     showTypingIndicator();
 
-    try {
-        const aiReply = await generateAIResponse(msg);
-        removeTypingIndicator();
+    const aiReply = await generateAIResponse(msg);
+    removeTypingIndicator();
 
-        const aiMsg = document.createElement('div');
-        aiMsg.className = 'flex gap-x-3.5 chat-bubble';
-        aiMsg.innerHTML = `
-            <div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
-                <i class="fa-solid fa-robot text-xs text-black"></i>
-            </div>
-            <div class="max-w-[82%]">
-                <div class="text-xs text-white/50 mb-px flex items-center gap-x-2">
-                    SYMANTIC AI • just now 
-                    <button onclick="copyToClipboard(this)" class="text-white/40 hover:text-white/70 transition-colors">
-                        <i class="fa-solid fa-copy text-xs"></i>
-                    </button>
-                </div>
-                <div class="bg-white/5 px-5 py-[13px] rounded-3xl text-sm" id="streaming-text"></div>
-            </div>
-        `;
-        container.appendChild(aiMsg);
-        container.scrollTop = container.scrollHeight;
-
-        const textEl = aiMsg.querySelector('#streaming-text');
-        streamText(textEl, aiReply);
-
-        chatHistory.push({ role: 'user', content: msg });
-        chatHistory.push({ role: 'assistant', content: aiReply });
-        if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
-
-    } catch (error) {
-        removeTypingIndicator();
-        showToast("Something went wrong. Please try again.", "error");
-    }
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'flex gap-x-3.5 chat-bubble';
+    aiMsg.innerHTML = `
+        <div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+            <i class="fa-solid fa-robot text-xs text-black"></i>
+        </div>
+        <div class="max-w-[82%]">
+            <div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div>
+            <div class="bg-white/5 px-5 py-[13px] rounded-3xl text-sm">${aiReply}</div>
+        </div>
+    `;
+    container.appendChild(aiMsg);
+    container.scrollTop = container.scrollHeight;
 }
 
-
-// ==================== quickPrompt ====================
 async function quickPrompt(query) {
     const container = document.getElementById('chat-messages');
-
-    const userMsg = document.createElement('div');
-    userMsg.className = 'flex justify-end';
-    userMsg.innerHTML = `<div class="max-w-[78%] bg-[#00f5ff] text-black px-5 py-3.5 rounded-3xl text-sm">${query}</div>`;
-    container.appendChild(userMsg);
+    container.innerHTML += `<div class="flex justify-end"><div class="max-w-[78%] bg-[#00f5ff] text-black px-5 py-3.5 rounded-3xl text-sm">${query}</div></div>`;
     container.scrollTop = container.scrollHeight;
 
     showTypingIndicator();
+    const aiReply = await generateAIResponse(query);
+    removeTypingIndicator();
 
-    try {
-        const aiReply = await generateAIResponse(query);
-        removeTypingIndicator();
-
-        const aiMsg = document.createElement('div');
-        aiMsg.className = 'flex gap-x-3.5 chat-bubble';
-        aiMsg.innerHTML = `
-            <div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
-                <i class="fa-solid fa-robot text-xs text-black"></i>
-            </div>
-            <div class="max-w-[82%]">
-                <div class="text-xs text-white/50 mb-px flex items-center gap-x-2">
-                    SYMANTIC AI • just now 
-                    <button onclick="copyToClipboard(this)" class="text-white/40 hover:text-white/70 transition-colors">
-                        <i class="fa-solid fa-copy text-xs"></i>
-                    </button>
-                </div>
-                <div class="bg-white/5 px-5 py-[13px] rounded-3xl text-sm" id="streaming-text"></div>
-            </div>
-        `;
-        container.appendChild(aiMsg);
-        container.scrollTop = container.scrollHeight;
-
-        const textEl = aiMsg.querySelector('#streaming-text');
-        streamText(textEl, aiReply);
-
-        chatHistory.push({ role: 'user', content: query });
-        chatHistory.push({ role: 'assistant', content: aiReply });
-        if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
-
-    } catch (error) {
-        removeTypingIndicator();
-        showToast("Error getting response. Please try again.", "error");
-    }
+    const aiMsg = document.createElement('div');
+    aiMsg.className = 'flex gap-x-3.5 chat-bubble';
+    aiMsg.innerHTML = `
+        <div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+            <i class="fa-solid fa-robot text-xs text-black"></i>
+        </div>
+        <div class="max-w-[82%]">
+            <div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div>
+            <div class="bg-white/5 px-5 py-[13px] rounded-3xl text-sm">${aiReply}</div>
+        </div>
+    `;
+    container.appendChild(aiMsg);
+    container.scrollTop = container.scrollHeight;
 }
         function clearChat() {
             const container = document.getElementById('chat-messages');
