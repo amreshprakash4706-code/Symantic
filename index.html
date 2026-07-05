@@ -1879,37 +1879,144 @@
             });
         }
         
-        function generateAIResponse(query) {
-            const q = query.toLowerCase();
-            
-            if (q.includes('gta') || q.includes('grand theft auto')) {
-                return `Our current model gives <strong>87% confidence</strong> that GTA VI Trailer 2 will drop before March 2026. The game is targeting a Fall 2026 release window. Marketing is expected to ramp up significantly in the next 60 days.`;
-            }
-            if (q.includes('valorant') && (q.includes('meta') || q.includes('patch'))) {
-                return `Valorant Patch 9.04 is expected mid-February. Our sentiment analysis shows <strong>64% approval</strong> for the current meta direction. Jett and Viper changes are the biggest talking points right now.`;
-            }
-            if (q.includes('black myth') || q.includes('wukong')) {
-                return `We have <strong>98% confidence</strong> on a Black Myth: Wukong 2 announcement at The Game Awards. This remains our highest confidence call. Development appears to be further along than most expected.`;
-            }
-            if (q.includes('league') || q.includes('lol') || q.includes('worlds')) {
-                return `T1 is currently the favorite to win Worlds 2027 according to our model (<strong>71% chance</strong>). Gen.G and LNG are close behind. The meta is shifting toward more aggressive playstyles.`;
-            }
-            if (q.includes('prediction') || q.includes('predict')) {
-                return `Top 3 predictions for 2026:<br>1. Elden Ring Nightreign sells <strong>8M+</strong> copies in first month<br>2. A surprise indie wins GOTY<br>3. Valorant overtakes League in peak concurrent players`;
-            }
-            if (q.includes('best fps')) {
-                return `Right now <strong>Counter-Strike 2</strong> and <strong>Valorant</strong> are fighting for the top spot. <strong>Apex Legends</strong> has seen a +34% resurgence in player count recently.`;
-            }
-            
-            const defaults = [
-                `Our latest analysis shows strong positive sentiment across the board. Would you like a detailed breakdown of the data points?`,
-                `We've tracked over <strong>142k discussions</strong> in the last 48 hours. The community is leaning positive (58%).`,
-                `This topic is trending upward <strong>(+248% mentions in 48h)</strong>. I can pull the full forecast and key drivers for you.`,
-                `Our AI has high confidence here. Data from Steam, Twitch, Reddit, and betting markets all align on this trajectory.`
-            ];
-            return defaults[Math.floor(Math.random() * defaults.length)];
+       // ==================== GROQ REAL AI (Protected) ====================
+async function generateAIResponse(query) {
+    try {
+        const response = await fetch("/api/groq", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are Symantic AI, a helpful gaming assistant. Give clear and accurate answers about games, esports, patches, and predictions."
+                    },
+                    {
+                        role: "user",
+                        content: query
+                    }
+                ]
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.choices && data.choices[0]) {
+            return data.choices[0].message.content;
+        } else {
+            return "Sorry, I couldn't get a response right now.";
         }
-        
+    } catch (error) {
+        console.error("Groq Error:", error);
+        return "Sorry, there was a connection error. Please try again later.";
+    }
+}
+
+
+// ==================== sendChatMessage ====================
+async function sendChatMessage() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    const container = document.getElementById('chat-messages');
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'flex justify-end';
+    userMsg.innerHTML = `<div class="max-w-[78%] bg-[#00f5ff] text-black px-5 py-3.5 rounded-3xl text-sm">${msg}</div>`;
+    container.appendChild(userMsg);
+    container.scrollTop = container.scrollHeight;
+
+    input.value = '';
+
+    showTypingIndicator();
+
+    try {
+        const aiReply = await generateAIResponse(msg);
+        removeTypingIndicator();
+
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'flex gap-x-3.5 chat-bubble';
+        aiMsg.innerHTML = `
+            <div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+                <i class="fa-solid fa-robot text-xs text-black"></i>
+            </div>
+            <div class="max-w-[82%]">
+                <div class="text-xs text-white/50 mb-px flex items-center gap-x-2">
+                    SYMANTIC AI • just now 
+                    <button onclick="copyToClipboard(this)" class="text-white/40 hover:text-white/70 transition-colors">
+                        <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
+                </div>
+                <div class="bg-white/5 px-5 py-[13px] rounded-3xl text-sm" id="streaming-text"></div>
+            </div>
+        `;
+        container.appendChild(aiMsg);
+        container.scrollTop = container.scrollHeight;
+
+        const textEl = aiMsg.querySelector('#streaming-text');
+        streamText(textEl, aiReply);
+
+        chatHistory.push({ role: 'user', content: msg });
+        chatHistory.push({ role: 'assistant', content: aiReply });
+        if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
+
+    } catch (error) {
+        removeTypingIndicator();
+        showToast("Something went wrong. Please try again.", "error");
+    }
+}
+
+
+// ==================== quickPrompt ====================
+async function quickPrompt(query) {
+    const container = document.getElementById('chat-messages');
+
+    const userMsg = document.createElement('div');
+    userMsg.className = 'flex justify-end';
+    userMsg.innerHTML = `<div class="max-w-[78%] bg-[#00f5ff] text-black px-5 py-3.5 rounded-3xl text-sm">${query}</div>`;
+    container.appendChild(userMsg);
+    container.scrollTop = container.scrollHeight;
+
+    showTypingIndicator();
+
+    try {
+        const aiReply = await generateAIResponse(query);
+        removeTypingIndicator();
+
+        const aiMsg = document.createElement('div');
+        aiMsg.className = 'flex gap-x-3.5 chat-bubble';
+        aiMsg.innerHTML = `
+            <div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20">
+                <i class="fa-solid fa-robot text-xs text-black"></i>
+            </div>
+            <div class="max-w-[82%]">
+                <div class="text-xs text-white/50 mb-px flex items-center gap-x-2">
+                    SYMANTIC AI • just now 
+                    <button onclick="copyToClipboard(this)" class="text-white/40 hover:text-white/70 transition-colors">
+                        <i class="fa-solid fa-copy text-xs"></i>
+                    </button>
+                </div>
+                <div class="bg-white/5 px-5 py-[13px] rounded-3xl text-sm" id="streaming-text"></div>
+            </div>
+        `;
+        container.appendChild(aiMsg);
+        container.scrollTop = container.scrollHeight;
+
+        const textEl = aiMsg.querySelector('#streaming-text');
+        streamText(textEl, aiReply);
+
+        chatHistory.push({ role: 'user', content: query });
+        chatHistory.push({ role: 'assistant', content: aiReply });
+        if (chatHistory.length > 8) chatHistory = chatHistory.slice(-8);
+
+    } catch (error) {
+        removeTypingIndicator();
+        showToast("Error getting response. Please try again.", "error");
+    }
+}
         function clearChat() {
             const container = document.getElementById('chat-messages');
             container.innerHTML = '';
