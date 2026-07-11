@@ -1,0 +1,282 @@
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --bg: #050507;
+            --surface: #0a0a0f;
+            --glass: rgba(255,255,255,0.035);
+            --border: rgba(255,255,255,0.07);
+            --primary: #00f5ff;
+            --accent: #7c3aed;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+        }
+
+        .section-header {
+            font-size: 3.25rem;
+            line-height: 0.95;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+        }
+
+        .premium-card {
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                       box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                       border-color 0.2s ease;
+            will-change: transform;
+        }
+        
+        .premium-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 70px -15px rgb(0 0 0 / 0.4), 
+                       0 10px 20px -5px rgb(0 0 0 / 0.3);
+            border-color: rgba(0, 245, 255, 0.2);
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.15s ease;
+        }
+        
+        .nav-link:hover {
+            color: #fff;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: linear-gradient(to right, #00f5ff, #7c3aed);
+            transition: width 0.25s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .gaming-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s cubic-bezier(0.23, 1.0, 0.32, 1);
+        }
+        
+        .gaming-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 30px -10px rgb(0 245 255 / 0.4);
+        }
+
+        .gaming-btn:active {
+            transform: scale(0.985);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.35);
+            transform: scale(0);
+            animation: ripple-effect 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-effect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .metric-card {
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .metric-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 245, 255, 0.25);
+        }
+
+        .stat-number {
+            font-variant-numeric: tabular-nums;
+            font-feature-settings: "tnum";
+        }
+
+        .prediction-card {
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), 
+                       box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .prediction-card:hover {
+            transform: translateY(-6px) scale(1.005);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+        }
+
+        .news-card {
+            transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .news-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 25px 60px -15px rgb(0 0 0 / 0.35);
+            border-color: rgba(0, 245, 255, 0.15);
+        }
+
+        .live-item {
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .live-item:hover {
+            background-color: rgba(255,255,255,0.03);
+            transform: translateX(2px);
+        }
+
+        .filter-tab {
+            transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+        }
+        
+        .filter-tab.active {
+            color: #fff;
+            background: rgba(255,255,255,0.06);
+        }
+        
+        .filter-tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 2px;
+            background: linear-gradient(to right, #00f5ff, #7c3aed);
+            border-radius: 2px;
+        }
+
+        .premium-btn {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .premium-btn:hover {
+            box-shadow: 0 0 0 1px rgba(0,245,255,0.3),
+                       0 10px 30px -10px rgb(0 245 255 / 0.3);
+        }
+
+        .confidence-bar {
+            height: 5px;
+            background: linear-gradient(90deg, #00f5ff, #7c3aed);
+            border-radius: 999px;
+            transition: width 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .ai-avatar {
+            background: linear-gradient(135deg, #00f5ff, #7c3aed);
+        }
+
+        .chat-bubble {
+            animation: fadeInUp 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .section {
+            scroll-margin-top: 80px;
+        }
+
+        .tilt-card {
+            transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+        }
+
+        .subtle-grid {
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .premium-shadow {
+            box-shadow: 0 10px 40px -10px rgb(0 0 0 / 0.3),
+                       0 0 0 1px rgba(255,255,255,0.06) inset;
+        }
+
+        .nav-active {
+            color: #fff;
+            position: relative;
+        }
+        
+        .nav-active:after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background: linear-gradient(to right, #00f5ff, #7c3aed);
+        }
+
+        .command-palette {
+            animation: modalPop 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .micro-hover {
+            transition: all 0.15s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        
+        .micro-hover:hover {
+            transform: translateY(-1px);
+        }
+
+        .thinking-dots {
+            display: inline-flex;
+            gap: 3px;
+            align-items: center;
+        }
+        
+        .thinking-dots span {
+            width: 4px;
+            height: 4px;
+            background: #64748b;
+            border-radius: 50%;
+            animation: thinking 1.2s infinite ease-in-out;
+        }
+        
+        .thinking-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .thinking-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 1.5px;
+            background: linear-gradient(to right, #00f5ff, #7c3aed);
+            z-index: 100;
+            transition: width 0.1s ease-out;
+        }
+
+        .bottom-nav {
+            box-shadow: 0 -10px 30px -15px rgb(0 0 0 / 0.5);
+        }
+
+        .metric-value {
+            font-feature-settings: "tnum";
+        }
