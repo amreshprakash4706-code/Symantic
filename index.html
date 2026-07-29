@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Symantic">
+    <meta property="og:title" content="SYMANTIC • Gaming Intelligence">
+    <meta property="og:description" content="The AI co-pilot for gamers and esports. Real-time predictions with 94.7% accuracy, live intelligence, and honest analysis.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <meta name="description" content="SYMANTIC — The AI co-pilot for gamers and esports. Real-time predictions with 94.7% accuracy, live intelligence, and honest analysis.">
     <meta name="theme-color" content="#00f5ff">
     <title>SYMANTIC • Gaming Intelligence</title>
@@ -14,11 +24,13 @@
     
 </head>
 <body class="bg-[#050507] text-[#f1f5f9] overflow-x-hidden">
+    <a href="#intelligence" class="skip-link">Skip to main content</a>
     <!-- SCROLL PROGRESS -->
     <div id="scroll-progress" class="scroll-progress" style="width: 0%"></div>
 
     <!-- NAVBAR -->
-    <nav class="sticky top-0 z-50 border-b border-white/10 bg-[#050507]/95 backdrop-blur-2xl">
+    <header>
+    <nav class="sticky top-0 z-50 border-b border-white/10 bg-[#050507]/95 backdrop-blur-2xl" aria-label="Primary">
         <div class="max-w-screen-2xl mx-auto">
             <div class="px-8 py-5 flex items-center justify-between">
                 <!-- Logo -->
@@ -72,7 +84,9 @@
                     <button id="mobile-menu-btn"
                             class="md:hidden w-11 h-11 flex items-center justify-center text-white/70 hover:text-white border border-white/15 rounded-2xl transition-all active:scale-[0.985]"
                             onclick="toggleMobileMenu()"
-                            aria-label="Toggle mobile menu">
+                            aria-label="Toggle mobile menu"
+                            aria-expanded="false"
+                            aria-controls="mobile-menu">
                         <i class="fa-solid fa-bars text-xl" id="mobile-menu-icon"></i>
                     </button>
                 </div>
@@ -94,7 +108,9 @@
             </div>
         </div>
     </nav>
+    </header>
 
+    <main id="main-content">
     <!-- HERO -->
     <div class="max-w-screen-2xl mx-auto px-8 pt-16 pb-20 relative">
         <div class="grid lg:grid-cols-12 gap-x-8 items-center">
@@ -131,7 +147,7 @@
                 
                 <div class="mt-9 flex items-center gap-x-6 text-sm">
                     <div class="flex -space-x-2.5">
-                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=12" class="w-full h-full object-cover" alt=""></div>
+                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=12" class="w-full h-full object-cover" alt="Gamer avatar"></div>
                         <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=28" class="w-full h-full object-cover" alt=""></div>
                         <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=47" class="w-full h-full object-cover" alt=""></div>
                         <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=15" class="w-full h-full object-cover" alt=""></div>
@@ -325,7 +341,7 @@
         </div>
         
         <div class="glass border border-white/10 rounded-3xl p-1.5">
-            <div id="live-feed-list" class="divide-y divide-white/10 max-h-[460px] overflow-auto rounded-3xl text-[14.5px]">
+            <div id="live-feed-list" class="divide-y divide-white/10 max-h-[460px] overflow-auto rounded-3xl text-[14.5px]" role="list" aria-live="polite" aria-relevant="additions">
             </div>
         </div>
         <p class="text-center text-xs text-white/40 mt-5">Real-time from 14 sources • Last synced moments ago</p>
@@ -365,8 +381,10 @@
             
             <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
                 <div class="relative flex-1 md:w-80">
-                    <input id="news-search" type="text" placeholder="Search analysis..." onkeyup="debounceFilterNews()" 
-                           class="w-full bg-white/5 border border-white/10 focus:border-[#00f5ff]/40 transition pl-11 py-3.5 rounded-3xl text-sm placeholder:text-white/40">
+                    <label for="news-search" class="sr-only">Search news</label>
+                    <input id="news-search" type="search" placeholder="Search analysis..." 
+                           class="w-full bg-white/5 border border-white/10 focus:border-[#00f5ff]/40 transition pl-11 py-3.5 rounded-3xl text-sm placeholder:text-white/40"
+                           aria-label="Search analysis">
                     <i class="fa-solid fa-search absolute left-5 top-4 text-white/40"></i>
                 </div>
                 <select id="news-filter" onchange="filterNews()" class="bg-white/5 border border-white/10 text-sm py-3.5 px-5 rounded-3xl cursor-pointer">
@@ -433,9 +451,12 @@
                 <div class="p-5 border-t border-white/10 bg-black/20">
                     <div class="flex gap-x-3">
                         <div class="flex-1 relative">
+                            <label for="chat-input" class="sr-only">Chat message</label>
                             <input id="chat-input" type="text" placeholder="Ask about GTA VI, Valorant meta, Black Myth Wukong 2, or any prediction..." 
                                    class="w-full bg-white/5 border border-white/10 focus:border-[#00f5ff]/50 transition rounded-3xl px-6 py-4 text-sm placeholder:text-white/40"
-                                   onkeypress="if (event.key === 'Enter') sendChatMessage()">
+                                   onkeypress="if (event.key === 'Enter') sendChatMessage()"
+                                   autocomplete="off"
+                                   aria-label="Ask Symantic AI">
                             <button onclick="uploadReplay()" class="absolute right-4 top-4 text-white/40 hover:text-white/70 transition-colors" title="Upload match replay for analysis">
                                 <i class="fa-solid fa-paperclip"></i>
                             </button>
@@ -621,8 +642,10 @@
         </div>
     </div>
 
+    </main>
+
     <!-- FOOTER -->
-    <footer class="border-t border-white/10 py-12 text-xs text-white/50">
+    <footer class="border-t border-white/10 py-12 text-xs text-white/50" role="contentinfo">
         <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row gap-y-5 items-center justify-between">
             <div>© 2026 Symantic. All rights reserved. Built with real data, zero hype.</div>
             <div class="flex gap-x-7">
@@ -641,20 +664,20 @@
 
     <!-- Modals -->
     <!-- Login Modal -->
-    <div id="login-modal" onclick="if (event.target.id === 'login-modal') hideLoginModal()" class="hidden fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6">
+    <div id="login-modal" onclick="if (event.target.id === 'login-modal') hideLoginModal()" class="hidden fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-labelledby="login-title">
         <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-9">
             <div class="flex justify-between items-center mb-8">
-                <div class="font-bold text-3xl tracking-tight">Welcome back</div>
+                <div id="login-title" class="font-bold text-3xl tracking-tight">Welcome back</div>
                 <button onclick="hideLoginModal()" class="text-white/50 hover:text-white transition-colors text-2xl leading-none" aria-label="Close">×</button>
             </div>
             <div class="space-y-5">
                 <div>
-                    <label class="text-xs tracking-widest text-white/50 block mb-2">EMAIL</label>
-                    <input type="email" value="demo@symantic.ai" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
+                    <label for="login-email" class="text-xs tracking-widest text-white/50 block mb-2">EMAIL</label>
+                    <input id="login-email" type="email" value="demo@symantic.ai" autocomplete="email" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
                 </div>
                 <div>
-                    <label class="text-xs tracking-widest text-white/50 block mb-2">PASSWORD</label>
-                    <input type="password" value="demo123" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
+                    <label for="login-password" class="text-xs tracking-widest text-white/50 block mb-2">PASSWORD</label>
+                    <input id="login-password" type="password" value="demo123" autocomplete="current-password" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
                 </div>
             </div>
             <button onclick="loginUser()" class="mt-8 w-full py-4 bg-white text-black font-bold rounded-3xl active:scale-[0.985]">Sign in</button>
@@ -663,13 +686,13 @@
     </div>
 
     <!-- Subscribe Modal -->
-    <div id="subscribe-modal" onclick="if (event.target.id === 'subscribe-modal') hideSubscribeModal()" class="hidden fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6">
+    <div id="subscribe-modal" onclick="if (event.target.id === 'subscribe-modal') hideSubscribeModal()" class="hidden fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6" role="dialog" aria-modal="true" aria-labelledby="subscribe-title">
         <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-md border border-white/10 rounded-3xl p-9">
             <div class="text-center">
                 <div class="mx-auto w-16 h-16 bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] rounded-3xl flex items-center justify-center mb-6">
                     <i class="fa-solid fa-credit-card text-3xl text-black"></i>
                 </div>
-                <div class="font-bold text-3xl tracking-tight">Subscribe to Pro</div>
+                <div id="subscribe-title" class="font-bold text-3xl tracking-tight">Subscribe to Pro</div>
                 <p class="mt-2 text-white/70">Start your 14-day free trial. Cancel anytime.</p>
                 
                 <div class="mt-8 text-left space-y-5">
@@ -702,7 +725,7 @@
     </div>
 
     <!-- Article Modal -->
-    <div id="article-modal" onclick="if (event.target.id === 'article-modal') hideArticleModal()" class="hidden fixed inset-0 bg-black/90 z-[130] flex items-center justify-center p-6">
+    <div id="article-modal" onclick="if (event.target.id === 'article-modal') hideArticleModal()" class="hidden fixed inset-0 bg-black/90 z-[130] flex items-center justify-center p-6" role="dialog" aria-modal="true">
         <div onclick="event.stopImmediatePropagation()" class="glass max-w-2xl w-full border border-white/10 rounded-3xl overflow-hidden">
             <div class="p-9" id="article-modal-content"></div>
             <div class="border-t border-white/10 p-5 flex justify-end bg-black/30">
@@ -712,7 +735,7 @@
     </div>
 
     <!-- Command Palette -->
-    <div id="command-palette" onclick="if (event.target.id === 'command-palette') hideCommandPalette()" class="hidden fixed inset-0 bg-black/80 z-[140] flex items-start justify-center pt-24 p-6">
+    <div id="command-palette" onclick="if (event.target.id === 'command-palette') hideCommandPalette()" class="hidden fixed inset-0 bg-black/80 z-[140] flex items-start justify-center pt-24 p-6" role="dialog" aria-modal="true" aria-label="Command palette">
         <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-lg border border-white/10 rounded-3xl overflow-hidden command-palette">
             <div class="p-4 border-b border-white/10">
                 <input id="command-input" type="text" placeholder="Type a command or search..." 
