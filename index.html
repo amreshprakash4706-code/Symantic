@@ -2,28 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Symantic">
+    <meta name="description" content="SYMANTIC — The AI co-pilot for gamers and esports. Real-time predictions, live intelligence from matches, and honest analysis with zero hype.">
+    <meta name="keywords" content="gaming news, esports predictions, AI gaming, game intelligence, live match analysis, GTA VI, Valorant meta">
+    <meta name="theme-color" content="#00f5ff">
+    <meta name="color-scheme" content="dark light">
+    <link rel="canonical" href="https://symantic.ai/">
     <meta property="og:title" content="SYMANTIC • Gaming Intelligence">
-    <meta property="og:description" content="The AI co-pilot for gamers and esports. Real-time predictions with 94.7% accuracy, live intelligence, and honest analysis.">
+    <meta property="og:description" content="Real-time predictions, live intelligence, and honest analysis for gamers and esports. Zero hype. Built to win.">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:site_name" content="Symantic">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="SYMANTIC • Gaming Intelligence">
+    <meta name="twitter:description" content="Real-time predictions, live intelligence, and honest analysis for gamers and esports.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2300f5ff'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-family='system-ui,sans-serif' font-weight='900' font-size='18' fill='%23000'%3ES%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <meta name="description" content="SYMANTIC — The AI co-pilot for gamers and esports. Real-time predictions with 94.7% accuracy, live intelligence, and honest analysis.">
-    <meta name="theme-color" content="#00f5ff">
     <title>SYMANTIC • Gaming Intelligence</title>
-    
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite","name":"Symantic","url":"https://symantic.ai/","description":"AI-powered gaming intelligence, predictions, and esports analysis.","potentialAction":{"@type":"SearchAction","target":"https://symantic.ai/#news","query-input":"required name=search_term_string"}}
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
     <link rel="stylesheet" href="styles.css">
     
 </head>
-<body class="bg-[#050507] text-[#f1f5f9] overflow-x-hidden">
+<body class="overflow-x-hidden">
     <a href="#intelligence" class="skip-link">Skip to main content</a>
     <!-- SCROLL PROGRESS -->
     <div id="scroll-progress" class="scroll-progress" style="width: 0%"></div>
@@ -32,16 +43,16 @@
     <header>
     <nav class="sticky top-0 z-50 border-b border-white/10 bg-[#050507]/95 backdrop-blur-2xl" aria-label="Primary">
         <div class="max-w-screen-2xl mx-auto">
-            <div class="px-8 py-5 flex items-center justify-between">
+            <div class="px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex items-center justify-between">
                 <!-- Logo -->
-                <div class="flex items-center gap-x-3 group">
+                <a href="#" class="flex items-center gap-x-3 group" aria-label="Symantic home">
                     <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center shadow-lg shadow-[#00f5ff]/20 group-hover:shadow-[#00f5ff]/40 transition-all duration-300">
-                        <span class="text-black font-black text-3xl tracking-[-2px]">S</span>
+                        <span class="text-black font-black text-3xl tracking-[-2px]" aria-hidden="true">S</span>
                     </div>
                     <div class="flex items-baseline">
                         <span class="font-display text-[27px] font-semibold tracking-[-1.5px]">SYMANTIC</span>
                     </div>
-                </div>
+                </a>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center gap-x-9 text-sm font-medium">
@@ -110,9 +121,9 @@
     </nav>
     </header>
 
-    <main id="main-content">
+    <main id="main-content" class="pb-20 md:pb-0">
     <!-- HERO -->
-    <div class="max-w-screen-2xl mx-auto px-8 pt-16 pb-20 relative">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20 relative">
         <div class="grid lg:grid-cols-12 gap-x-8 items-center">
             <!-- Left Content -->
             <div class="lg:col-span-7 max-w-3xl">
@@ -147,10 +158,10 @@
                 
                 <div class="mt-9 flex items-center gap-x-6 text-sm">
                     <div class="flex -space-x-2.5">
-                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=12" class="w-full h-full object-cover" alt="Gamer avatar"></div>
-                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=28" class="w-full h-full object-cover" alt=""></div>
-                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=47" class="w-full h-full object-cover" alt=""></div>
-                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=15" class="w-full h-full object-cover" alt=""></div>
+                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=12" class="w-full h-full object-cover" alt="" loading="lazy" decoding="async" width="32" height="32"></div>
+                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=28" class="w-full h-full object-cover" alt="" loading="lazy" decoding="async" width="32" height="32"></div>
+                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=47" class="w-full h-full object-cover" alt="" loading="lazy" decoding="async" width="32" height="32"></div>
+                        <div class="w-8 h-8 rounded-full ring-2 ring-[#050507] overflow-hidden"><img src="https://i.pravatar.cc/32?img=15" class="w-full h-full object-cover" alt="" loading="lazy" decoding="async" width="32" height="32"></div>
                     </div>
                     <div class="text-white/60">
                         <span class="font-semibold text-white/80">142,847</span> gamers using it today
@@ -162,7 +173,10 @@
             <div class="lg:col-span-5 mt-12 lg:mt-0 relative">
                 <div id="hero-floating-card" 
                      class="glass border border-white/10 rounded-3xl p-7 premium-shadow tilt-card max-w-[380px] ml-auto cursor-pointer"
-                     onclick="showPredictionModal({id:99, title: 'GTA VI Trailer 2', confidence: 87, date: 'Before March 2026', category: 'Prediction'})">
+                     role="button" tabindex="0"
+                     aria-label="GTA VI Trailer 2 prediction, 87% confidence"
+                     onclick="showPredictionModal({id:99, title: 'GTA VI Trailer 2', confidence: 87, date: 'Before March 2026', category: 'Prediction'})"
+                     onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
                     <div class="flex items-center justify-between mb-5">
                         <div>
                             <div class="text-xs tracking-[1.5px] font-bold text-white/50">HIGHEST CONFIDENCE</div>
@@ -200,7 +214,7 @@
 
     <!-- TRUST BAR -->
     <div class="border-y border-white/10 bg-white/[0.015] py-5">
-        <div class="max-w-screen-2xl mx-auto px-8">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-wrap justify-center md:justify-between items-center gap-x-10 gap-y-4 opacity-75 text-sm tracking-widest font-medium">
                 <div class="flex items-center gap-x-2.5"><i class="fa-brands fa-twitch text-[#9146FF]"></i> <span>TWITCH</span></div>
                 <div class="flex items-center gap-x-2.5"><i class="fa-brands fa-steam text-[#1b2838]"></i> <span>STEAM</span></div>
@@ -211,13 +225,13 @@
     </div>
 
     <!-- INTELLIGENCE DASHBOARD -->
-    <div id="intelligence" class="max-w-screen-2xl mx-auto px-8 pt-20 pb-16 section">
+    <div id="intelligence" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 section">
         <div class="flex items-end justify-between mb-9">
             <div>
                 <div class="uppercase tracking-[3px] text-xs font-bold text-[#00f5ff] mb-1">REAL-TIME</div>
-                <h2 class="text-5xl font-bold tracking-tighter">Live Intelligence</h2>
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter">Live Intelligence</h2>
             </div>
-            <button onclick="refreshDashboard()" 
+            <button type="button" onclick="refreshDashboard()" 
                     class="hidden md:flex items-center gap-x-2.5 px-6 py-2.5 text-sm border border-white/15 hover:bg-white/5 rounded-3xl font-medium transition-all active:scale-[0.985]">
                 <i class="fa-solid fa-sync-alt"></i>
                 <span>Refresh data</span>
@@ -226,7 +240,7 @@
 
         <!-- Metrics Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <div onclick="bumpMetric(this, 142847, 1247)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+            <div onclick="bumpMetric(this, 142847, 1247)" data-metric="readers" data-format="int" tabindex="0" role="button" aria-label="Active gamers metric" class="metric-card glass p-5 sm:p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-4">
                     <div class="text-white/50 text-xs font-medium tracking-widest">ACTIVE GAMERS</div>
                     <i class="fa-solid fa-users text-[#00f5ff]"></i>
@@ -237,7 +251,7 @@
                 </div>
             </div>
             
-            <div onclick="bumpMetric(this, 94.7, 0.4)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+            <div onclick="bumpMetric(this, 94.7, 0.4)" data-metric="accuracy" data-format="pct" tabindex="0" role="button" aria-label="Model accuracy metric" class="metric-card glass p-5 sm:p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-4">
                     <div class="text-white/50 text-xs font-medium tracking-widest">MODEL ACCURACY</div>
                     <i class="fa-solid fa-brain text-[#7c3aed]"></i>
@@ -248,7 +262,7 @@
                 </div>
             </div>
             
-            <div onclick="bumpMetric(this, 87, 4)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+            <div onclick="bumpMetric(this, 87, 4)" data-metric="articles" data-format="int" tabindex="0" role="button" aria-label="Insights today metric" class="metric-card glass p-5 sm:p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-4">
                     <div class="text-white/50 text-xs font-medium tracking-widest">INSIGHTS TODAY</div>
                     <i class="fa-solid fa-newspaper text-[#00f5ff]"></i>
@@ -259,7 +273,7 @@
                 </div>
             </div>
             
-            <div onclick="bumpMetric(this, 6.4, 0.3)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+            <div onclick="bumpMetric(this, 6.4, 0.3)" data-metric="readtime" data-format="min" tabindex="0" role="button" aria-label="Average read time metric" class="metric-card glass p-5 sm:p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-4">
                     <div class="text-white/50 text-xs font-medium tracking-widest">AVG. READ TIME</div>
                     <i class="fa-solid fa-clock text-[#00f5ff]"></i>
@@ -270,7 +284,7 @@
                 </div>
             </div>
             
-            <div onclick="bumpMetric(this, 128400, 3200)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+            <div onclick="bumpMetric(this, 128400, 3200)" data-metric="predictions" data-format="k" tabindex="0" role="button" aria-label="Predictions run metric" class="metric-card glass p-5 sm:p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-4">
                     <div class="text-white/50 text-xs font-medium tracking-widest">PREDICTIONS RUN</div>
                     <i class="fa-solid fa-chart-line text-[#7c3aed]"></i>
@@ -281,7 +295,7 @@
                 </div>
             </div>
             
-            <div onclick="bumpMetric(this, 312, 19)" class="metric-card glass p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
+            <div onclick="bumpMetric(this, 312, 19)" data-metric="matches" data-format="int" tabindex="0" role="button" aria-label="Esports matches metric" class="metric-card glass p-5 sm:p-6 rounded-3xl cursor-pointer border border-white/10 hover:border-[#00f5ff]/30">
                 <div class="flex justify-between items-start mb-4">
                     <div class="text-white/50 text-xs font-medium tracking-widest">ESPORTS MATCHES</div>
                     <i class="fa-solid fa-tachometer-alt text-[#00f5ff]"></i>
@@ -314,27 +328,27 @@
     </div>
 
     <!-- LIVE FEED -->
-    <div id="live" class="max-w-screen-2xl mx-auto px-8 pt-8 pb-20 section">
+    <div id="live" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-20 section">
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-7 gap-y-4">
             <div class="flex items-center gap-x-4">
                 <span class="px-5 py-1.5 text-xs font-bold tracking-[2px] rounded-3xl bg-red-500/10 text-red-400 border border-red-500/30">LIVE</span>
-                <span class="text-4xl font-bold tracking-tighter">Intelligence Feed</span>
+                <span class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tighter">Intelligence Feed</span>
             </div>
             
-            <div class="flex items-center gap-x-1.5 bg-white/5 border border-white/10 rounded-3xl p-1 text-sm">
-                <button onclick="filterLiveFeed('all')" id="filter-all" class="filter-tab active px-6 py-2 rounded-3xl font-medium">All</button>
-                <button onclick="filterLiveFeed('prediction')" id="filter-prediction" class="filter-tab px-5 py-2 rounded-3xl font-medium flex items-center gap-x-2">
+            <div class="flex items-center gap-x-1 bg-white/5 border border-white/10 rounded-3xl p-1 text-sm overflow-x-auto max-w-full scrollbar-none">
+                <button type="button" onclick="filterLiveFeed('all')" id="filter-all" class="filter-tab active px-4 sm:px-6 py-2 rounded-3xl font-medium whitespace-nowrap">All</button>
+                <button type="button" onclick="filterLiveFeed('prediction')" id="filter-prediction" class="filter-tab px-3 sm:px-5 py-2 rounded-3xl font-medium flex items-center gap-x-2 whitespace-nowrap">
                     <i class="fa-solid fa-brain text-[#7c3aed]"></i> <span>Predictions</span>
                 </button>
-                <button onclick="filterLiveFeed('news')" id="filter-news" class="filter-tab px-5 py-2 rounded-3xl font-medium flex items-center gap-x-2">
+                <button type="button" onclick="filterLiveFeed('news')" id="filter-news" class="filter-tab px-3 sm:px-5 py-2 rounded-3xl font-medium flex items-center gap-x-2 whitespace-nowrap">
                     <i class="fa-solid fa-newspaper text-[#00f5ff]"></i> <span>News</span>
                 </button>
-                <button onclick="filterLiveFeed('patch')" id="filter-patch" class="filter-tab px-5 py-2 rounded-3xl font-medium flex items-center gap-x-2">
+                <button type="button" onclick="filterLiveFeed('patch')" id="filter-patch" class="filter-tab px-3 sm:px-5 py-2 rounded-3xl font-medium flex items-center gap-x-2 whitespace-nowrap">
                     <i class="fa-solid fa-sync text-emerald-400"></i> <span>Patches</span>
                 </button>
             </div>
             
-            <button onclick="addLiveUpdate()" class="flex items-center gap-x-2.5 px-6 py-2.5 text-sm font-medium border border-white/15 hover:bg-white/5 rounded-3xl transition-all active:scale-[0.985]">
+            <button type="button" onclick="addLiveUpdate()" class="flex items-center gap-x-2.5 px-6 py-2.5 text-sm font-medium border border-white/15 hover:bg-white/5 rounded-3xl transition-all active:scale-[0.985]">
                 <i class="fa-solid fa-broadcast-tower"></i>
                 <span>Simulate live update</span>
             </button>
@@ -348,13 +362,13 @@
     </div>
 
     <!-- TOP PREDICTIONS -->
-    <div id="predictions" class="max-w-screen-2xl mx-auto px-8 pb-20 section">
+    <div id="predictions" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 section">
         <div class="flex items-end justify-between mb-8">
             <div>
                 <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold mb-1">HIGHEST CONFIDENCE</div>
-                <h3 class="text-5xl font-bold tracking-tighter">Top Predictions</h3>
+                <h3 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter">Top Predictions</h3>
             </div>
-            <button onclick="refreshPredictions()" class="hidden md:flex items-center gap-x-2.5 px-6 py-2.5 text-sm border border-white/15 hover:bg-white/5 rounded-3xl font-medium transition-all active:scale-[0.985]">
+            <button type="button" onclick="refreshPredictions()" class="hidden md:flex items-center gap-x-2.5 px-6 py-2.5 text-sm border border-white/15 hover:bg-white/5 rounded-3xl font-medium transition-all active:scale-[0.985]">
                 <i class="fa-solid fa-sync-alt"></i>
                 <span>Refresh predictions</span>
             </button>
@@ -366,13 +380,13 @@
     </div>
 
     <!-- NEWS -->
-    <div id="news" class="max-w-screen-2xl mx-auto px-8 pb-20 section">
+    <div id="news" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 section">
         <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-y-4 mb-8">
             <div>
                 <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold mb-1">JUST IN</div>
                 <div class="flex items-center gap-x-3">
-                    <h3 class="text-5xl font-bold tracking-tighter">Gaming News &amp; Analysis</h3>
-                    <div id="saved-count" onclick="showSavedArticles()" class="hidden items-center gap-x-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-2xl text-xs cursor-pointer hover:bg-white/10 transition-all">
+                    <h3 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter">Gaming News &amp; Analysis</h3>
+                    <div id="saved-count" role="button" tabindex="0" onclick="showSavedArticles()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();showSavedArticles();}" class="hidden items-center gap-x-2 px-4 py-1.5 bg-white/5 border border-white/10 rounded-2xl text-xs cursor-pointer hover:bg-white/10 transition-all">
                         <i class="fa-solid fa-bookmark text-[#00f5ff]"></i>
                         <span id="saved-count-text">0 saved</span>
                     </div>
@@ -408,11 +422,11 @@
     </div>
 
     <!-- AI DEMO - MAGICAL EXPERIENCE -->
-    <div id="ai" class="max-w-screen-2xl mx-auto px-8 py-20 border-y border-white/10 bg-[#0a0a0f] section">
+    <div id="ai" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-y border-white/10 bg-[#0a0a0f] section">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-10">
                 <div class="inline px-5 py-1.5 rounded-3xl bg-[#00f5ff]/10 text-[#00f5ff] text-xs tracking-[2.5px] font-bold mb-4">POWERED BY SYMANTIC-4</div>
-                <h2 class="text-6xl font-bold tracking-tighter mb-3">Talk to Symantic AI</h2>
+                <h2 class="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tighter mb-3">Talk to Symantic AI</h2>
                 <p class="text-white/70 max-w-md mx-auto text-[15px]">Ask anything. Get instant, data-backed answers with live reasoning.</p>
             </div>
             
@@ -474,10 +488,10 @@
     </div>
 
     <!-- HOW IT WORKS -->
-    <div class="max-w-screen-2xl mx-auto px-8 py-20 section">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 section">
         <div class="text-center mb-14">
             <div class="text-xs tracking-[3px] font-bold text-white/50 mb-2">3 STEPS TO YOUR EDGE</div>
-            <h2 class="text-5xl font-bold tracking-tighter">Your daily gaming intelligence</h2>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter">Your daily gaming intelligence</h2>
         </div>
         
         <div class="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -506,11 +520,11 @@
     </div>
 
     <!-- TESTIMONIALS -->
-    <div class="max-w-screen-2xl mx-auto px-8 pb-20 section">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 section">
         <div class="mb-10 flex items-center justify-between">
             <div>
                 <span class="text-xs font-bold tracking-[3px] text-white/50">LOVED BY THE BEST</span>
-                <h3 class="text-5xl font-bold tracking-tighter">Real players. Real results.</h3>
+                <h3 class="text-4xl sm:text-5xl font-bold tracking-tighter">What players are saying</h3>
             </div>
         </div>
         
@@ -521,10 +535,10 @@
                 </div>
                 <p class="italic text-white/90 leading-relaxed">"Symantic predicted the Black Myth Wukong 2 announcement 11 months early. Their analysis is terrifyingly accurate."</p>
                 <div class="mt-8 flex items-center gap-x-4">
-                    <img src="https://i.pravatar.cc/40?img=15" class="w-10 h-10 rounded-2xl ring-1 ring-white/20" alt="">
+                    <img src="https://i.pravatar.cc/40?img=15" class="w-10 h-10 rounded-2xl ring-1 ring-white/20" alt="" loading="lazy" decoding="async" width="40" height="40">
                     <div>
                         <div class="font-semibold">Alex Rivera</div>
-                        <div class="text-xs text-white/50">Pro Player • FaZe Clan</div>
+                        <div class="text-xs text-white/50">Competitive player</div>
                     </div>
                 </div>
             </div>
@@ -535,10 +549,10 @@
                 </div>
                 <p class="italic text-white/90 leading-relaxed">"Finally, honest game reviews without publisher pressure. The scoring system is transparent and brutally data-driven."</p>
                 <div class="mt-8 flex items-center gap-x-4">
-                    <img src="https://i.pravatar.cc/40?img=32" class="w-10 h-10 rounded-2xl ring-1 ring-white/20" alt="">
+                    <img src="https://i.pravatar.cc/40?img=32" class="w-10 h-10 rounded-2xl ring-1 ring-white/20" alt="" loading="lazy" decoding="async" width="40" height="40">
                     <div>
                         <div class="font-semibold">Maya Chen</div>
-                        <div class="text-xs text-white/50">Game Director • Riot Games</div>
+                        <div class="text-xs text-white/50">Game studio lead</div>
                     </div>
                 </div>
             </div>
@@ -549,10 +563,10 @@
                 </div>
                 <p class="italic text-white/90 leading-relaxed">"I check Symantic every morning. The personalized feed + early predictions save me hours of research every single day."</p>
                 <div class="mt-8 flex items-center gap-x-4">
-                    <img src="https://i.pravatar.cc/40?img=60" class="w-10 h-10 rounded-2xl ring-1 ring-white/20" alt="">
+                    <img src="https://i.pravatar.cc/40?img=60" class="w-10 h-10 rounded-2xl ring-1 ring-white/20" alt="" loading="lazy" decoding="async" width="40" height="40">
                     <div>
                         <div class="font-semibold">Jordan Lee</div>
-                        <div class="text-xs text-white/50">Creator • 2.4M subscribers</div>
+                        <div class="text-xs text-white/50">Content creator</div>
                     </div>
                 </div>
             </div>
@@ -560,16 +574,16 @@
     </div>
 
     <!-- PRICING -->
-    <div id="pricing" class="max-w-screen-2xl mx-auto px-8 py-20 bg-[#0a0a0f] border-t border-white/10 section">
+    <div id="pricing" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 bg-[#0a0a0f] border-t border-white/10 section">
         <div class="text-center mb-12">
             <div class="text-[#00f5ff] text-xs tracking-[3px] font-bold">CHOOSE YOUR EDGE</div>
-            <h2 class="text-5xl font-bold tracking-tighter">Plans built for serious gamers</h2>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter">Plans built for serious gamers</h2>
         </div>
         
         <div class="flex justify-center mb-9">
             <div class="inline-flex items-center rounded-3xl border border-white/15 p-1 text-sm font-medium">
-                <div onclick="togglePricing('monthly')" id="pricing-monthly" class="px-7 py-2.5 font-semibold cursor-pointer rounded-3xl bg-white text-black transition-all">Monthly</div>
-                <div onclick="togglePricing('yearly')" id="pricing-yearly" class="px-7 py-2.5 font-semibold cursor-pointer rounded-3xl transition-all">Yearly <span class="text-emerald-400 text-xs font-bold">(Save 35%)</span></div>
+                <button type="button" onclick="togglePricing('monthly')" id="pricing-monthly" aria-pressed="false" class="px-5 sm:px-7 py-2.5 font-semibold cursor-pointer rounded-3xl bg-white text-black transition-all">Monthly</button>
+                <button type="button" onclick="togglePricing('yearly')" id="pricing-yearly" aria-pressed="true" class="px-5 sm:px-7 py-2.5 font-semibold cursor-pointer rounded-3xl transition-all">Yearly <span class="text-emerald-400 text-xs font-bold">(Save 35%)</span></button>
             </div>
         </div>
         
@@ -631,9 +645,9 @@
     </div>
 
     <!-- FINAL CTA -->
-    <div class="max-w-screen-2xl mx-auto px-8 py-20 text-center">
+    <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
         <div class="max-w-lg mx-auto">
-            <h2 class="text-5xl font-bold tracking-tighter mb-4">Ready to play with an edge?</h2>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tighter mb-4">Ready to play with an edge?</h2>
             <p class="text-white/60 mb-8 text-lg">Join 142k+ gamers getting smarter every day.</p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button onclick="showSubscribeModal()" class="gaming-btn px-11 py-4 bg-white text-black font-extrabold text-base rounded-3xl active:scale-[0.985]">START 14-DAY PRO TRIAL</button>
@@ -646,7 +660,7 @@
 
     <!-- FOOTER -->
     <footer class="border-t border-white/10 py-12 text-xs text-white/50" role="contentinfo">
-        <div class="max-w-screen-2xl mx-auto px-8 flex flex-col md:flex-row gap-y-5 items-center justify-between">
+        <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row gap-y-5 items-center justify-between">
             <div>© 2026 Symantic. All rights reserved. Built with real data, zero hype.</div>
             <div class="flex gap-x-7">
                 <a href="#" class="hover:text-white transition-colors">Privacy</a>
@@ -748,13 +762,13 @@
 
     <!-- Back to Top -->
     <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" 
-            class="back-to-top hidden fixed bottom-8 right-8 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl items-center justify-center z-[90] transition-all active:scale-95"
+            type="button" aria-label="Back to top" class="back-to-top hidden fixed bottom-24 md:bottom-8 right-4 sm:right-8 w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 rounded-2xl items-center justify-center z-[90] transition-all active:scale-95"
             aria-label="Back to top">
         <i class="fa-solid fa-arrow-up text-white/70"></i>
     </button>
 
     <!-- Mobile Bottom Navigation -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#050507] border-t border-white/10 z-[110] bottom-nav">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-[#050507]/95 backdrop-blur-xl border-t border-white/10 z-[110] bottom-nav" role="navigation" aria-label="Mobile">
         <div class="flex justify-around items-center h-16 text-xs">
             <a href="#intelligence" class="flex flex-col items-center text-white/60 active:text-white"><i class="fa-solid fa-chart-line text-lg mb-0.5"></i><span>Intel</span></a>
             <a href="#live" class="flex flex-col items-center text-white/60 active:text-white"><i class="fa-solid fa-broadcast-tower text-lg mb-0.5"></i><span>Live</span></a>

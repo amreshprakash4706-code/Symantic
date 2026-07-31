@@ -21,6 +21,24 @@ let currentLiveFilter = 'all';
 let accuracyChartInstance = null;
 let currentTheme = localStorage.getItem('symantic_theme') || 'dark';
 let lastFocusedElement = null;
+let chatBusy = false;
+let openModalCount = 0;
+
+
+function lockBodyScroll() {
+  openModalCount += 1;
+  if (openModalCount === 1) {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+  }
+}
+function unlockBodyScroll() {
+  openModalCount = Math.max(0, openModalCount - 1);
+  if (openModalCount === 0) {
+    document.body.style.overflow = '';
+    document.documentElement.style.overflow = '';
+  }
+}
 
 function initializeTailwind() {
   if (typeof tailwind !== 'undefined') {
@@ -44,15 +62,19 @@ function init() {
   updateSavedCount();
   initCommandPaletteKeyboard();
   initModalFocusTraps();
+  initMetricKeyboard();
 
-  setInterval(() => { if (Math.random() > 0.75) addLiveUpdate(true); }, 19500);
+  setInterval(() => { if (document.hidden) return; if (Math.random() > 0.75) addLiveUpdate(true); }, 19500);
   setInterval(() => {
+    if (document.hidden) return;
     if (Math.random() > 0.88) {
       const metrics = $$('#intelligence .metric-card');
       if (!metrics.length) return;
       const m = metrics[Math.floor(Math.random()*metrics.length)];
       const n = m.querySelector('.metric-value');
       if (!n) return;
+      // Skip structured metrics that contain nested spans (accuracy, readtime)
+      if (n.querySelector('span')) return;
       let val = parseFloat(n.textContent.replace(/[^0-9.]/g,''));
       if (isNaN(val) || val <= 50) return;
       const nv = val + (Math.random()>0.5?0.8:-0.5);
@@ -69,6 +91,18 @@ function init() {
     document.body.appendChild(tip);
     setTimeout(() => tip.remove(), 6200);
   }, 9800);
+}
+
+
+function initMetricKeyboard() {
+  $$('#intelligence .metric-card').forEach(card => {
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        card.click();
+      }
+    });
+  });
 }
 
 function initScrollProgress() {
@@ -162,7 +196,26 @@ function filterLiveFeed(type) {
   currentLiveFilter = type;
   $$('.filter-tab').forEach(t => t.classList.remove('active'));
   const a = $('#filter-'+type); if (a) a.classList.add('active');
-  for (const item of ($('#live-feed-list')?.children||[])) item.style.display = (type==='all'||item.dataset.type===type)?'':'none';
+  const list = $('#live-feed-list');
+  if (!list) return;
+  let visible = 0;
+  for (const item of list.children) {
+    if (item.classList.contains('live-empty')) continue;
+    const show = type === 'all' || item.dataset.type === type;
+    item.style.display = show ? '' : 'none';
+    if (show) visible += 1;
+  }
+  let empty = list.querySelector('.live-empty');
+  if (visible === 0) {
+    if (!empty) {
+      empty = document.createElement('div');
+      empty.className = 'live-empty px-7 py-12 text-center text-sm text-white/50';
+      empty.textContent = 'No items in this category right now.';
+      list.appendChild(empty);
+    }
+  } else if (empty) {
+    empty.remove();
+  }
 }
 
 function addLiveUpdate(silent=false) {
@@ -211,12 +264,13 @@ function renderPredictions(data) {
 
 function showPredictionModal(pred) {
   lastFocusedElement = document.activeElement;
+  lockBodyScroll();
   const modal = document.createElement('div');
   modal.className = 'fixed inset-0 bg-black/90 z-[130] flex items-center justify-center p-6';
   modal.setAttribute('role','dialog'); modal.setAttribute('aria-modal','true'); modal.setAttribute('aria-labelledby','pred-modal-title');
   const cat = pred.category==='Esports'?'bg-violet-400/10 text-violet-400':pred.category==='Patch'?'bg-emerald-400/10 text-emerald-400':'bg-orange-400/10 text-orange-400';
   modal.innerHTML = `<div class="glass max-w-lg w-full border border-white/10 rounded-3xl p-9" role="document"><div class="flex justify-between items-start"><span class="px-4 py-1 text-xs font-bold tracking-widest rounded-3xl ${cat}">${escapeHTML(pred.category)}</span><span class="text-xs text-white/40 font-mono">${escapeHTML(pred.date)}</span></div><h3 id="pred-modal-title" class="text-3xl font-bold tracking-tighter mt-6">${escapeHTML(pred.title)}</h3><div class="mt-8"><div class="flex justify-between text-sm mb-2.5"><span class="text-white/60">AI Confidence</span><span class="font-mono text-emerald-400 font-bold text-lg">${pred.confidence}%</span></div><div class="h-2 bg-white/10 rounded-full overflow-hidden" role="progressbar" aria-valuenow="${pred.confidence}" aria-valuemin="0" aria-valuemax="100"><div class="confidence-bar" style="width:${pred.confidence}%"></div></div></div><div class="mt-7 text-sm text-white/70 leading-relaxed">Our model analyzed thousands of data points including social sentiment, betting odds, historical patterns, and insider signals. This prediction carries a <strong>${pred.confidence}% confidence score</strong>.</div><div class="mt-9 flex gap-3"><button type="button" class="pred-watchlist flex-1 py-3.5 border border-white/20 hover:bg-white/5 rounded-3xl font-semibold text-sm">Add to Watchlist</button><button type="button" class="pred-ask-ai flex-1 py-3.5 bg-white text-black font-bold rounded-3xl active:scale-[0.985]">Ask AI about this</button></div></div>`;
-  const close = () => { modal.remove(); document.removeEventListener('keydown',onKey); if(lastFocusedElement) lastFocusedElement.focus(); };
+  const close = () => { modal.remove(); document.removeEventListener('keydown',onKey); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus(); };
   const onKey = e => { if(e.key==='Escape') close(); };
   modal.addEventListener('click', e => { if(e.target===modal) close(); });
   modal.querySelector('.pred-watchlist').addEventListener('click', () => { close(); showToast('Added to watchlist'); });
@@ -266,6 +320,14 @@ function initNewsSection() {
 function renderNews(arr) {
   const grid = $('#news-grid'); if (!grid) return;
   grid.innerHTML = '';
+  if (!arr.length) {
+    const empty = document.createElement('div');
+    empty.className = 'col-span-full text-center py-16 text-white/50';
+    empty.innerHTML = '<i class="fa-solid fa-newspaper text-3xl mb-4 opacity-40" aria-hidden="true"></i><p class="text-sm">No stories match your filters.</p><button type="button" class="mt-4 text-[#00f5ff] text-sm underline" id="reset-filters-btn">Clear filters</button>';
+    grid.appendChild(empty);
+    $('#reset-filters-btn')?.addEventListener('click', resetNewsView);
+    return;
+  }
   arr.forEach(item => {
     const isSaved = savedArticles.some(a => a.id===item.id);
     const card = document.createElement('div');
@@ -289,7 +351,7 @@ function filterNews() {
   const fv = $('#news-filter')?.value||'';
   let f = newsData;
   if (fv) f = f.filter(i => i.category===fv);
-  if (term) f = f.filter(i => i.title.toLowerCase().includes(term)||i.summary.toLowerCase().includes(term));
+  if (term) f = f.filter(i => i.title.toLowerCase().includes(term)||i.summary.toLowerCase().includes(term)||i.tag.toLowerCase().includes(term));
   renderNews(f.slice(0, visibleNewsCount));
   const btn = $('#load-more-btn'); if (btn) btn.style.display = visibleNewsCount >= f.length ? 'none' : '';
 }
@@ -347,6 +409,7 @@ function showArticleModal(article) {
   lastFocusedElement = document.activeElement;
   const modal = $('#article-modal'), content = $('#article-modal-content');
   if (!modal || !content) return;
+  lockBodyScroll();
   const isSaved = savedArticles.some(a => a.id===article.id);
   content.innerHTML = `<div class="flex justify-between items-start"><span class="px-4 py-1 text-xs font-bold tracking-[1.5px] rounded-3xl ${getTagColor(article.tag)}">${escapeHTML(article.tag)}</span><span class="text-xs text-white/40 font-mono">${escapeHTML(article.time)}</span></div><h3 class="text-3xl font-bold tracking-tighter mt-5 pr-6" id="article-modal-title">${escapeHTML(article.title)}</h3><div class="flex items-center gap-x-2 mt-5"><div class="px-3.5 py-px text-sm bg-emerald-400/10 text-emerald-400 rounded-2xl font-medium">Symantic Score: ${escapeHTML(article.score)}/10</div><div class="text-xs text-white/50">• 100% data-backed • No publisher influence</div></div><div class="prose prose-invert mt-8 text-[15px] text-white/80 leading-relaxed">${escapeHTML(article.full)}</div><div class="mt-9 pt-6 border-t border-white/10 flex items-center justify-between text-xs"><div class="flex items-center gap-x-3"><button type="button" id="modal-bookmark-btn" class="flex items-center gap-x-2 px-5 py-2.5 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors ${isSaved?'text-red-400 border-red-400/30':''}"><i class="fa-${isSaved?'solid':'regular'} fa-bookmark" aria-hidden="true"></i><span>${isSaved?'Saved':'Save for later'}</span></button><button type="button" id="modal-share-btn" class="flex items-center gap-x-2 px-5 py-2.5 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors"><i class="fa-solid fa-link" aria-hidden="true"></i> <span>Share</span></button></div><button type="button" onclick="hideArticleModal()" class="px-6 py-2.5 text-xs font-bold border border-white/20 rounded-3xl hover:bg-white/5">CLOSE</button></div>`;
   modal.setAttribute('aria-labelledby','article-modal-title');
@@ -373,19 +436,31 @@ function toggleBookmarkFromModal(id, btn) {
 function hideArticleModal() {
   const m = $('#article-modal'); if (!m) return;
   m.classList.remove('flex'); m.classList.add('hidden');
+  unlockBodyScroll();
   if (lastFocusedElement) lastFocusedElement.focus();
 }
 
 function bumpMetric(el, base, inc) {
+  if (!el) return;
   const n = el.querySelector('.metric-value'); if (!n) return;
+  const hasSuffix = !!n.querySelector('span');
+  const suffixHTML = hasSuffix ? n.querySelector('span').outerHTML : '';
   const isF = base % 1 !== 0;
   let cur = parseFloat(n.textContent.replace(/[^0-9.]/g,'')) || base;
   const nv = cur + inc;
   const start = performance.now();
+  function setVal(v) {
+    if (hasSuffix) {
+      const num = isF ? v.toFixed(1) : (base > 1000 ? Math.round(v).toLocaleString() : Math.round(v));
+      n.innerHTML = num + suffixHTML;
+    } else if (isF) n.textContent = v.toFixed(1);
+    else if (base > 1000) n.textContent = Math.round(v).toLocaleString();
+    else n.textContent = Math.round(v);
+  }
   (function anim(now) {
     const p = Math.min((now-start)/680,1), e = 1-Math.pow(1-p,3), v = cur+(nv-cur)*e;
-    if (isF) n.textContent = v.toFixed(1); else if (base>1000) n.textContent = Math.round(v).toLocaleString(); else n.textContent = Math.round(v);
-    if (p<1) requestAnimationFrame(anim); else { if (isF) n.textContent=nv.toFixed(1); else if (base>1000) n.textContent=Math.round(nv).toLocaleString(); else n.textContent=Math.round(nv); }
+    setVal(v);
+    if (p<1) requestAnimationFrame(anim); else setVal(nv);
   })(start);
   el.style.transform = 'scale(0.96)'; setTimeout(()=>el.style.transform='scale(1)',140);
   if (Math.random()>0.6) setTimeout(()=>showToast('Metric updated with latest live data'),720);
@@ -463,17 +538,25 @@ function appendAIMessage(text) {
 }
 
 async function sendChatMessage() {
+  if (chatBusy) return;
   const input = $('#chat-input'); if (!input) return;
   const msg = input.value.trim(); if (!msg) return;
+  chatBusy = true;
   appendUserMessage(msg); input.value=''; input.focus();
   showTypingIndicator();
-  const reply = await generateAIResponse(msg);
-  removeTypingIndicator(); appendAIMessage(reply);
+  try {
+    const reply = await generateAIResponse(msg);
+    removeTypingIndicator(); appendAIMessage(reply);
+  } finally { chatBusy = false; }
 }
 
 async function quickPrompt(q) {
+  if (chatBusy) return;
+  chatBusy = true;
   appendUserMessage(q); showTypingIndicator();
-  const reply = await generateAIResponse(q); removeTypingIndicator(); appendAIMessage(reply);
+  try {
+    const reply = await generateAIResponse(q); removeTypingIndicator(); appendAIMessage(reply);
+  } finally { chatBusy = false; }
 }
 
 function clearChat() { const c=$('#chat-messages'); if(c){c.innerHTML=''; initChat();} }
@@ -500,11 +583,11 @@ function togglePricing(period) {
   }
 }
 
-function showLoginModal() { lastFocusedElement=document.activeElement; const m=$('#login-modal'); if(m){m.classList.remove('hidden');m.classList.add('flex'); m.querySelector('input')?.focus();} }
-function hideLoginModal() { const m=$('#login-modal'); if(m){m.classList.remove('flex');m.classList.add('hidden'); if(lastFocusedElement) lastFocusedElement.focus();} }
+function showLoginModal() { lastFocusedElement=document.activeElement; const m=$('#login-modal'); if(m){m.classList.remove('hidden');m.classList.add('flex'); lockBodyScroll(); m.querySelector('input')?.focus();} }
+function hideLoginModal() { const m=$('#login-modal'); if(m){m.classList.remove('flex');m.classList.add('hidden'); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus();} }
 function loginUser() { hideLoginModal(); showToast("Welcome back! You're now logged in as demo user.",'success'); setTimeout(()=>$('#live')?.scrollIntoView({behavior:'smooth',block:'center'}),1100); }
-function showSubscribeModal() { lastFocusedElement=document.activeElement; const m=$('#subscribe-modal'); if(m){m.classList.remove('hidden');m.classList.add('flex'); m.querySelector('input')?.focus();} }
-function hideSubscribeModal() { const m=$('#subscribe-modal'); if(m){m.classList.remove('flex');m.classList.add('hidden'); if(lastFocusedElement) lastFocusedElement.focus();} }
+function showSubscribeModal() { lastFocusedElement=document.activeElement; const m=$('#subscribe-modal'); if(m){m.classList.remove('hidden');m.classList.add('flex'); lockBodyScroll(); m.querySelector('input')?.focus();} }
+function hideSubscribeModal() { const m=$('#subscribe-modal'); if(m){m.classList.remove('flex');m.classList.add('hidden'); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus();} }
 function processFakeCheckout() {
   const mc = $('#subscribe-modal .glass'); if (!mc) return;
   mc.innerHTML = `<div class="text-center py-10"><div class="mx-auto w-16 h-16 bg-emerald-400/10 rounded-3xl flex items-center justify-center mb-6" aria-hidden="true"><i class="fa-solid fa-check text-4xl text-emerald-400"></i></div><div class="font-bold text-3xl tracking-tight">Welcome to Pro!</div><p class="mt-2 text-white/70">Your 14-day free trial has started.</p><div class="mt-9 text-left bg-white/5 p-6 rounded-2xl text-sm"><div class="font-semibold mb-3">What's unlocked now:</div><ul class="space-y-1.5 text-white/80"><li>✓ Unlimited AI insights &amp; predictions</li><li>✓ Early access to all forecasts</li><li>✓ Custom dashboards &amp; alerts</li><li>✓ Priority support</li></ul></div><button type="button" id="pro-start-btn" class="mt-8 w-full py-4 font-bold bg-white text-black rounded-3xl active:scale-[0.985]">Start Exploring Pro Features</button></div>`;
@@ -513,11 +596,12 @@ function processFakeCheckout() {
 
 function showContactModal() {
   lastFocusedElement = document.activeElement;
+  lockBodyScroll();
   const modal = document.createElement('div');
   modal.className = 'fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6';
   modal.setAttribute('role','dialog'); modal.setAttribute('aria-modal','true'); modal.setAttribute('aria-labelledby','contact-title');
   modal.innerHTML = `<div class="glass w-full max-w-md border border-white/10 rounded-3xl p-9" role="document"><div class="text-center"><i class="fa-solid fa-headset text-4xl mb-5 text-[#00f5ff]" aria-hidden="true"></i><div id="contact-title" class="font-bold text-2xl tracking-tight">Let's talk enterprise</div><p class="mt-2 text-white/70">Our team will get back to you within 4 hours.</p><div class="mt-7 text-left"><label class="sr-only" for="contact-email">Work email</label><input id="contact-email" type="email" placeholder="Your work email" class="w-full bg-white/5 border border-white/10 px-6 py-3.5 rounded-3xl text-sm mb-3.5" value="studio@yourgame.com"><label class="sr-only" for="contact-msg">Message</label><textarea id="contact-msg" placeholder="Tell us about your team and needs..." class="w-full h-24 bg-white/5 border border-white/10 px-6 py-3.5 rounded-3xl text-sm resize-y"></textarea></div><button type="button" id="contact-send" class="mt-6 w-full py-4 bg-white font-bold text-black rounded-3xl active:scale-[0.985]">Send message</button></div></div>`;
-  const close = () => { modal.remove(); document.removeEventListener('keydown',onKey); if(lastFocusedElement) lastFocusedElement.focus(); };
+  const close = () => { modal.remove(); document.removeEventListener('keydown',onKey); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus(); };
   const onKey = e => { if(e.key==='Escape') close(); };
   modal.addEventListener('click', e => { if(e.target===modal) close(); });
   modal.querySelector('#contact-send').addEventListener('click', () => { close(); showToast('Thanks! Our sales team will contact you shortly.','success'); });
@@ -548,12 +632,14 @@ function showCommandPalette() {
   const p = $('#command-palette'), i = $('#command-input');
   if (!p||!i) return;
   p.classList.remove('hidden'); p.classList.add('flex');
+  lockBodyScroll();
   i.value=''; i.focus(); showAllCommands(); i.onkeyup = filterCommands;
 }
 
 function hideCommandPalette() {
   const p = $('#command-palette'); if (!p) return;
   p.classList.remove('flex'); p.classList.add('hidden');
+  unlockBodyScroll();
   if (lastFocusedElement) lastFocusedElement.focus();
 }
 
@@ -606,11 +692,9 @@ function applyTheme() {
   const icon = $('#theme-icon');
   if (currentTheme==='light') {
     document.documentElement.classList.add('light');
-    document.body.style.background='#f8fafc'; document.body.style.color='#0f172a';
     if (icon) { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); }
   } else {
     document.documentElement.classList.remove('light');
-    document.body.style.background='#050507'; document.body.style.color='#f1f5f9';
     if (icon) { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
   }
 }
@@ -653,4 +737,11 @@ window.Symantic = {
 };
 
 // Expose for inline handlers
-['filterLiveFeed','addLiveUpdate','refreshPredictions','refreshDashboard','bumpMetric','loadMoreNews','showSavedArticles','resetNewsView','hideArticleModal','sendChatMessage','clearChat','simulateVoiceInput','uploadReplay','togglePricing','showLoginModal','hideLoginModal','loginUser','showSubscribeModal','hideSubscribeModal','processFakeCheckout','showContactModal','showCommandPalette','hideCommandPalette','toggleTheme','toggleMobileMenu','showPredictionModal','quickPrompt'].forEach(n => { window[n] = eval(n); });
+Object.assign(window, {
+  filterLiveFeed, addLiveUpdate, refreshPredictions, refreshDashboard, bumpMetric,
+  loadMoreNews, showSavedArticles, resetNewsView, hideArticleModal, sendChatMessage,
+  clearChat, simulateVoiceInput, uploadReplay, togglePricing, showLoginModal,
+  hideLoginModal, loginUser, showSubscribeModal, hideSubscribeModal, processFakeCheckout,
+  showContactModal, showCommandPalette, hideCommandPalette, toggleTheme, toggleMobileMenu,
+  showPredictionModal, quickPrompt
+});
