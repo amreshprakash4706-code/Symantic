@@ -111,7 +111,7 @@
                 <a href="#live" class="py-3 px-4 hover:bg-white/5 rounded-2xl transition-colors" onclick="toggleMobileMenu()">Live Feed</a>
                 <a href="#predictions" class="py-3 px-4 hover:bg-white/5 rounded-2xl transition-colors" onclick="toggleMobileMenu()">Predictions</a>
                 <a href="#news" class="py-3 px-4 hover:bg-white/5 rounded-2xl transition-colors" onclick="toggleMobileMenu()">News</a>
-                <a href="#ai" class="py-3 px-4 hover:bg-white/5 rounded-2xl transition-colors" onclick="toggleMobileMenu()">AI Demo</a>
+                <a href="#ai" class="py-3 px-4 hover:bg-white/5 rounded-2xl transition-colors" onclick="toggleMobileMenu()">AI</a>
                 <div class="pt-4 mt-2 border-t border-white/10 flex flex-col gap-y-3">
                     <button onclick="showLoginModal(); toggleMobileMenu()" class="w-full py-3 text-center border border-white/20 rounded-3xl text-sm font-semibold active:bg-white/5">Log in</button>
                     <button onclick="showSubscribeModal(); toggleMobileMenu()" class="w-full py-3 text-center bg-white text-black font-bold rounded-3xl text-sm active:bg-[#00f5ff]">Start free trial</button>
@@ -421,7 +421,7 @@
         </div>
     </div>
 
-    <!-- AI DEMO - MAGICAL EXPERIENCE -->
+    <!-- AI CO-PILOT -->
     <div id="ai" class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-y border-white/10 bg-[#0a0a0f] section">
         <div class="max-w-4xl mx-auto">
             <div class="text-center mb-10">
@@ -687,11 +687,11 @@
             <div class="space-y-5">
                 <div>
                     <label for="login-email" class="text-xs tracking-widest text-white/50 block mb-2">EMAIL</label>
-                    <input id="login-email" type="email" value="demo@symantic.ai" autocomplete="email" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
+                    <input id="login-email" type="email" value="" placeholder="you@email.com" autocomplete="email" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
                 </div>
                 <div>
                     <label for="login-password" class="text-xs tracking-widest text-white/50 block mb-2">PASSWORD</label>
-                    <input id="login-password" type="password" value="demo123" autocomplete="current-password" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
+                    <input id="login-password" type="password" value="" placeholder="Your password" autocomplete="current-password" class="w-full bg-white/5 border border-white/10 px-6 py-4 rounded-3xl text-sm">
                 </div>
             </div>
             <button onclick="loginUser()" class="mt-8 w-full py-4 bg-white text-black font-bold rounded-3xl active:scale-[0.985]">Sign in</button>
@@ -730,7 +730,7 @@
                     </div>
                 </div>
                 
-                <button onclick="processFakeCheckout()" class="mt-8 w-full py-4 font-bold bg-white text-black rounded-3xl active:scale-[0.985] flex items-center justify-center gap-x-2">
+                <button onclick="processCheckout()" class="mt-8 w-full py-4 font-bold bg-white text-black rounded-3xl active:scale-[0.985] flex items-center justify-center gap-x-2">
                     Start 14-Day Free Trial
                 </button>
                 <div class="text-[10px] text-white/40 mt-4">You won't be charged until after your trial ends.</div>

@@ -564,3 +564,265 @@ html.light .nav-link:focus-visible {
     color: #000;
   }
 }
+
+
+/* ============================================================
+   PRODUCTION POLISH — mobile, light theme, a11y, consistency
+   ============================================================ */
+
+/* Body uses design tokens */
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+/* Light theme: nav + surfaces */
+html.light body {
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+html.light nav {
+  background: rgba(248, 250, 252, 0.92) !important;
+  border-color: var(--border) !important;
+}
+
+html.light .bottom-nav {
+  background: rgba(248, 250, 252, 0.95) !important;
+  border-color: var(--border) !important;
+}
+
+html.light .metric-card,
+html.light .glass {
+  background: var(--glass);
+  border-color: var(--border);
+}
+
+html.light .nav-link {
+  color: var(--text-secondary);
+}
+
+html.light .section-header,
+html.light h1, html.light h2, html.light h3 {
+  color: var(--text-primary);
+}
+
+/* Hide horizontal scrollbar on filter strip */
+.scrollbar-none {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+/* Metric value transitions */
+.metric-value {
+  transition: transform 0.28s var(--ease-out);
+  display: inline-block;
+}
+
+/* Command tip */
+.cmd-tip {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  font-size: 10px;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 50;
+  pointer-events: none;
+}
+html.light .cmd-tip {
+  background: rgba(15, 23, 42, 0.06);
+  border-color: rgba(15, 23, 42, 0.1);
+  color: #64748b;
+}
+
+/* Equal-height news cards in grid */
+#news-grid {
+  align-items: stretch;
+}
+.news-card {
+  min-height: 0;
+}
+
+/* Touch targets — minimum 44px for primary controls on mobile */
+@media (max-width: 767px) {
+  .bottom-nav a {
+    min-height: 44px;
+    min-width: 64px;
+    justify-content: center;
+  }
+  .gaming-btn, .premium-btn {
+    min-height: 48px;
+  }
+  /* Tighter section headers already handled in HTML */
+  .metric-card .text-4xl {
+    font-size: 1.65rem;
+    line-height: 1.1;
+  }
+  /* Prevent live feed horizontal overflow */
+  .live-item {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  /* Chat on small screens */
+  #chat-messages {
+    height: 280px;
+  }
+  /* Pricing cards stack padding */
+  #pricing .glass {
+    padding: 1.5rem;
+  }
+}
+
+/* Ultra-narrow (320px) */
+@media (max-width: 360px) {
+  .section-header {
+    font-size: 1.85rem;
+  }
+  .metric-card {
+    padding: 1rem;
+  }
+  .metric-card .text-4xl {
+    font-size: 1.4rem;
+  }
+}
+
+/* Improved modal max height for mobile keyboards */
+[role="dialog"] .glass {
+  max-height: min(90dvh, 900px);
+  overflow-y: auto;
+}
+
+/* Focus ring on cards that are interactive */
+.metric-card:focus-visible,
+.prediction-card:focus-visible,
+.news-card:focus-visible,
+.live-item:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* Active filter tab clearer */
+.filter-tab {
+  color: var(--text-secondary);
+}
+.filter-tab.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+html.light .filter-tab.active {
+  color: var(--text-primary);
+  background: rgba(15, 23, 42, 0.08);
+}
+
+/* Nav sticky shadow subtle on scroll (visual only) */
+nav {
+  transition: box-shadow 0.2s ease;
+}
+
+/* Line clamp utility if Tailwind doesn't provide */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Prefer reduced motion: kill tilt residual */
+@media (prefers-reduced-motion: reduce) {
+  .premium-card:hover,
+  .prediction-card:hover,
+  .news-card:hover,
+  .metric-card:hover {
+    transform: none;
+  }
+  .confidence-bar {
+    transition: none;
+  }
+}
+
+/* Safe area for notched phones on bottom nav */
+.bottom-nav {
+  padding-bottom: max(0px, env(safe-area-inset-bottom, 0px));
+}
+
+/* Ensure sticky header doesn't cover content under fixed bottom nav on mobile */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+}
+
+/* High-quality selection in light mode */
+html.light ::selection {
+  background: rgba(var(--primary-rgb), 0.2);
+  color: #0f172a;
+}
+
+/* kbd styling for command tip */
+kbd {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.95em;
+}
+
+/* Loading skeleton optional for future */
+.skeleton {
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-md);
+}
+@keyframes skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
+
+/* Print: more content visible */
+@media print {
+  main { padding-bottom: 0 !important; }
+  .metric-card, .prediction-card, .news-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+}
+
+
+/* LIGHT THEME HARDCODED OVERRIDES */
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20 {
+  border-color: var(--border) !important;
+}
+html.light .bg-white\/5,
+html.light .hover\:bg-white\/5:hover,
+html.light .hover\:bg-white\/10:hover {
+  background-color: rgba(15, 23, 42, 0.04) !important;
+}
+html.light .bg-\[\#050507\],
+html.light .bg-\[\#0a0a0f\] {
+  background-color: var(--bg) !important;
+}
+html.light .bg-black\/20 {
+  background-color: rgba(15, 23, 42, 0.06) !important;
+}
+html.light .bg-black\/80,
+html.light .bg-black\/90 {
+  background-color: rgba(15, 23, 42, 0.55) !important;
+}
+html.light .divide-white\/10 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border);
+}
+html.light .text-white {
+  color: var(--text-primary);
+}

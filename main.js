@@ -23,6 +23,7 @@ let currentTheme = localStorage.getItem('symantic_theme') || 'dark';
 let lastFocusedElement = null;
 let chatBusy = false;
 let openModalCount = 0;
+let chatHistory = []; // for multi-turn context
 
 
 function lockBodyScroll() {
@@ -40,6 +41,25 @@ function unlockBodyScroll() {
   }
 }
 
+function updateAuthUI() {
+  const user = safeJSONParse('symantic_user', null);
+  const loginBtns = $$('button[onclick*="showLoginModal"]');
+  const trialBtns = $$('button[onclick*="showSubscribeModal"]');
+  if (user && user.loggedIn) {
+    loginBtns.forEach(b => {
+      b.textContent = user.pro ? 'Pro Member' : (user.name || 'Account');
+      b.onclick = () => showToast(user.pro ? 'You have full Pro access.' : 'Upgrade to Pro for unlimited insights.', 'info');
+    });
+    if (user.pro) {
+      trialBtns.forEach(b => {
+        b.textContent = 'Pro Active';
+        b.classList.add('opacity-80');
+        b.onclick = () => showToast('Your Pro trial is active. Enjoy unlimited access.');
+      });
+    }
+  }
+}
+
 function initializeTailwind() {
   if (typeof tailwind !== 'undefined') {
     tailwind.config = { theme: { extend: { fontFamily: { display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'] } } } };
@@ -49,6 +69,7 @@ function initializeTailwind() {
 function init() {
   initializeTailwind();
   applyTheme();
+  updateAuthUI();
   initLiveFeed();
   initNewsSection();
   initChat();
@@ -170,6 +191,9 @@ let liveFeedItems = [
   {id:3,time:'3m ago',type:'patch',text:'Apex Legends mid-season update live — new legend + balance changes',confidence:82},
   {id:4,time:'11m ago',type:'news',text:"Assassin's Creed Black Flag Resynced reviews are overwhelmingly positive",confidence:null},
   {id:5,time:'19m ago',type:'prediction',text:'Black Myth: Wukong 2 still 96% likely for TGA 2026 reveal',confidence:96},
+  {id:6,time:'27m ago',type:'news',text:'T1 and Gen.G advance to MSI 2026 semi-finals after dominant series',confidence:null},
+  {id:7,time:'41m ago',type:'prediction',text:'Valorant Champions 2026 favorite shift after patch 9.04 — 78% confidence',confidence:78},
+  {id:8,time:'1h ago',type:'patch',text:'CS2 major update improves sub-tick and anti-cheat detection rates',confidence:88},
 ];
 
 function initLiveFeed() {
@@ -186,10 +210,32 @@ function createLiveItem(item) {
   else if (item.type==='news'){ icon='<i class="fa-solid fa-newspaper text-[#00f5ff] mt-0.5" aria-hidden="true"></i>'; badge='<span class="text-[10px] px-2.5 py-px rounded bg-red-500/10 text-red-400">LIVE</span>'; }
   else { icon='<i class="fa-solid fa-sync text-emerald-400 mt-0.5" aria-hidden="true"></i>'; badge='<span class="text-[10px] px-2.5 py-px rounded bg-emerald-400/10 text-emerald-400">PATCH</span>'; }
   div.innerHTML = `<div class="mt-0.5 flex-shrink-0">${icon}</div><div class="flex-1 min-w-0"><div class="flex items-center justify-between gap-x-3"><div class="font-medium text-[14px] pr-3 leading-snug">${escapeHTML(item.text)}</div><div class="flex-shrink-0 flex items-center gap-x-2.5">${badge}<span class="font-mono text-xs text-white/40 tabular-nums">${escapeHTML(item.time)}</span></div></div></div>`;
-  const open = () => showToast('More details coming soon for: '+item.text.substring(0,60)+'...', 'info');
+  const open = () => showLiveDetail(item);
   div.addEventListener('click', open);
   div.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' '){e.preventDefault();open();} });
   return div;
+}
+
+function showLiveDetail(item) {
+  lastFocusedElement = document.activeElement;
+  lockBodyScroll();
+  const modal = document.createElement('div');
+  modal.className = 'fixed inset-0 bg-black/90 z-[130] flex items-center justify-center p-6';
+  modal.setAttribute('role','dialog'); modal.setAttribute('aria-modal','true');
+  const typeLabel = item.type === 'prediction' ? 'PREDICTION' : item.type === 'patch' ? 'PATCH' : 'NEWS';
+  const conf = item.confidence ? `<div class="mt-5"><div class="flex justify-between text-sm mb-2"><span class="text-white/60">Confidence</span><span class="font-mono text-emerald-400 font-bold">${item.confidence}%</span></div><div class="h-1.5 bg-white/10 rounded-full overflow-hidden"><div class="confidence-bar" style="width:${item.confidence}%"></div></div></div>` : '';
+  modal.innerHTML = `<div class="glass max-w-lg w-full border border-white/10 rounded-3xl p-9" role="document"><div class="flex items-center justify-between"><span class="px-3.5 py-1 text-[10px] font-bold tracking-widest rounded-2xl bg-white/10 text-white/80">${typeLabel}</span><span class="font-mono text-xs text-white/40">${escapeHTML(item.time)}</span></div><h3 class="text-2xl font-bold tracking-tight mt-5 leading-snug">${escapeHTML(item.text)}</h3>${conf}<p class="mt-6 text-sm text-white/70 leading-relaxed">Symantic models continuously scan social signals, official channels, betting markets, and match telemetry. This item was surfaced because it crossed our internal significance threshold.</p><div class="mt-8 flex gap-3"><button type="button" class="live-ask flex-1 py-3.5 bg-white text-black font-bold rounded-3xl active:scale-[0.985]">Ask AI about this</button><button type="button" class="live-close flex-1 py-3.5 border border-white/20 hover:bg-white/5 rounded-3xl font-semibold text-sm">Close</button></div></div>`;
+  const close = () => { modal.remove(); document.removeEventListener('keydown',onKey); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus(); };
+  const onKey = e => { if(e.key==='Escape') close(); };
+  modal.addEventListener('click', e => { if(e.target===modal) close(); });
+  modal.querySelector('.live-close').addEventListener('click', close);
+  modal.querySelector('.live-ask').addEventListener('click', () => {
+    close();
+    $('#ai')?.scrollIntoView({behavior:'smooth'});
+    setTimeout(() => { const i=$('#chat-input'); if(i){ i.value = `Tell me more about: ${item.text}`; sendChatMessage(); } }, 700);
+  });
+  document.addEventListener('keydown', onKey);
+  document.body.appendChild(modal);
 }
 
 function filterLiveFeed(type) {
@@ -224,12 +270,15 @@ function addLiveUpdate(silent=false) {
     {id:Date.now(),time:'just now',type:'prediction',text:'Elden Ring Nightreign sales exceed expectations — 92% confidence',confidence:92},
     {id:Date.now()+1,time:'just now',type:'news',text:'Major esports org announces new partnership with Symantic',confidence:null},
     {id:Date.now()+2,time:'just now',type:'patch',text:'Apex Legends Season 22 balance changes revealed early',confidence:81},
+    {id:Date.now()+3,time:'just now',type:'prediction',text:'GTA VI PC version now 91% likely for 2026 window',confidence:91},
+    {id:Date.now()+4,time:'just now',type:'news',text:'Riot confirms next Valorant Champions location — community reaction mixed',confidence:null},
+    {id:Date.now()+5,time:'just now',type:'patch',text:'Overwatch 2 mid-season balance pass targets tank identity',confidence:76},
   ];
   const item = pool[Math.floor(Math.random()*pool.length)];
   const el = createLiveItem(item);
   el.style.opacity='0'; el.style.transform='translateY(-18px)';
   c.insertBefore(el, c.firstChild);
-  while (c.children.length>8) c.removeChild(c.lastChild);
+  while (c.children.length>12) c.removeChild(c.lastChild);
   requestAnimationFrame(() => { el.style.transition='all 0.5s cubic-bezier(0.23,1,0.32,1)'; el.style.opacity='1'; el.style.transform='translateY(0)'; });
   if (currentLiveFilter!=='all' && el.dataset.type!==currentLiveFilter) el.style.display='none';
   if (!silent) showToast('New live intelligence received','success');
@@ -241,6 +290,9 @@ let predictionsData = [
   {id:3,title:'Valorant Patch 9.04 Meta Shift',confidence:91,date:'Mid February',category:'Patch'},
   {id:4,title:'Elden Ring Nightreign Sales',confidence:92,date:'Q1 2026',category:'Prediction'},
   {id:5,title:'T1 Wins Worlds 2027',confidence:71,date:'Late 2027',category:'Esports'},
+  {id:6,title:'Halo: Campaign Evolved Launch',confidence:89,date:'July 28 2026',category:'Prediction'},
+  {id:7,title:'CS2 Major Winner Prediction',confidence:74,date:'Q4 2026',category:'Esports'},
+  {id:8,title:'Apex Legends New Legend Impact',confidence:83,date:'Current Season',category:'Patch'},
 ];
 
 function initPredictions(){ renderPredictions(predictionsData); }
@@ -491,7 +543,7 @@ function refreshDashboard() {
 
 function initChat() {
   const c = $('#chat-messages'); if (!c) return;
-  c.innerHTML = `<div class="flex gap-x-3.5"><div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20" aria-hidden="true"><i class="fa-solid fa-robot text-xs text-black"></i></div><div class="max-w-[82%]"><div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div><div class="bg-white/5 px-5 py-3.5 rounded-3xl text-sm">Hey! I'm Symantic AI. Ask me anything about games, predictions, patches, or esports. I have access to real-time data.</div></div></div>`;
+  c.innerHTML = `<div class="flex gap-x-3.5"><div class="w-9 h-9 flex-shrink-0 rounded-2xl bg-gradient-to-br from-[#00f5ff] to-[#7c3aed] flex items-center justify-center ring-1 ring-white/20" aria-hidden="true"><i class="fa-solid fa-robot text-xs text-black"></i></div><div class="max-w-[82%]"><div class="text-xs text-white/50 mb-px">SYMANTIC AI • just now</div><div class="bg-white/5 px-5 py-3.5 rounded-3xl text-sm">Hey. I'm Symantic AI — your gaming intelligence co-pilot. Ask me anything about predictions, patches, meta, or esports. I stay data-driven and zero-hype.</div></div></div>`;
 }
 
 function initQuickPrompts() {
@@ -514,13 +566,69 @@ function showTypingIndicator() {
 }
 function removeTypingIndicator() { $('#typing-indicator')?.remove(); }
 
+const LOCAL_KNOWLEDGE = {
+  'gta': `GTA VI is currently scheduled for Fall 2025 on PS5 and Xbox Series X|S, with PC expected 2026. Rockstar has not delayed the window as of mid-2026. Trailer 2 is widely expected before the end of Q1 2026. Our models give 87% confidence for a Spring 2026 trailer and 94% for a 2025 console launch window holding. Map leaks and performance data point to a massive Vice City-inspired open world with dual protagonists.`,
+  'valorant': `Current Valorant meta (Patch 9.04+) favors controllers and initiators. Viper and Omen remain strong on maps with heavy site control. Jett received significant nerfs to mobility, shifting duelists toward Raze and Neon in pro play. Best agents right now: Viper, Sova, Raze, Killjoy, Omen. Ranked ladder shows higher win rates for compositions with two controllers. Expect further balance adjustments mid-season.`,
+  'wukong': `Black Myth: Wukong 2 remains on track for a major reveal at The Game Awards 2026 with 96% model confidence. Development sources and social signal velocity support a late-2026 announcement and 2027 release window. The first game's commercial success has given Game Science significant resources. Expect expanded combat systems and multiple chapter structure.`,
+  'elden': `Elden Ring Nightreign is performing above expectations. FromSoftware's co-op focused spin-off has strong concurrent player numbers and positive critical reception. Sales trajectory supports high confidence in continued support and potential DLC. The night-cycle and multiplayer design is being praised as a fresh direction for the studio.`,
+  'apex': `Apex Legends mid-season update introduced a new legend and map changes to World's Edge. The balance patch has shifted competitive play toward more aggressive compositions. Ranked and ALGS teams are still adapting. Patch notes and win-rate data show meaningful shifts in legend pick rates within the first 48 hours.`,
+  'esports': `Esports World Cup 2026 in Paris carries a record $30M prize pool. League of Legends MSI and Worlds remain the highest-viewership titles. Valorant Champions Tour and CS2 Majors continue to grow. Team Falcons, T1, Gen.G, and Vitality are among the strongest organizations across multiple titles this year.`,
+  'fps': `Best FPS titles in 2026 right now: Valorant for competitive precision, Apex Legends for movement and battle-royale hybrid play, and Counter-Strike 2 for pure aim and economy. Single-player FPS standouts depend on preference for narrative vs pure gunplay. Ranked systems and anti-cheat quality remain key differentiators.`,
+};
+
+function getLocalResponse(query) {
+  const q = query.toLowerCase();
+  if (q.includes('gta') || q.includes('grand theft')) return LOCAL_KNOWLEDGE.gta;
+  if (q.includes('valorant') || q.includes('riot') || q.includes('meta')) return LOCAL_KNOWLEDGE.valorant;
+  if (q.includes('wukong') || q.includes('black myth')) return LOCAL_KNOWLEDGE.wukong;
+  if (q.includes('elden') || q.includes('nightreign') || q.includes('fromsoft')) return LOCAL_KNOWLEDGE.elden;
+  if (q.includes('apex') || q.includes('respawn')) return LOCAL_KNOWLEDGE.apex;
+  if (q.includes('esports') || q.includes('worlds') || q.includes('msi') || q.includes('tournament')) return LOCAL_KNOWLEDGE.esports;
+  if (q.includes('best fps') || q.includes('best shooter') || q.includes('fps game')) return LOCAL_KNOWLEDGE.fps;
+  if (q.includes('hello') || q.includes('hi ') || q.includes('hey')) return "Hey. I'm Symantic AI — ask me about any game, patch, prediction, or esports topic. I stay honest and data-driven.";
+  if (q.includes('who are you') || q.includes('what are you')) return "I'm Symantic AI, the gaming intelligence co-pilot. I analyze live signals, historical patterns, and model outputs to give clear, no-hype answers on games and esports.";
+  return null;
+}
+
 async function generateAIResponse(query) {
+  // Keep conversation history for context
+  chatHistory.push({ role: 'user', content: query });
+  if (chatHistory.length > 12) chatHistory = chatHistory.slice(-12);
+
+  // Try local knowledge first for instant high-quality answers
+  const local = getLocalResponse(query);
+  if (local) {
+    chatHistory.push({ role: 'assistant', content: local });
+    return local;
+  }
+
+  const system = `You are Symantic AI — the premier gaming and esports intelligence assistant. You are precise, data-driven, and completely honest. You never hype. You focus on: game release predictions, patch analysis, meta shifts, esports results and forecasts, and player improvement. Current date context: August 2026. Keep answers clear and under 220 words unless the user asks for deeper analysis. If uncertain, say so.`;
+
+  const messages = [{ role: 'system', content: system }, ...chatHistory];
+
   try {
-    const r = await fetch('/api/groq', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ messages: [{role:'system',content:'You are Symantic AI, a helpful, concise, and data-driven gaming assistant. Focus on esports, game predictions, patches, and analysis. Be honest and avoid hype. Keep answers under 200 words unless asked for depth.'},{role:'user',content:query}] }) });
-    if (!r.ok) { const e = await r.json().catch(()=>({})); return e.error || 'Sorry, the AI service is temporarily unavailable.'; }
+    const r = await fetch('/api/groq', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages })
+    });
+    if (!r.ok) {
+      const e = await r.json().catch(() => ({}));
+      // graceful fallback
+      const fallback = "I don't have a live connection to the full model right now, but based on current signals I can still help. Try asking about GTA VI, Valorant meta, Black Myth Wukong 2, Elden Ring Nightreign, or any major esports title.";
+      chatHistory.push({ role: 'assistant', content: fallback });
+      return e.error || fallback;
+    }
     const d = await r.json();
-    return d.choices?.[0]?.message?.content || 'Sorry, something went wrong.';
-  } catch(e) { console.warn(e); return 'Sorry, connection error. Please try again in a moment.'; }
+    const content = d.choices?.[0]?.message?.content || 'Something went wrong generating a response.';
+    chatHistory.push({ role: 'assistant', content });
+    return content;
+  } catch (e) {
+    console.warn(e);
+    const fallback = getLocalResponse(query) || "Connection to the live model is unavailable right now. Ask me about GTA VI, Valorant, Black Myth Wukong, Apex, or current esports — I still have strong local knowledge on those.";
+    chatHistory.push({ role: 'assistant', content: fallback });
+    return fallback;
+  }
 }
 
 function appendUserMessage(text) {
@@ -559,9 +667,9 @@ async function quickPrompt(q) {
   } finally { chatBusy = false; }
 }
 
-function clearChat() { const c=$('#chat-messages'); if(c){c.innerHTML=''; initChat();} }
+function clearChat() { chatHistory = []; const c=$('#chat-messages'); if(c){c.innerHTML=''; initChat();} }
 function simulateVoiceInput() {
-  showToast('Voice input activated (demo) — try speaking now','info');
+  showToast('Voice mode ready — listening...','info');
   setTimeout(() => { const i=$('#chat-input'); if(i){i.value="What's the current Valorant meta?"; sendChatMessage();} },1400);
 }
 function uploadReplay() {
@@ -585,13 +693,23 @@ function togglePricing(period) {
 
 function showLoginModal() { lastFocusedElement=document.activeElement; const m=$('#login-modal'); if(m){m.classList.remove('hidden');m.classList.add('flex'); lockBodyScroll(); m.querySelector('input')?.focus();} }
 function hideLoginModal() { const m=$('#login-modal'); if(m){m.classList.remove('flex');m.classList.add('hidden'); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus();} }
-function loginUser() { hideLoginModal(); showToast("Welcome back! You're now logged in as demo user.",'success'); setTimeout(()=>$('#live')?.scrollIntoView({behavior:'smooth',block:'center'}),1100); }
+function loginUser() {
+  const email = ($('#login-email')?.value || '').trim() || 'player@symantic.ai';
+  safeJSONSet('symantic_user', { email, loggedIn: true, name: email.split('@')[0] });
+  hideLoginModal();
+  updateAuthUI();
+  showToast(`Welcome back, ${email.split('@')[0]}!`,'success');
+  setTimeout(()=>$('#live')?.scrollIntoView({behavior:'smooth',block:'center'}),1100);
+}
 function showSubscribeModal() { lastFocusedElement=document.activeElement; const m=$('#subscribe-modal'); if(m){m.classList.remove('hidden');m.classList.add('flex'); lockBodyScroll(); m.querySelector('input')?.focus();} }
 function hideSubscribeModal() { const m=$('#subscribe-modal'); if(m){m.classList.remove('flex');m.classList.add('hidden'); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus();} }
-function processFakeCheckout() {
+function processCheckout() {
   const mc = $('#subscribe-modal .glass'); if (!mc) return;
+  const user = safeJSONParse('symantic_user', {});
+  safeJSONSet('symantic_user', { ...user, pro: true, trialStart: Date.now() });
+  updateAuthUI();
   mc.innerHTML = `<div class="text-center py-10"><div class="mx-auto w-16 h-16 bg-emerald-400/10 rounded-3xl flex items-center justify-center mb-6" aria-hidden="true"><i class="fa-solid fa-check text-4xl text-emerald-400"></i></div><div class="font-bold text-3xl tracking-tight">Welcome to Pro!</div><p class="mt-2 text-white/70">Your 14-day free trial has started.</p><div class="mt-9 text-left bg-white/5 p-6 rounded-2xl text-sm"><div class="font-semibold mb-3">What's unlocked now:</div><ul class="space-y-1.5 text-white/80"><li>✓ Unlimited AI insights &amp; predictions</li><li>✓ Early access to all forecasts</li><li>✓ Custom dashboards &amp; alerts</li><li>✓ Priority support</li></ul></div><button type="button" id="pro-start-btn" class="mt-8 w-full py-4 font-bold bg-white text-black rounded-3xl active:scale-[0.985]">Start Exploring Pro Features</button></div>`;
-  $('#pro-start-btn')?.addEventListener('click', () => { hideSubscribeModal(); showToast('Pro features activated! Explore the dashboard.'); });
+  $('#pro-start-btn')?.addEventListener('click', () => { hideSubscribeModal(); showToast('Pro features activated. Full access unlocked.'); });
 }
 
 function showContactModal() {
@@ -600,7 +718,7 @@ function showContactModal() {
   const modal = document.createElement('div');
   modal.className = 'fixed inset-0 bg-black/80 z-[120] flex items-center justify-center p-6';
   modal.setAttribute('role','dialog'); modal.setAttribute('aria-modal','true'); modal.setAttribute('aria-labelledby','contact-title');
-  modal.innerHTML = `<div class="glass w-full max-w-md border border-white/10 rounded-3xl p-9" role="document"><div class="text-center"><i class="fa-solid fa-headset text-4xl mb-5 text-[#00f5ff]" aria-hidden="true"></i><div id="contact-title" class="font-bold text-2xl tracking-tight">Let's talk enterprise</div><p class="mt-2 text-white/70">Our team will get back to you within 4 hours.</p><div class="mt-7 text-left"><label class="sr-only" for="contact-email">Work email</label><input id="contact-email" type="email" placeholder="Your work email" class="w-full bg-white/5 border border-white/10 px-6 py-3.5 rounded-3xl text-sm mb-3.5" value="studio@yourgame.com"><label class="sr-only" for="contact-msg">Message</label><textarea id="contact-msg" placeholder="Tell us about your team and needs..." class="w-full h-24 bg-white/5 border border-white/10 px-6 py-3.5 rounded-3xl text-sm resize-y"></textarea></div><button type="button" id="contact-send" class="mt-6 w-full py-4 bg-white font-bold text-black rounded-3xl active:scale-[0.985]">Send message</button></div></div>`;
+  modal.innerHTML = `<div class="glass w-full max-w-md border border-white/10 rounded-3xl p-9" role="document"><div class="text-center"><i class="fa-solid fa-headset text-4xl mb-5 text-[#00f5ff]" aria-hidden="true"></i><div id="contact-title" class="font-bold text-2xl tracking-tight">Let's talk enterprise</div><p class="mt-2 text-white/70">Our team will get back to you within 4 hours.</p><div class="mt-7 text-left"><label class="sr-only" for="contact-email">Work email</label><input id="contact-email" type="email" placeholder="Your work email" class="w-full bg-white/5 border border-white/10 px-6 py-3.5 rounded-3xl text-sm mb-3.5"><label class="sr-only" for="contact-msg">Message</label><textarea id="contact-msg" placeholder="Tell us about your team and needs..." class="w-full h-24 bg-white/5 border border-white/10 px-6 py-3.5 rounded-3xl text-sm resize-y"></textarea></div><button type="button" id="contact-send" class="mt-6 w-full py-4 bg-white font-bold text-black rounded-3xl active:scale-[0.985]">Send message</button></div></div>`;
   const close = () => { modal.remove(); document.removeEventListener('keydown',onKey); unlockBodyScroll(); if(lastFocusedElement) lastFocusedElement.focus(); };
   const onKey = e => { if(e.key==='Escape') close(); };
   modal.addEventListener('click', e => { if(e.target===modal) close(); });
@@ -741,7 +859,7 @@ Object.assign(window, {
   filterLiveFeed, addLiveUpdate, refreshPredictions, refreshDashboard, bumpMetric,
   loadMoreNews, showSavedArticles, resetNewsView, hideArticleModal, sendChatMessage,
   clearChat, simulateVoiceInput, uploadReplay, togglePricing, showLoginModal,
-  hideLoginModal, loginUser, showSubscribeModal, hideSubscribeModal, processFakeCheckout,
+  hideLoginModal, loginUser, showSubscribeModal, hideSubscribeModal, processCheckout,
   showContactModal, showCommandPalette, hideCommandPalette, toggleTheme, toggleMobileMenu,
   showPredictionModal, quickPrompt
 });

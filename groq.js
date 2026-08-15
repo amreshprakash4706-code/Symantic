@@ -67,10 +67,10 @@ export default async function handler(req, res) {
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.1-8b-instant',
+        model: 'qwen/qwen3.6-27b',
         messages,
-        temperature: 0.7,
-        max_tokens: 700,
+        temperature: 0.65,
+        max_tokens: 2048,
         top_p: 0.95,
       }),
       signal: controller.signal,
