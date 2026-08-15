@@ -1,0 +1,31 @@
+{
+  "name": "symantic",
+  "version": "1.0.0",
+  "description": "SYMANTIC — AI co-pilot for gamers and esports. Real-time predictions, live intelligence, and honest analysis.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "start": "npx serve . -l 3000",
+    "build": "echo 'Static site — no build step required'"
+  },
+  "dependencies": {
+    "groq-sdk": "^0.9.1"
+  },
+  "devDependencies": {
+    "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "gaming",
+    "esports",
+    "ai",
+    "predictions",
+    "symantic",
+    "groq"
+  ],
+  "author": "Symantic",
+  "license": "MIT"
+}
